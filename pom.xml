@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<modelVersion>4.0.0</modelVersion>
+<groupId>com.example</groupId>
+<artifactId>portcdm</artifactId>
+<packaging>pom</packaging>
+<version>0.0.1-SNAPSHOT</version>
+
+<modules>
+    <module>../locationregistry</module>
+</modules>
+<name>portcdm</name>
+<description>test</description>
+<repositories>
+    <repository>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+        <id>central</id>
+        <name>Central Repository</name>
+        <url>https://repo.maven.apache.org/maven2</url>
+    </repository>
+    <repository>
+        <releases>
+            <enabled>false</enabled>
+            <updatePolicy>always</updatePolicy>
+            <checksumPolicy>warn</checksumPolicy>
+        </releases>
+        <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+            <checksumPolicy>fail</checksumPolicy>
+        </snapshots>
+        <id>monalisa-viktoria-snapshots</id>
+        <name>MonaLisa Viktoria Snapshots</name>
+        <url>http://brink.viktoria.chalmers.se/nexus/content/repositories/monalisa-viktoria-snapshots</url>
+    </repository>
+    <repository>
+        <releases>
+            <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
+            <checksumPolicy>warn</checksumPolicy>
+        </releases>
+        <snapshots>
+            <enabled>false</enabled>
+            <updatePolicy>never</updatePolicy>
+            <checksumPolicy>fail</checksumPolicy>
+        </snapshots>
+        <id>monalisa-viktoria</id>
+        <name>MonaLisa Viktoria</name>
+        <url>http://brink.viktoria.chalmers.se/nexus/content/repositories/monalisa-viktoria</url>
+    </repository>
+</repositories>
+<pluginRepositories>
+    <pluginRepository>
+        <releases>
+            <updatePolicy>never</updatePolicy>
+        </releases>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+        <id>central</id>
+        <name>Central Repository</name>
+        <url>https://repo.maven.apache.org/maven2</url>
+    </pluginRepository>
+</pluginRepositories>
+<dependencies>
+    <dependency>
+        <groupId>
+            se.viktoria.stm.portcdm.demonstrator-connector
+        </groupId>
+        <artifactId>common</artifactId>
+        <version>LATEST</version>
+        <exclusions>
+            <exclusion>
+                <groupId>sun.jdk</groupId>
+                <artifactId>jconsole</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>
+    <dependency>
+        <groupId>eu.portcdm</groupId>
+        <artifactId>message-broker-dto</artifactId>
+        <version>LATEST</version>
+    </dependency>
+    <dependency>
+        <groupId>eu.portcdm</groupId>
+        <artifactId>message-broker-client</artifactId>
+        <version>LATEST</version>
+    </dependency>
+</dependencies>
+</project>
