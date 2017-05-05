@@ -10,8 +10,6 @@ public class main {
 
     public static void main(String [] args)
     {
-
-
         System.out.println("Sushi är Max");
         System.out.println("Max Sushi, (Oscar was here today)");
         System.out.print("Hej");
@@ -19,8 +17,7 @@ public class main {
         ApiClient client = new ApiClient();
 
         PortcallsApi api = new PortcallsApi(client);
-
-// jakes test
+// hej
 
 
     }
