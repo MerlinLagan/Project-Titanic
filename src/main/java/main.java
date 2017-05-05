@@ -1,5 +1,3 @@
-package main.java;
-
 import eu.portcdm.client.ApiClient;
 import eu.portcdm.client.service.PortcallsApi;
 
@@ -18,6 +16,7 @@ public class main {
 
         PortcallsApi api = new PortcallsApi(client);
 // hej
+        // test jakob
 
 
     }
