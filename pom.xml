@@ -7,7 +7,6 @@
 <artifactId>portcdm</artifactId>
 <packaging>pom</packaging>
 <version>0.0.1-SNAPSHOT</version>
-
     <build>
         <plugins>
             <plugin>
@@ -20,7 +19,6 @@
             </plugin>
         </plugins>
     </build>
-
 <modules>
     <module>../locationregistry</module>
 </modules>
@@ -93,7 +91,7 @@
             </exclusion>
         </exclusions>
     </dependency>
-    <dependency>
+    <!--dependency>
         <groupId>eu.portcdm</groupId>
         <artifactId>message-broker-dto</artifactId>
         <version>LATEST</version>
@@ -102,6 +100,6 @@
         <groupId>eu.portcdm</groupId>
         <artifactId>message-broker-client</artifactId>
         <version>LATEST</version>
-    </dependency>
+    </dependency-->
 </dependencies>
 </project>
