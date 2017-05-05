@@ -12,7 +12,7 @@ public class main {
     {
         System.out.println("Sushi är Max");
         System.out.println("Max Sushi, (Oscar was here today)");
-        System.out.print("Hej :)");
+        System.out.print("Hej");
 
         ApiClient client = new ApiClient();
 
