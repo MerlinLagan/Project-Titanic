@@ -9,7 +9,7 @@ public class main {
     {
         System.out.println("Sushi är Max");
         System.out.println("Max Sushi, (Oscar was here today)");
-        System.out.print("Hej hej hej jag är bara fjorton år");
+        System.out.print("Hej hej hej Max är bara fjorton år");
     }
 
 }
