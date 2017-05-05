@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: eu.portcdm:amss-client:1.6-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/eu/portcdm/amss-client/1.6-SNAPSHOT/amss-client-1.6-20170302.145802-3.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/eu/portcdm/amss-client/1.6-SNAPSHOT/amss-client-1.6-20170302.145802-3-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/eu/portcdm/amss-client/1.6-SNAPSHOT/amss-client-1.6-20170302.145802-3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

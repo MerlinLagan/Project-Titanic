@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: eu.portcdm:client-api:1.5-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/eu/portcdm/client-api/1.5-SNAPSHOT/client-api-1.5-20170302.145755-10.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/eu/portcdm/client-api/1.5-SNAPSHOT/client-api-1.5-20170302.145755-10-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/eu/portcdm/client-api/1.5-SNAPSHOT/client-api-1.5-20170302.145755-10-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

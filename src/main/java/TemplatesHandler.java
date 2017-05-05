@@ -33,6 +33,7 @@
                 templates = newTemplates;
             }
 
+
             public void saveTemplatesMap(){
                 Properties properties = new Properties();
                 properties.putAll(templates);

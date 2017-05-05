@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: eu.portcdm:port-call-message-format:1.5-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/eu/portcdm/port-call-message-format/1.5-SNAPSHOT/port-call-message-format-1.5-20161102.090519-4.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/eu/portcdm/port-call-message-format/1.5-SNAPSHOT/port-call-message-format-1.5-20161102.090519-4-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/eu/portcdm/port-call-message-format/1.5-SNAPSHOT/port-call-message-format-1.5-20161102.090519-4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
