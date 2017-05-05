@@ -9,8 +9,6 @@ public class main {
     {
         System.out.println("Sushi är Max");
         System.out.println("Max Sushi, (Oscar was here today)");
-        System.out.println("Hej");
-        //PortCallMessage portCallMessage;
     }
 
 }
