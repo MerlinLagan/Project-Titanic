@@ -9,18 +9,14 @@ import eu.portcdm.client.service.PortcallsApi;
 public class main {
 
     public static void main(String [] args)
+    public static void main( String[] args )
     {
-        System.out.println("Sushi är Max");
-        System.out.println("Max Sushi, (Oscar was here today)");
-        System.out.print("Hej");
-
-        ApiClient client = new ApiClient();
-
-        PortcallsApi api = new PortcallsApi(client);
-
-
-
-
+        App app = new App();
+        app.initiateStateUpdateAPI();
+        PortCallMessage testPCM = app.testMessage("portcallone");
+        app.sendPCM(testPCM);
+        System.out.println("ran main method");
+        app.GetPortCalls();
     }
-
 }
+
