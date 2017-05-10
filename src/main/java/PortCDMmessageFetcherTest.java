@@ -1,4 +1,3 @@
-
 import eu.portcdm.client.ApiClient;
 import eu.portcdm.client.ApiException;
 import eu.portcdm.client.service.PortcallsApi;
@@ -9,9 +8,6 @@ import java.util.List;
 
 
 public class PortCDMmessageFetcherTest {
-
-}
-    /*
     // 4567 kunde aron och anton skicka till
     // 8080/dmp kan de hämta ifrån
     // från amss assistant message service fick man xml-test
@@ -34,13 +30,13 @@ public class PortCDMmessageFetcherTest {
         return stateUpdateApi;
     }
 
-    private List<PortCallMessage> GetPortCalls() {
+    private  List<PortCallMessage> GetPortCalls() {
 
         try {
-            // List<PortCallSummary> portCallSummaries = portcallsApi.getAllPortCalls(8);
-            return stateUpdateApi.getMessagesBetween("2015-05-03T06:30:00Z", "2017-05-05T19:50:00Z", "porter", "porter", "aaa");
+           // List<PortCallSummary> portCallSummaries = portcallsApi.getAllPortCalls(8);
+            return stateUpdateApi.getMessagesBetween("2015-05-03T06:30:00Z","2017-05-05T19:50:00Z", "porter", "porter", "porter");
 
-            // System.out.println(portCallSummaries.size());
+           // System.out.println(portCallSummaries.size());
         } catch (ApiException e) {
             e.printStackTrace();
             return null;
@@ -50,14 +46,14 @@ public class PortCDMmessageFetcherTest {
 
     public List<PortCallMessage> getMessages() {
         try {
-            stateUpdateApi.getPortCallMessages(5);
-            return stateUpdateApi.getMessagesBetween("2017-05-05T06:30:00Z", "2017-05-05T17:50:00Z", "porter", "porter", "aaa");
+            stateUpdateApi.getPortCallMessages("porter", "porter", "porter", 5);
+            return stateUpdateApi.getMessagesBetween("2017-05-05T06:30:00Z","2017-05-05T17:50:00Z", "porter", "porter"," porter");
         } catch (ApiException e) {
             e.printStackTrace();
         }
         return null;
     }
-}
+
 
     public static void main( String[] args )
     {
@@ -69,8 +65,7 @@ public class PortCDMmessageFetcherTest {
         for (PortCallMessage pcm : messageList) {
             String printString = pcm.getReportedAt().toString();
             System.out.println(printString);
-
+        }
       //  app.GetPortCalls();
     }
 }
-*/
