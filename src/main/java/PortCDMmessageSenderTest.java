@@ -28,10 +28,14 @@ public class PortCDMmessageSenderTest {
 
         apiClient = new ApiClient();
 
-        //Base path = URL to PortCDM (i.e. http://192.168.56.101:8080/amss)
+        // Base path = URL to PortCDM
+        // Virtual Machine: http://192.168.56.101:8080/amss
+        // PortCDM Sandbox: http://dev.portcdm.eu:8080/
         apiClient.setBasePath( "http://192.168.56.101:8080/amss" );
 
-        //Authenticate with headers
+        // Authenticate with headers
+        // Virtual Machine: "X-PortCDM-UserId", "porter" | "X-PortCDM-Password", "porter" | "X-PortCDM-ApiKey", "tobbesnyckel" |
+        // PortCDM: "X-PortCDM-UserId", "viktoria" | "X-PortCDM-Password", "vik123" | "X-PortCDM-ApiKey", "eeee"
         apiClient.addDefaultHeader( "X-PortCDM-UserId", "porter" );
         apiClient.addDefaultHeader( "X-PortCDM-Password", "porter" );
         apiClient.addDefaultHeader( "X-PortCDM-ApiKey", "tobbesnyckel" );
