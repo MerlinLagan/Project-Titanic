@@ -3,4 +3,5 @@ public class main {
         MessengerGUI hej = new MessengerGUI();
         hej.loadTemplatesMap("data.properties");
     }
+    // här kommer korrekt main
 }
