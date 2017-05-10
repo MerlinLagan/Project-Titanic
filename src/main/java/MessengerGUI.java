@@ -123,7 +123,6 @@ public class MessengerGUI extends JFrame implements ActionListener {
 
         if (LabelPositions.length == 0){
             return messageText;
-            
         }
 
         String newString = "";
@@ -168,6 +167,7 @@ public class MessengerGUI extends JFrame implements ActionListener {
             JComboBox cb = (JComboBox)e.getSource();
             String chosenTemplate = (String)cb.getSelectedItem();
             templatesHandler.action(chosenTemplate, this);
+            labelField.repaint();
         }
 
         if(o == sendButton) {
