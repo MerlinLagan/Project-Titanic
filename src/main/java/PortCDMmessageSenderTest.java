@@ -12,6 +12,9 @@ import java.util.UUID;
 
 public class PortCDMmessageSenderTest {
 
+}
+    /*
+
 
     public PortCDMmessageSenderTest() {
     }
@@ -55,7 +58,7 @@ public class PortCDMmessageSenderTest {
      *
      * @return
      */
-
+/*
     private PortCallMessage getExampleMessage2() {
         PortCallMessage portCallMessage = new PortCallMessage();
         LocationState locationState = new LocationState();
@@ -75,7 +78,7 @@ public class PortCDMmessageSenderTest {
     /** Skapa ett korrekt meddelande. Olika variabler skall antingen bestämmas genom meddelandet eller skapas. Kan finnas
      * jobb ID vilka antingen skall sättas automatiskt eller sllkapas..
      */
-
+/*
     private PortCallMessage getExampleMessage() {
         StateWrapper stateWrapper = new StateWrapper(
                 LocationReferenceObject.VESSEL, //referenceObject
@@ -108,7 +111,7 @@ public class PortCDMmessageSenderTest {
 
  // OLd way to construct messages
 
-/*
+
     private PortCallMessage testMessage(String portCallId) {
         PortCallMessage portCallMessage = new PortCallMessage();
         LocationState locationState = new LocationState();
