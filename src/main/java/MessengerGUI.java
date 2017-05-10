@@ -129,23 +129,26 @@ public class MessengerGUI extends JFrame implements ActionListener {
         {
             JTextField currentTextField = (JTextField)JTexts[i-1];
             String currentLabelEntry = currentTextField.getText();
+            System.out.println(currentLabelEntry);
             int leftBracketPos = LabelPositions[(2*(i-1))];
-            System.out.println(leftBracketPos);
             int rightBracketPos = LabelPositions[(2*(i)-1)];
-            System.out.println(rightBracketPos);
 
             if (firstiteration == false) {
                 int previousRightBracketPos = LabelPositions[(2*(i-2)+1)];
                 System.out.println("prev right bracket pos = " + previousRightBracketPos);
                 newString = newString + messageText.substring(previousRightBracketPos, leftBracketPos-1) +
                         currentLabelEntry;
+                if (i == JTexts.length) {
+                    newString = newString + messageText.substring(rightBracketPos, messageText.length());
+                }
             }
-            else
-                newString = messageText.substring(0, leftBracketPos-1) + currentLabelEntry;
+            else {
+                newString = messageText.substring(0, leftBracketPos - 1) + currentLabelEntry;
+                System.out.println(newString);
+                 }
             firstiteration = false;
         }
         return newString;
-
     }
 
     public void setMessageBox(String str){
