@@ -73,7 +73,7 @@ public class PortCDMmessageSenderTest {
     }
 
     /** Skapa ett korrekt meddelande. Olika variabler skall antingen bestämmas genom meddelandet eller skapas. Kan finnas
-     * jobb ID vilka antingen skall sättas automatiskt eller skapas.
+     * jobb ID vilka antingen skall sättas automatiskt eller skapas..
      */
 
     private PortCallMessage getExampleMessage() {
