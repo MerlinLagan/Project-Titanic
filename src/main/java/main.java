@@ -4,4 +4,5 @@ public class main {
         hej.loadTemplatesMap("data.properties");
     }
     // här kommer korrekt main
+    // testing some git stuff
 }
