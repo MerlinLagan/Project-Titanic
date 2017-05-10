@@ -26,7 +26,7 @@ public class MessengerGUI extends JFrame implements ActionListener {
     private JButton sendButton, newMessageButton, deleteMessageButton;
     private JComboBox<String> templateMenu;
     public MessagesGUI messagesGui;
-    private App app;
+    // private App app;
     private HashMap<String, String> templates;
     public JPanel labelField;
     public JPanel northPanel;

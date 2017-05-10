@@ -48,7 +48,6 @@ public class PortCDMmessageSenderTest {
             e.printStackTrace();
         }
     }
-
     /**
      * Example of creating a PortCallMessage using the common package util classes.
      * There are more versions of the StateWrapper constructor, this one is for creating a LocationState.
@@ -72,6 +71,10 @@ public class PortCDMmessageSenderTest {
         portCallMessage.setReportedAt(DateFormatter.toGregorianXML("2016-09-02T10:00:00Z"));
         return portCallMessage;
     }
+
+    /** Skapa ett korrekt meddelande. Olika variabler skall antingen bestämmas genom meddelandet eller skapas. Kan finnas
+     * jobb ID vilka antingen skall sättas automatiskt eller skapas.
+     */
 
     private PortCallMessage getExampleMessage() {
         StateWrapper stateWrapper = new StateWrapper(
