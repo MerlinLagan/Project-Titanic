@@ -120,6 +120,11 @@ public class MessengerGUI extends JFrame implements ActionListener {
     public String applyLabelsToMessage(String messageText) {
 
         int[] LabelPositions = LabelHandler.getLabelPositions(messageText);
+
+        if (LabelPositions.length == 0){
+            return messageText;
+        }
+
         String newString = "";
         Boolean firstiteration = true;
 
