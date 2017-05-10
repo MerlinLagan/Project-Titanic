@@ -123,6 +123,7 @@ public class MessengerGUI extends JFrame implements ActionListener {
 
         if (LabelPositions.length == 0){
             return messageText;
+            
         }
 
         String newString = "";
