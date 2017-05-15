@@ -22,6 +22,8 @@ public class PortCDMmessageFetcherTest {
     /* Konstruktor för klassen som anropar stateupdateAPI
     public PortCDMmessageFetcherTest (){
         initiateStateupdateAPI();
+
+
     }
 */
     private StateupdateApi initiateStateupdateAPI() {
