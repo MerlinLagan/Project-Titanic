@@ -54,6 +54,17 @@ public class PortCDMmessageFetcherTest {
         return null;
     }
 
+    /* Hämtar och returnerar en lista med ett givet antal PortCallMessages
+    public List<PortCallMessage> getMessages(){
+        try {
+            //return stateupdateApi.getMessagesBetween("2017-05-03T06:30:00Z","2017-05-05T06:50:00Z");
+            return stateUpdateApi.getPortCallMessages(10);
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+*/
 
     public static void main( String[] args )
     {
