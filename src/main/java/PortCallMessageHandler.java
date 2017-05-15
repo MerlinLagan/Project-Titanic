@@ -4,22 +4,25 @@
 import eu.portcdm.client.ApiClient;
 import eu.portcdm.client.ApiException;
 import eu.portcdm.client.service.PortcallsApi;
+import eu.portcdm.client.service.StateupdateApi;
 import eu.portcdm.dto.Port;
 import eu.portcdm.dto.PortCall;
 import eu.portcdm.dto.PortCallSummary;
 
 import java.util.List;
-public class PortCallMessageHandler {
-    public class PortCallMesseageHandler {
+    public class PortCallMessageHandler {
+        public StateupdateApi stateUpdateApi;
 
         // Här lagras APIn och callen.
+        public ApiClient connectorClient;
         PortcallsApi portcallsApi;
         PortCall activeCall;
+        public String baseurl = "http://192.168.56.101:8080/dmp";
         List<PortCallSummary> summaries;
 
         // Konstruktor, skapar ett api och hämtar senaste callen.
-        public PortCallMesseageHandler(){
-            setupApi();
+        public PortCallMessageHandler(){
+            initiateStateupdateAPI();
             summaries = getSummaries();
             activeCall = getPortCall(0);
         }
@@ -40,23 +43,18 @@ public class PortCallMessageHandler {
             return activeCall;
         }
 
-        // Ansluter till backenden
-        private void setupApi(){
-
-            ApiClient apiClient = new ApiClient();
-
-            // Adress till virtualboxens PortCDM Services
-            apiClient.setBasePath( "http://192.168.56.101:8080/dmp");
-
-            // Inlogg till servern
-            apiClient.addDefaultHeader( "X-PortCDM-UserId", "porter" );
-            apiClient.addDefaultHeader( "X-PortCDM-Password", "porter" );
-
-            // API-key, används inte idag men måste finnas
-            apiClient.addDefaultHeader( "X-PortCDM-ApiKey", "Fenix-SMA" );
-
-            portcallsApi = new PortcallsApi(apiClient);
+        private StateupdateApi initiateStateupdateAPI() {
+            connectorClient = new ApiClient();
+            connectorClient.setConnectTimeout(15);
+            connectorClient.addDefaultHeader("X-PortCDM-UserId", "porter");
+            connectorClient.addDefaultHeader("X-PortCDM-Password", "porter");
+            connectorClient.addDefaultHeader("X-PortCDM-APIKey", "eeee");
+            connectorClient.setBasePath(baseurl);
+            stateUpdateApi = new StateupdateApi(connectorClient);
+            return stateUpdateApi;
         }
+
+
 
         // Hämtar ett givet antal PortCallSummaries
         private List<PortCallSummary> getSummaries(){
@@ -79,4 +77,4 @@ public class PortCallMessageHandler {
             return null;
         }
     }
-}
+
