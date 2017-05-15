@@ -55,21 +55,21 @@ import java.util.List;
         }
 
 
-        // Hämtar ett antal Summaries
-        private List<PortCallSummary> getSummaries(){
-            try {
-                return portcallsApi.getAllPortCalls("porter", "porter"," porter", 30);
-            } catch (ApiException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
         // Hämtar ett PortCall
         public PortCall getPortCall(int id){
             PortCallSummary summary = summaries.get(id);
             try {
                 return portcallsApi.getPortCall(summary.getId(), "porter", "porter"," porter");
+            } catch (ApiException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        
+        // Hämtar ett antal Summaries
+        private List<PortCallSummary> getSummaries(){
+            try {
+                return portcallsApi.getAllPortCalls("porter", "porter"," porter", 30);
             } catch (ApiException e) {
                 e.printStackTrace();
             }
