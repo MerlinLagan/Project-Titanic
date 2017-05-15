@@ -19,6 +19,11 @@ public class PortCDMmessageFetcherTest {
     public ApiClient connectorClient;
     public PortcallsApi portCallsApi;
 
+    /* Konstruktor för klassen som anropar stateupdateAPI
+    public PortCDMmessageFetcherTest (){
+        initiateStateupdateAPI();
+    }
+*/
     private StateupdateApi initiateStateupdateAPI() {
         connectorClient = new ApiClient();
         connectorClient.setConnectTimeout(15);
@@ -30,18 +35,6 @@ public class PortCDMmessageFetcherTest {
         return stateUpdateApi;
     }
 
-    private  List<PortCallMessage> GetPortCalls() {
-
-        try {
-           // List<PortCallSummary> portCallSummaries = portcallsApi.getAllPortCalls(8);
-            return stateUpdateApi.getMessagesBetween("2015-05-03T06:30:00Z","2017-05-05T19:50:00Z", "porter", "porter", "porter");
-
-           // System.out.println(portCallSummaries.size());
-        } catch (ApiException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
 
     public List<PortCallMessage> getMessages() {
@@ -54,17 +47,6 @@ public class PortCDMmessageFetcherTest {
         return null;
     }
 
-    /* Hämtar och returnerar en lista med ett givet antal PortCallMessages
-    public List<PortCallMessage> getMessages(){
-        try {
-            //return stateupdateApi.getMessagesBetween("2017-05-03T06:30:00Z","2017-05-05T06:50:00Z");
-            return stateUpdateApi.getPortCallMessages(10);
-        } catch (ApiException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-*/
 
     public static void main( String[] args )
     {
