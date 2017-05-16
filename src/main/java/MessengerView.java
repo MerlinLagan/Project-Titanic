@@ -92,6 +92,19 @@ public class MessengerView extends JFrame{
         revalidate();
     }
 
+    public String[] getLabels() {
+
+        String[] labels = new String[labelField.getComponentCount()];
+        Component[] jTexts = labelField.getComponents();
+
+        for (int i=0; i<labelField.getComponentCount(); i++) {
+
+            labels[i] = ((JTextField)jTexts[i]).getText();
+
+        }
+        return labels;
+    }
+
     public void loadTemplatesFromMap(HashMap<String, String> map){
         applyTemplates(map);
     }

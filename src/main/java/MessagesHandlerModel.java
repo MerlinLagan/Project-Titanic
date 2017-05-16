@@ -85,11 +85,13 @@ public class MessagesHandlerModel {
     }
 
 
-    public void applyLabelsToMessage(String messageText) {
+    public void applyLabelsToMessage(String messageText, String[] labels) {
+
+        labelList = labels;
 
         updateLabelPositionsInMessage(messageText);
 
-        if (labelPositionsList.length == 0){
+        if (labelList.length == 0){
             message = messageText;
             return;
         }

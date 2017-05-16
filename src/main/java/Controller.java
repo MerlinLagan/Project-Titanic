@@ -46,7 +46,7 @@ public class Controller implements ActionListener {
         }
 
             if(o == msgrView.sendButton) {
-                msgsModel.applyLabelsToMessage(msgrView.tThree.getText());
+                msgsModel.applyLabelsToMessage(msgrView.tThree.getText(), msgrView.getLabels());
                 msgsView.append(msgsModel.getMessage());
             }
 
