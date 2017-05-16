@@ -4,12 +4,12 @@
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
 
 /*
  * The Client with its GUI
  */
-public class MessagesGUI extends JFrame implements ActionListener {
+public class MessagesView extends JFrame {
 
 
     private static final long serialVersionUID = 1L;
@@ -21,8 +21,7 @@ public class MessagesGUI extends JFrame implements ActionListener {
 
     //TODO Lägg in hållare för API-uppkopplingsnycklar
 
-    // Constructor connection receiving a socket number
-    MessagesGUI() {
+    MessagesView() {
 
         super();
 
