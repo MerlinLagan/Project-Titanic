@@ -27,7 +27,7 @@ import java.util.List;
             currentCall = getPortCall(0);
         }
 
-        // Uppdaterar listan med PortCalls
+        // Uppdaterar summaries
         public boolean updateCalls(){
             summaries = getSummaries();
             if (summaries == null){
@@ -55,7 +55,7 @@ import java.util.List;
         }
 
 
-        // Hämtar ett PortCall
+        // Hämtar ett specifikt PortCall
         public PortCall getPortCall(int id){
             PortCallSummary summary = summaries.get(id);
             try {
