@@ -8,39 +8,39 @@ import java.util.List;
  */
 public class StatementHandler  {
 
-    // Här lagras statements samt den senaste callen.
+    // Statements och nuvarande callen lagras.
     HashMap<String,String> latestStatements;
-    PortCall activeCall;
+    PortCall currentCall;
 
-    // Konstruktor, kräver en call och hämtar statements därifrån direkt.
-    public StatementHandler(PortCall call) {
-        activeCall = call;
-        latestStatements = getAllLatestStatements(activeCall);
+    // Konstruktor som hämtar statements från nuvarande callet.
+    public StatementHandler(PortCall portcall) {
+        currentCall = portcall;
+        latestStatements = getAllLatestStatements(currentCall);
     }
 
-    // Ändrar vilket call vi hämtar samt uppdaterar senaste statements
-    public boolean setActiveCall(PortCall call) {
-        if (call == null){
+    // Skapar nuvarande call
+    public boolean setCurrentCall(PortCall portcall) {
+        if (portcall == null){
             return false;
         }
-        activeCall = call;
-        latestStatements = getAllLatestStatements(activeCall);
+        currentCall = portcall;
+        latestStatements = getAllLatestStatements(currentCall);
         return true;
     }
 
-    // Hämtar en statement utefter sitt ID. Fullständig lista är ej sammanställd.
+    // Hämtar statements från ett id och returnerar som en string
     public String getStatement(String id) {
         return latestStatements.get(id);
     }
 
     // Lägger in alla senaste statements i en HashMap med statens ID som key och timeType + timeStatement som value.
-    private HashMap<String, String> getAllLatestStatements(PortCall call){
+    private HashMap<String, String> getAllLatestStatements(PortCall portcall){
 
         // Skapar ny hashmap
         HashMap<String, String> output = new HashMap<String, String>();
 
         // Tar ut alla ProcessSteps från callen
-        List<ProcessStep> steps = call.getProcessSteps();
+        List<ProcessStep> steps = portcall.getProcessSteps();
 
         for (ProcessStep step : steps) {
 
