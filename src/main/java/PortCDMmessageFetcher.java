@@ -7,7 +7,7 @@ import eu.portcdm.messaging.PortCallMessage;
 import java.util.List;
 
 
-public class PortCDMmessageFetcherTest {
+public class PortCDMmessageFetcher {
     // 4567 kunde aron och anton skicka till
     // 8080/dmp kan de hämta ifrån
     // från amss assistant message service fick man xml-test
@@ -52,7 +52,7 @@ public class PortCDMmessageFetcherTest {
 
     public static void main( String[] args )
     {
-        PortCDMmessageFetcherTest app = new PortCDMmessageFetcherTest();
+        PortCDMmessageFetcher app = new PortCDMmessageFetcher();
         app.initiateStateupdateAPI();
         System.out.println("ran main method");
         List<PortCallMessage> messageList = app.getMessages();
