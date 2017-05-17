@@ -22,6 +22,7 @@ public class PortCDMmessageSender {
 
 
     public PortCDMmessageSender() {
+        initiateStateupdateAPI();
     }
 
 
