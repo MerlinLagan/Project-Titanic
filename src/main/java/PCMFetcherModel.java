@@ -3,9 +3,9 @@ import eu.portcdm.client.ApiException;
 import eu.portcdm.client.service.PortcallsApi;
 import eu.portcdm.client.service.StateupdateApi;
 import eu.portcdm.messaging.PortCallMessage;
-
 import java.util.List;
 
+// Den här klassen ska hämta meddelanden från PortCDM enl specifikations
 
 public class PCMFetcherModel {
     // 4567 kunde aron och anton skicka till
