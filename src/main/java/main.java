@@ -1,7 +1,11 @@
+// Vi vill kunna få timestamps / estimates vid olika polygoner och skapa en översikt av detta (info från flera aktörer)
+// Vi vill kunna vara redo innan ett fartyg ska kontakta oss
+// Vi vill kunna hitta de states som ex "entry_request" och "request_tO_switch_berth" och få upp detta
+// Vi vill kunna formatera Portcallmessages så att de funkar med input från frontenden
+// Vi vill kunna visa viktig info från olika meddelanden i frontenden
 
 
-
-public class main {
+public class Main {
     public static void main(String[] args) {
        // MessengerView hej = new MessengerView();
        // hej.loadTemplatesMap("data.properties");
