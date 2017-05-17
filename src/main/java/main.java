@@ -8,6 +8,9 @@ public class main {
 
                 MessagesHandlerModel msgsModel = new MessagesHandlerModel();
                 TemplatesHandlerModel msgrModel = new TemplatesHandlerModel();
+                PCMHandlerModel pcmHandler = new PCMHandlerModel();
+                  PCMFetcherModel pcmFetcher = new PCMFetcherModel();
+                  PCMSenderModel pcmSender = new PCMSenderModel();
 
                 Controller controller = new Controller();
 
@@ -18,6 +21,10 @@ public class main {
 
                 controller.addModels(msgrModel, msgsModel);
 
+                controller.addPCMHandler(pcmHandler);
+
                 controller.initialize();
+
+
     }
 }

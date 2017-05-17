@@ -12,8 +12,9 @@ public class Controller implements ActionListener {
     TemplatesHandlerModel tmpltsModel;
     MessengerView msgrView;
     MessagesView msgsView;
-    PortCallMessageHandler pcmHandler;
-    PortCDMmessageFetcher pcmFetcher;
+    PCMHandlerModel pcmHandler;
+    PCMSenderModel pcmSender;
+    PCMFetcherModel pcmFether;
     Timer timer;
 
 
@@ -32,7 +33,9 @@ public class Controller implements ActionListener {
     public void addModels(TemplatesHandlerModel tmpltsModel, MessagesHandlerModel msgsModel, PCMHandlerModel pcmHandler, PCMFetcherModel pcmFetcher, PCMSenderModel pcmSender){
         this.tmpltsModel = tmpltsModel;
         this.msgsModel = msgsModel;
-        this.pcmHandler = pcmHandler
+        this.pcmHandler = pcmHandler;
+        this.pcmFetcher = pcmFetcher;
+        this.pcmSender = pcmSender;
     }
 
     public void addPCMHandler(PortCallMessageHandler pcmHandler){
