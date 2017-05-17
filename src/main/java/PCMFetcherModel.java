@@ -23,7 +23,6 @@ public class PCMFetcherModel {
     //Konstruktor för klassen som anropar stateupdateAPI
     public PCMFetcherModel(){
         initiateStateupdateAPI();
-
     }
 
     private StateupdateApi initiateStateupdateAPI() {
@@ -39,10 +38,10 @@ public class PCMFetcherModel {
 
 
 
-    public List<PortCallMessage> getMessages() {
+    public List<PortCallMessage> fetchMessagesBetweenTimes(String fromtime, String totime) {
         try {
             stateUpdateApi.getPortCallMessages("porter", "porter", "porter", 5);
-            return stateUpdateApi.getMessagesBetween("2017-05-05T06:30:00Z","2017-05-05T17:50:00Z", "porter", "porter"," porter");
+            return stateUpdateApi.getMessagesBetween(fromtime, totime, "porter", "porter"," porter");
         } catch (ApiException e) {
             e.printStackTrace();
         }

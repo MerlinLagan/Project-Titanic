@@ -22,7 +22,5 @@ public class main {
                 controller.addModels(msgrModel, msgsModel, pcmHandler, pcmFetcher, pcmSender);
 
                 controller.initialize();
-
-
     }
 }

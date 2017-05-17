@@ -89,10 +89,7 @@ public class StatementHandlerModel {
                 }
             }
         }
-
         // Returnerar alla statements som hittades
         return output;
     }
-
-
 }

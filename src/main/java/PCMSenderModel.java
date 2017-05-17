@@ -1,6 +1,3 @@
-import eu.portcdm.amss.client.ApiClient;
-import eu.portcdm.amss.client.ApiException;
-import eu.portcdm.amss.client.StateupdateApi;
 import eu.portcdm.client.service.PortcallsApi;
 import eu.portcdm.dto.LocationTimeSequence;
 import eu.portcdm.messaging.*;
@@ -110,4 +107,5 @@ public class PCMSenderModel {
         );
         return portCallMessage;
     }
+
 }

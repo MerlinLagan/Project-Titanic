@@ -50,12 +50,10 @@ public class Controller implements ActionListener {
         System.out.println("haj");
         oldTime = newTime;
         newTime = TimeStampHelper.getCurrentTimeStamp();
-        // pcmFetcher.getMessagesBetweenTimes(oldTime, newTime);
-        //
+        pcmFetcher.fetchMessagesBetweenTimes(oldTime, newTime);
         System.out.println(oldTime);
         System.out.println(newTime);
     }
-
 
     public static String getCurrentTimeStamp() {
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
