@@ -19,13 +19,12 @@ public class PortCDMmessageFetcher {
     public ApiClient connectorClient;
     public PortcallsApi portCallsApi;
 
-    /* Konstruktor för klassen som anropar stateupdateAPI
-    public PortCDMmessageFetcherTest (){
+    //Konstruktor för klassen som anropar stateupdateAPI
+    public PortCDMmessageFetcher (){
         initiateStateupdateAPI();
 
-
     }
-*/
+
     private StateupdateApi initiateStateupdateAPI() {
         connectorClient = new ApiClient();
         connectorClient.setConnectTimeout(15);
@@ -49,7 +48,7 @@ public class PortCDMmessageFetcher {
         return null;
     }
 
-
+/*
     public static void main( String[] args )
     {
         PortCDMmessageFetcher app = new PortCDMmessageFetcher();
@@ -62,5 +61,5 @@ public class PortCDMmessageFetcher {
             System.out.println(printString);
         }
       //  app.GetPortCalls();
-    }
+    }*/
 }
