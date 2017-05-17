@@ -1,6 +1,7 @@
 import eu.portcdm.amss.client.ApiClient;
 import eu.portcdm.amss.client.ApiException;
 import eu.portcdm.amss.client.StateupdateApi;
+import eu.portcdm.client.service.PortcallsApi;
 import eu.portcdm.dto.LocationTimeSequence;
 import eu.portcdm.messaging.*;
 import se.viktoria.stm.portcdm.connector.common.util.DateFormatter;
@@ -10,48 +11,31 @@ import se.viktoria.stm.portcdm.connector.common.util.StateWrapper;
 import java.util.UUID;
 
 
-public class PortCDMmessageSenderTest {
+public class PortCDMmessageSender {
+
+    public String baseurl = "http://192.168.56.101:8080/dmp";
+    public String userId = "porter";
+    public String password = "porter";
+    public eu.portcdm.client.service.StateupdateApi stateUpdateApi;
+    public eu.portcdm.client.ApiClient connectorClient;
+    public PortcallsApi portCallsApi;
 
 
-    public PortCDMmessageSenderTest() {
+    public PortCDMmessageSender() {
     }
 
-    public static void main( String[] args ) {
-        new PortCDMmessageSenderTest().runUpdates();
+
+    private eu.portcdm.client.service.StateupdateApi initiateStateupdateAPI() {
+        connectorClient = new eu.portcdm.client.ApiClient();
+        connectorClient.setConnectTimeout(15);
+        connectorClient.addDefaultHeader("X-PortCDM-UserId", "porter");
+        connectorClient.addDefaultHeader("X-PortCDM-Password", "porter");
+        connectorClient.addDefaultHeader("X-PortCDM-APIKey", "eeee");
+        connectorClient.setBasePath(baseurl);
+        stateUpdateApi = new eu.portcdm.client.service.StateupdateApi(connectorClient);
+        return stateUpdateApi;
     }
 
-    public void runUpdates() {
-        PortCallMessage portCallMessage;
-
-        // * 1. Setup ApiClient and connection to PortCDM
-        ApiClient apiClient;
-
-        apiClient = new ApiClient();
-
-        // Base path = URL to PortCDM
-        // Virtual Machine: http://192.168.56.101:8080/amss
-        // PortCDM Sandbox: http://dev.portcdm.eu:8080/
-        apiClient.setBasePath( "http://192.168.56.101:8080/amss" );
-
-        // Authenticate with headers
-        // Virtual Machine: "X-PortCDM-UserId", "porter" | "X-PortCDM-Password", "porter" | "X-PortCDM-ApiKey", "tobbesnyckel" |
-        // PortCDM: "X-PortCDM-UserId", "viktoria" | "X-PortCDM-Password", "vik123" | "X-PortCDM-ApiKey", "eeee"
-        apiClient.addDefaultHeader( "X-PortCDM-UserId", "porter" );
-        apiClient.addDefaultHeader( "X-PortCDM-Password", "porter" );
-        apiClient.addDefaultHeader( "X-PortCDM-ApiKey", "tobbesnyckel" );
-        System.out.println(apiClient.getDateFormat());
-
-        StateupdateApi stateupdateApi = new StateupdateApi( apiClient );
-
-        // * 3. Fetch new message
-        portCallMessage = getExampleMessage();
-        // * 4. Send message to PortCDM
-        try {
-            stateupdateApi.sendMessage("porter", "porter", "porter", portCallMessage);
-        } catch ( ApiException e ) {
-            e.printStackTrace();
-        }
-    }
     /**
      * Example of creating a PortCallMessage using the common package util classes.
      * There are more versions of the StateWrapper constructor, this one is for creating a LocationState.
@@ -108,27 +92,8 @@ public class PortCDMmessageSenderTest {
         return portCallMessage;
     }
 }
-
-
- // OLd way to construct messages
-
 /*
-    private PortCallMessage testMessage(String portCallId) {
-        PortCallMessage portCallMessage = new PortCallMessage();
-        LocationState locationState = new LocationState();
-        LocationState.ArrivalLocation arrivalLocation = new LocationState.ArrivalLocation();
-        LocationState.DepartureLocation departureLocation = new LocationState.DepartureLocation();
-        portCallMessage.setPortCallId(portCallId);
-        portCallMessage.setComment(null);
-        portCallMessage.setMessageId("urn:x-mrn:stm:portcdm:message:" + UUID.randomUUID().toString());
-        locationState.setArrivalLocation(arrivalLocation);
-        locationState.setDepartureLocation(departureLocation);
-        locationState.setReferenceObject(LocationReferenceObject.VESSEL);
-        portCallMessage.setLocationState(locationState);
-        portCallMessage.setReportedAt(DateFormatter.toGregorianXML("2016-09-02T10:00:00Z"));
-        return portCallMessage;
-    }
-    /*import eu.portcdm.amss.client.ApiClient;
+import eu.portcdm.amss.client.ApiClient;
 import eu.portcdm.amss.client.ApiException;
 import eu.portcdm.amss.client.StateupdateApi;
 import eu.portcdm.dto.LocationTimeSequence;
@@ -219,4 +184,5 @@ public class MessageSender {
         stateupdateApi = new StateupdateApi( apiClient );
 
     }
-    */
+
+*/
