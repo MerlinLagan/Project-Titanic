@@ -7,7 +7,7 @@ import eu.portcdm.messaging.PortCallMessage;
 import java.util.List;
 
 
-public class PortCDMmessageFetcherTest {
+public class PortCDMmessageFetcher {
     // 4567 kunde aron och anton skicka till
     // 8080/dmp kan de hämta ifrån
     // från amss assistant message service fick man xml-test
@@ -18,6 +18,12 @@ public class PortCDMmessageFetcherTest {
     public StateupdateApi stateUpdateApi;
     public ApiClient connectorClient;
     public PortcallsApi portCallsApi;
+
+    //Konstruktor för klassen som anropar stateupdateAPI
+    public PortCDMmessageFetcher (){
+        initiateStateupdateAPI();
+
+    }
 
     private StateupdateApi initiateStateupdateAPI() {
         connectorClient = new ApiClient();
@@ -30,18 +36,6 @@ public class PortCDMmessageFetcherTest {
         return stateUpdateApi;
     }
 
-    private  List<PortCallMessage> GetPortCalls() {
-
-        try {
-           // List<PortCallSummary> portCallSummaries = portcallsApi.getAllPortCalls(8);
-            return stateUpdateApi.getMessagesBetween("2015-05-03T06:30:00Z","2017-05-05T19:50:00Z", "porter", "porter", "porter");
-
-           // System.out.println(portCallSummaries.size());
-        } catch (ApiException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
 
     public List<PortCallMessage> getMessages() {
@@ -54,10 +48,10 @@ public class PortCDMmessageFetcherTest {
         return null;
     }
 
-
+/*
     public static void main( String[] args )
     {
-        PortCDMmessageFetcherTest app = new PortCDMmessageFetcherTest();
+        PortCDMmessageFetcher app = new PortCDMmessageFetcher();
         app.initiateStateupdateAPI();
         System.out.println("ran main method");
         List<PortCallMessage> messageList = app.getMessages();
@@ -67,5 +61,5 @@ public class PortCDMmessageFetcherTest {
             System.out.println(printString);
         }
       //  app.GetPortCalls();
-    }
+    }*/
 }
