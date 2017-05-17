@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -11,10 +12,16 @@ public class Controller implements ActionListener {
     TemplatesHandlerModel tmpltsModel;
     MessengerView msgrView;
     MessagesView msgsView;
+    PortCallMessageHandler pcmHandler;
+    PortCDMmessageFetcher pcmFetcher;
+    Timer timer;
+
 
     public void initialize(){
         tmpltsModel.loadTemplatesMap("data.properties");
         msgrView.loadTemplatesFromMap(tmpltsModel.getTemplates());
+        timer = new Timer(5000, this);
+        timer.start();
     }
 
     public void addViews(MessengerView msgrView, MessagesView msgsView){
@@ -22,10 +29,16 @@ public class Controller implements ActionListener {
         this.msgrView = msgrView;
     }
 
-    public void addModels(TemplatesHandlerModel tmpltsModel, MessagesHandlerModel msgsModel){
+    public void addModels(TemplatesHandlerModel tmpltsModel, MessagesHandlerModel msgsModel, PCMHandlerModel pcmHandler, PCMFetcherModel pcmFetcher, PCMSenderModel pcmSender){
         this.tmpltsModel = tmpltsModel;
         this.msgsModel = msgsModel;
+        this.pcmHandler = pcmHandler
     }
+
+    public void addPCMHandler(PortCallMessageHandler pcmHandler){
+        this.pcmHandler = pcmHandler;
+    }
+
 
 
     @Override
@@ -45,31 +58,37 @@ public class Controller implements ActionListener {
             }
         }
 
-            if(o == msgrView.sendButton) {
-                msgsModel.applyLabelsToMessage(msgrView.tThree.getText(), msgrView.getLabels());
-                msgsView.append(msgsModel.getMessage());
-            }
+        if(o == msgrView.sendButton) {
+            msgsModel.applyLabelsToMessage(msgrView.tThree.getText(), msgrView.getLabels());
+            msgsView.append(msgsModel.getMessage());
+        }
 
-            if(o == msgrView.newTemplateButton) {
+        if(o == msgrView.newTemplateButton) {
 
-                msgrView.createTemplateName();
-                String templateKey = msgrView.getLastCreatedTemplateName();
-                String templateValue = msgrView.getMessageBoxText();
-                if (templateKey != null && templateValue != null) {
-                    tmpltsModel.addTemplate(templateKey, templateValue);
-                    msgrView.addSingleTemplate(templateKey);
-                }
-                tmpltsModel.saveTemplatesMap();
-                return;
+            msgrView.createTemplateName();
+            String templateKey = msgrView.getLastCreatedTemplateName();
+            String templateValue = msgrView.getMessageBoxText();
+            if (templateKey != null && templateValue != null) {
+                tmpltsModel.addTemplate(templateKey, templateValue);
+                msgrView.addSingleTemplate(templateKey);
             }
-            if(o == msgrView.deleteMessageButton) {
-                try {
-                      tmpltsModel.removeTemplate(msgrView.getSelectedTemplate());
-                      msgrView.removeSelectedTemplateFromMenu();
-                }
-                catch (NullPointerException exception) {
-                    System.out.println("list is already empty");
-                }
+            tmpltsModel.saveTemplatesMap();
+            return;
+        }
+        if(o == msgrView.deleteMessageButton) {
+            try {
+                tmpltsModel.removeTemplate(msgrView.getSelectedTemplate());
+                msgrView.removeSelectedTemplateFromMenu();
+            }
+            catch (NullPointerException exception) {
+                System.out.println("list is already empty");
             }
         }
+        if (o == timer) {
+            System.out.println("haj");
+            pcmHandler.get
+
+        }
+
     }
+}
