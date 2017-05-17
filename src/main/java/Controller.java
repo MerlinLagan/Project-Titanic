@@ -17,6 +17,8 @@ public class Controller implements ActionListener {
     PCMHandlerModel pcmHandler;
     PCMSenderModel pcmSender;
     PCMFetcherModel pcmFetcher;
+    VesselLocationModel vsllocModel;
+    VesselLocationView vsllocView;
     Timer timer;
 
 
@@ -28,18 +30,21 @@ public class Controller implements ActionListener {
         timer.start();
     }
 
-    public void addViews(MessengerView msgrView, MessagesView msgsView){
+    public void addViews(MessengerView msgrView, MessagesView msgsView, VesselLocationView vsllocView){
         this.msgsView = msgsView;
         this.msgrView = msgrView;
+        this.vsllocView = vsllocView;
     }
 
     public void addModels(TemplatesHandlerModel tmpltsModel, MessagesHandlerModel msgsModel,
-                          PCMHandlerModel pcmHandler, PCMFetcherModel pcmFetcher, PCMSenderModel pcmSender){
+                          PCMHandlerModel pcmHandler, PCMFetcherModel pcmFetcher, PCMSenderModel pcmSender,
+                          VesselLocationModel vsllocModel){
         this.tmpltsModel = tmpltsModel;
         this.msgsModel = msgsModel;
         this.pcmHandler = pcmHandler;
         this.pcmFetcher = pcmFetcher;
         this.pcmSender = pcmSender;
+        this.vsllocModel = vsllocModel;
     }
 
     String newTime = "";

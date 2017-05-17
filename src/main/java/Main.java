@@ -17,6 +17,7 @@ public class Main {
                 PCMHandlerModel pcmHandler = new PCMHandlerModel();
                 PCMFetcherModel pcmFetcher = new PCMFetcherModel();
                 PCMSenderModel pcmSender = new PCMSenderModel();
+                VesselLocationModel vsllocModel = new VesselLocationModel();
 
                 Controller controller = new Controller();
 
@@ -24,9 +25,9 @@ public class Main {
                 MessagesView msgsView = new MessagesView(controller);
                 VesselLocationView vsllocView = new VesselLocationView(controller);
 
-                controller.addViews(msgrView, msgsView);
+                controller.addViews(msgrView, msgsView, vsllocView);
 
-                controller.addModels(msgrModel, msgsModel, pcmHandler, pcmFetcher, pcmSender);
+                controller.addModels(msgrModel, msgsModel, pcmHandler, pcmFetcher, pcmSender, vsllocModel);
 
                 controller.initialize();
     }

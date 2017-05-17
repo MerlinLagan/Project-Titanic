@@ -28,5 +28,4 @@ public class VesselLocationView extends JFrame {
         setSize(600, 600);
         setVisible(true);
     }
-
 }
