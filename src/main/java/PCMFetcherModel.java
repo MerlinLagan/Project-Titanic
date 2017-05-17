@@ -11,6 +11,7 @@ public class PCMFetcherModel {
     // 4567 kunde aron och anton skicka till
     // 8080/dmp kan de hämta ifrån
     // från amss assistant message service fick man xml-test
+    // comment
 
     public String baseurl = "http://192.168.56.101:8080/dmp";
     public String userId = "porter";

@@ -7,6 +7,7 @@ import java.util.List;
  * Created by maxlundstrom on 15/05/17.
  */
 public class StatementHandlerModel {
+    // comment
 
     // Statements och nuvarande callen lagras.
     HashMap<String,String> latestStatements;

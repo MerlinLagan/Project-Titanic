@@ -10,6 +10,7 @@ import eu.portcdm.dto.PortCallSummary;
 
 import java.util.List;
     public class PCMHandlerModel {
+        // comment
         public StateupdateApi stateUpdateApi;
 
         // Här lagras APIn och callen.
