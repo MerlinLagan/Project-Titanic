@@ -11,7 +11,7 @@ import se.viktoria.stm.portcdm.connector.common.util.StateWrapper;
 import java.util.UUID;
 
 
-public class PortCDMmessageSender {
+public class PCMSenderModel {
 
     public String baseurl = "http://192.168.56.101:8080/dmp";
     public String userId = "porter";
@@ -21,7 +21,7 @@ public class PortCDMmessageSender {
     public PortcallsApi portCallsApi;
 
 
-    public PortCDMmessageSender() {
+    public PCMSenderModel() {
         initiateStateupdateAPI();
     }
 

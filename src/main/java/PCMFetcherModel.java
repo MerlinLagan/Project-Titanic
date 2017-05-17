@@ -7,7 +7,7 @@ import eu.portcdm.messaging.PortCallMessage;
 import java.util.List;
 
 
-public class PortCDMmessageFetcher {
+public class PCMFetcherModel {
     // 4567 kunde aron och anton skicka till
     // 8080/dmp kan de hämta ifrån
     // från amss assistant message service fick man xml-test
@@ -20,7 +20,7 @@ public class PortCDMmessageFetcher {
     public PortcallsApi portCallsApi;
 
     //Konstruktor för klassen som anropar stateupdateAPI
-    public PortCDMmessageFetcher (){
+    public PCMFetcherModel(){
         initiateStateupdateAPI();
 
     }
@@ -51,7 +51,7 @@ public class PortCDMmessageFetcher {
 /*
     public static void main( String[] args )
     {
-        PortCDMmessageFetcher app = new PortCDMmessageFetcher();
+        PCMFetcherModel app = new PCMFetcherModel();
         app.initiateStateupdateAPI();
         System.out.println("ran main method");
         List<PortCallMessage> messageList = app.getMessages();

@@ -9,7 +9,7 @@ import eu.portcdm.dto.PortCall;
 import eu.portcdm.dto.PortCallSummary;
 
 import java.util.List;
-    public class PortCallMessageHandler {
+    public class PCMHandlerModel {
         public StateupdateApi stateUpdateApi;
 
         // Här lagras APIn och callen.
@@ -20,7 +20,7 @@ import java.util.List;
         List<PortCallSummary> summaries;
 
         // Konstruktor som anropar initiateStateupdateAPI och hämtare nuvarande portcall
-        public PortCallMessageHandler(){
+        public PCMHandlerModel(){
             initiateStateupdateAPI();
             summaries = getSummaries();
           // TODO   här skall vi hänvisa till portcallIDet (kolla vad summaries är)

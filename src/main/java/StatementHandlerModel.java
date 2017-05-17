@@ -6,14 +6,14 @@ import java.util.List;
 /**
  * Created by maxlundstrom on 15/05/17.
  */
-public class StatementHandler  {
+public class StatementHandlerModel {
 
     // Statements och nuvarande callen lagras.
     HashMap<String,String> latestStatements;
     PortCall currentCall;
 
     // Konstruktor som hämtar statements från nuvarande callet.
-    public StatementHandler(PortCall portcall) {
+    public StatementHandlerModel(PortCall portcall) {
         currentCall = portcall;
         latestStatements = getAllLatestStatements(currentCall);
     }
