@@ -97,7 +97,7 @@ import java.util.List;
         private PortCallMessage createNewMessage(LocationTimeSequence locationTimeSequence, LogicalLocation logicalLocation, double reqLat,
                                                  double reqLong, String reqName, LogicalLocation logicalOptionalLocation, double reqOptLat,
                                                  double reqOptLong, String reqOptName, String localPCID, String localJID, String time, TimeType
-                                                         timeType, String vesselID, XMLGregorianCalendar reportedAt, String reportedBy, String groupWith, String comment) {
+                                                         timeType, String vesselID, String reportedAt, String reportedBy, String groupWith, String comment) {
             StateWrapper stateWrapper = new StateWrapper(
                     LocationReferenceObject.VESSEL, //referenceObject
                     locationTimeSequence, //ARRIVAL_TO or DEPARTURE_FROM
