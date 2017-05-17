@@ -59,6 +59,7 @@ public class Controller implements ActionListener {
                     tmpltsModel.addTemplate(templateKey, templateValue);
                     msgrView.addSingleTemplate(templateKey);
                 }
+                tmpltsModel.saveTemplatesMap();
                 return;
             }
             if(o == msgrView.deleteMessageButton) {

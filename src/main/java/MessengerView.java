@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.HashMap;
 
 /*
@@ -78,12 +76,6 @@ public class MessengerView extends JFrame{
         setSize(600, 600);
         setVisible(true);
         tThree.requestFocus();
-
-        this.addWindowListener(new WindowAdapter(){
-            public void windowClosing(WindowEvent e){
-                // templatesHandlerModel.saveTemplatesMap();
-            }
-        });
     }
 
     public void addLabel(String str){
