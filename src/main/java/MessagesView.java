@@ -76,6 +76,6 @@ public class MessagesView extends JFrame {
 
     // to start the whole thing the server
     public static void main(String[] args) {
-    }
 
+    }
 }
