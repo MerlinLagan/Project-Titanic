@@ -74,8 +74,45 @@ public class PCMSenderModel {
     /** Skapa ett korrekt meddelande. Olika variabler skall antingen bestämmas genom meddelandet eller skapas. Kan finnas
      * jobb ID vilka antingen skall sättas automatiskt eller sllkapas..
      */
+    private PortCallMessage createMessage2(PortCallMessage portCallMessage, String text){
+        PortCallMessage message = portCallMessage;
+        message.setReportedBy("VTS");
+        message.setComment(text);
+        //message.setReportedAt();
+        return message;
+    }
 
-    private PortCallMessage getExampleMessage() {
+    private PortCallMessage createMessage(LocationTimeSequence locationTimeSequence, LogicalLocation logicalLocation) {
+        StateWrapper stateWrapper = new StateWrapper(
+                LocationReferenceObject.VESSEL, //referenceObject
+                locationTimeSequence, //ARRIVAL_TO or DEPARTURE_FROM
+                logicalLocation, //Type of required location
+                53.50, //Latitude of required location
+                53.50, //Longitude of required location
+                "Skarvik Harbour 518", //Name of required location
+                LogicalLocation.ANCHORING_AREA, //Type of optional location
+                52.50, //Latitude of optional location
+                52.50, //Longitude of optional location
+                "Dana Fjord D1" );//Name of optional location
+        //Change dates from 2017-03-23 06:40:00 to 2017-03-23T06:40:00Z
+        PortCallMessage portCallMessage = PortCallMessageBuilder.build(
+                "urn:x-mrn:stm:portcdm:local_port_call:SEGOT:DHC:52724", //localPortCallId
+                "urn:x-mrn:stm:portcdm:local_job:FENIX_SMA:990198126", //localJobId
+                stateWrapper, //StateWrapper created above
+                "2017-03-23T06:40:01Z", //Message's time
+                TimeType.ESTIMATED, //Message's timeType
+                "urn:x-mrn:stm:vessel:IMO:9259501", //vesselId
+                "2017-03-23T06:38:57Z", //reportedAt (optional)
+                "Viktoria", //reportedBy (optional)
+                "urn:x-mrn:stm:portcdm:message:5eadbb1c-6be7-4cf2-bd6d-f0af5a0c35dc", //groupWith (optional), messageId of the message to group with.
+                "example comment" //comment (optional)
+        );
+        return portCallMessage;
+    }
+}
+
+/*
+private PortCallMessage createMessage() {
         StateWrapper stateWrapper = new StateWrapper(
                 LocationReferenceObject.VESSEL, //referenceObject
                 LocationTimeSequence.ARRIVAL_TO, //ARRIVAL_TO or DEPARTURE_FROM
@@ -102,52 +139,4 @@ public class PCMSenderModel {
         );
         return portCallMessage;
     }
-}
-
-/*
-
-
-    // Skapar ett meddelande. Exempelkod från PortCDM-utvecklarna
-    public PortCallMessage createMessage(){
-
-        //StateWrapper xd = new StateWrapper()
-
-        StateWrapper wrapper = new StateWrapper(
-                ServiceObject.ARRIVAL_VTSAREA,
-                "VTS",
-                ServiceTimeSequence.CONFIRMED,
-                LogicalLocation.TRAFFIC_AREA, //Type of optional location
-                52.50, //Latitude of optional location
-                52.50, //Longitude of optional location
-                "Dana Fjord D1"
-                );
-
-        StateWrapper stateWrapper = new StateWrapper(
-                LocationReferenceObject.VESSEL, //referenceObject
-                LocationTimeSequence.ARRIVAL_TO, //ARRIVAL_TO or DEPARTURE_FROM
-                LogicalLocation.BERTH, //Type of required location
-                53.50, //Latitude of required location
-                53.50, //Longitude of required location
-                "Skarvik Harbour 518", //Name of required location
-                LogicalLocation.ANCHORING_AREA, //Type of optional location
-                52.50, //Latitude of optional location
-                52.50, //Longitude of optional location
-                "Dana Fjord D1" );//Name of optional location
-        //Change dates from 2017-03-23 06:40:00 to 2017-03-23T06:40:00Z
-        @SuppressWarnings("Since15") PortCallMessage portCallMessage = PortCallMessageBuilder.build(
-                "urn:x-mrn:stm:portcdm:local_port_call:SEGOT:DHC:52723", //localPortCallId
-                "urn:x-mrn:stm:portcdm:local_job:FENIX_SMA:990198125", //localJobId
-                wrapper, //StateWrapper created above
-                ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT), //Message's time
-                TimeType.ESTIMATED, //Message's timeType
-                "urn:x-mrn:stm:vessel:IMO:9259501", //vesselId
-                null, //reportedAt (optional)
-                null, //reportedBy (optional)
-                null, //groupWith (optional), messageId of the message to group with.
-                "Hello World" //comment (optional)
-        );
-
-        return portCallMessage;
-    }
-
  */
