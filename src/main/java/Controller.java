@@ -106,7 +106,22 @@ public class Controller implements ActionListener {
             }
         }
         if (o == timer) {
-                getMessages();
+            //getMessages();
+        }
+
+        if (o == msgsView.previousMessageButton) {
+            System.out.println("left");
+            // msgsView.append(PCMHandlerModel.messageToText(getPreviousMessage()));
+            // msgrView.setVESSELID(pcmHandlerModel.getVesselID(getPreviousMessage()));
+
+            // Utgår från att backenden har koll på vilket meddelande (samt vilken
+            // plats den har i en lista av flera meddelanden) som visas just nu, samt att föregående / nästa
+        }
+
+        if (o == msgsView.nextMessageButton) {
+            System.out.println("Right");
+            // msgsView.append(PCMHandlerModel.getNextMessage());
+            // msgrView.setVESSELID(pcmHandlerModel.getVesselID(getPreviousMessage()));
         }
 
     }
