@@ -23,9 +23,9 @@ import java.util.List;
         // Konstruktor som anropar initiateStateupdateAPI och hämtare nuvarande portcall
         public PCMHandlerModel(){
             initiateStateupdateAPI();
-            summaries = getSummaries();
+//            summaries = getSummaries();
           // TODO   här skall vi hänvisa till portcallIDet (kolla vad summaries är)
-            currentCall = getPortCall(0);
+//            currentCall = getPortCall(0);
         }
 
         // Uppdaterar summaries

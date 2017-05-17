@@ -9,8 +9,8 @@ public class main {
                 MessagesHandlerModel msgsModel = new MessagesHandlerModel();
                 TemplatesHandlerModel msgrModel = new TemplatesHandlerModel();
                 PCMHandlerModel pcmHandler = new PCMHandlerModel();
-                  PCMFetcherModel pcmFetcher = new PCMFetcherModel();
-                  PCMSenderModel pcmSender = new PCMSenderModel();
+                PCMFetcherModel pcmFetcher = new PCMFetcherModel();
+                PCMSenderModel pcmSender = new PCMSenderModel();
 
                 Controller controller = new Controller();
 
@@ -19,9 +19,7 @@ public class main {
 
                 controller.addViews(msgrView, msgsView);
 
-                controller.addModels(msgrModel, msgsModel);
-
-                controller.addPCMHandler(pcmHandler);
+                controller.addModels(msgrModel, msgsModel, pcmHandler, pcmFetcher, pcmSender);
 
                 controller.initialize();
 

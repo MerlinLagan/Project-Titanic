@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Jakob on 15/05/17.
@@ -14,7 +16,7 @@ public class Controller implements ActionListener {
     MessagesView msgsView;
     PCMHandlerModel pcmHandler;
     PCMSenderModel pcmSender;
-    PCMFetcherModel pcmFether;
+    PCMFetcherModel pcmFetcher;
     Timer timer;
 
 
@@ -22,6 +24,7 @@ public class Controller implements ActionListener {
         tmpltsModel.loadTemplatesMap("data.properties");
         msgrView.loadTemplatesFromMap(tmpltsModel.getTemplates());
         timer = new Timer(5000, this);
+        timer.setInitialDelay(0);
         timer.start();
     }
 
@@ -30,7 +33,8 @@ public class Controller implements ActionListener {
         this.msgrView = msgrView;
     }
 
-    public void addModels(TemplatesHandlerModel tmpltsModel, MessagesHandlerModel msgsModel, PCMHandlerModel pcmHandler, PCMFetcherModel pcmFetcher, PCMSenderModel pcmSender){
+    public void addModels(TemplatesHandlerModel tmpltsModel, MessagesHandlerModel msgsModel,
+                          PCMHandlerModel pcmHandler, PCMFetcherModel pcmFetcher, PCMSenderModel pcmSender){
         this.tmpltsModel = tmpltsModel;
         this.msgsModel = msgsModel;
         this.pcmHandler = pcmHandler;
@@ -38,11 +42,27 @@ public class Controller implements ActionListener {
         this.pcmSender = pcmSender;
     }
 
-    public void addPCMHandler(PortCallMessageHandler pcmHandler){
-        this.pcmHandler = pcmHandler;
+    String newTime = "";
+    String oldTime;
+    TimeStampHelper timeStampHelper = new TimeStampHelper();
+
+    public void getMessages(){
+        System.out.println("haj");
+        oldTime = newTime;
+        newTime = TimeStampHelper.getCurrentTimeStamp();
+        // pcmFetcher.getMessagesBetweenTimes(oldTime, newTime);
+        //
+        System.out.println(oldTime);
+        System.out.println(newTime);
     }
 
 
+    public static String getCurrentTimeStamp() {
+        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        Date now = new Date();
+        String strDate = sdfDate.format(now);
+        return strDate;
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -88,9 +108,7 @@ public class Controller implements ActionListener {
             }
         }
         if (o == timer) {
-            System.out.println("haj");
-            pcmHandler.get
-
+                getMessages();
         }
 
     }
