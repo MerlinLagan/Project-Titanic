@@ -25,7 +25,16 @@ public class PCMSenderModel {
         initiateStateupdateAPI();
     }
 
+    public boolean sendMessage(PortCallMessage message){
+            try {
+                stateUpdateApi.sendMessage( "porter", "porter", "porter", message );
+                return true;
+            } catch (eu.portcdm.client.ApiException e) {
+                e.printStackTrace();
+                return false;
+            }
 
+    }
     private eu.portcdm.client.service.StateupdateApi initiateStateupdateAPI() {
         connectorClient = new eu.portcdm.client.ApiClient();
         connectorClient.setConnectTimeout(15);
@@ -93,27 +102,9 @@ public class PCMSenderModel {
         return portCallMessage;
     }
 }
+
 /*
-import eu.portcdm.amss.client.ApiClient;
-import eu.portcdm.amss.client.ApiException;
-import eu.portcdm.amss.client.StateupdateApi;
-import eu.portcdm.dto.LocationTimeSequence;
-import eu.portcdm.messaging.*;
-import se.viktoria.stm.portcdm.connector.common.util.PortCallMessageBuilder;
-import se.viktoria.stm.portcdm.connector.common.util.StateWrapper;
 
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-
-public class MessageSender {
-    ApiClient apiClient;
-    StateupdateApi stateupdateApi;
-
-
-    public MessageSender() {
-        setupApi();
-    }
 
     // Skapar ett meddelande. Exempelkod från PortCDM-utvecklarna
     public PortCallMessage createMessage(){
@@ -121,10 +112,10 @@ public class MessageSender {
         //StateWrapper xd = new StateWrapper()
 
         StateWrapper wrapper = new StateWrapper(
-                ServiceObject.CARGO_OPERATION,
-                "Aron",
-                ServiceTimeSequence.COMMENCED,
-                LogicalLocation.ANCHORING_AREA, //Type of optional location
+                ServiceObject.ARRIVAL_VTSAREA,
+                "VTS",
+                ServiceTimeSequence.CONFIRMED,
+                LogicalLocation.TRAFFIC_AREA, //Type of optional location
                 52.50, //Latitude of optional location
                 52.50, //Longitude of optional location
                 "Dana Fjord D1"
@@ -158,32 +149,4 @@ public class MessageSender {
         return portCallMessage;
     }
 
-    // Skickar ett givet meddelande till Assisted Message Submission Service
-    public boolean sendMessage(PortCallMessage message){
-        try {
-            stateupdateApi.sendMessage( message );
-            return true;
-        } catch (ApiException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    private void setupApi(){
-        apiClient = new ApiClient();
-
-        // Adress till backendens Assisted Message Submission Service
-        apiClient.setBasePath( "http://192.168.56.101:8080/amss");
-
-        // Inlogg till backenden
-        apiClient.addDefaultHeader( "X-PortCDM-UserId", "porter" );
-        apiClient.addDefaultHeader( "X-PortCDM-Password", "porter" );
-
-        // API-key som ej används men krävs
-        apiClient.addDefaultHeader( "X-PortCDM-ApiKey", "Fenix-SMA" );
-
-        stateupdateApi = new StateupdateApi( apiClient );
-
-    }
-
-*/
+ */
