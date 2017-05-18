@@ -63,6 +63,8 @@ import java.util.List;
             return stateUpdateApi;
         }
 
+        //TODO En metod som hanterar listan från fetch och skriver ut dessa
+
 
         // Hämtar ett specifikt PortCall
         public PortCall getPortCall(int id){
