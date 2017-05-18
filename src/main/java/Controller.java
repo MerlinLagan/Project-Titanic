@@ -57,7 +57,7 @@ public class Controller implements ActionListener {
         System.out.println("haj");
         oldTime = newTime;
         newTime = TimeStampHelper.getCurrentTimeStamp();
-        pcmFetcher.fetchMessagesBetweenTimes(oldTime, newTime);
+       // pcmFetcher.fetchMessagesBetweenTimes(oldTime, newTime);
         System.out.println(oldTime);
         System.out.println(newTime);
     }
@@ -137,23 +137,32 @@ public class Controller implements ActionListener {
             }
         }
         if (o == timer) {
-            //getMessages();
+            msgsModel.addMessageTest();
+            int[] currentPositionInfo = msgsModel.getMessagePositions();
+            msgsView.changePositionInfo(currentPositionInfo);
         }
 
         if (o == msgsView.previousMessageButton) {
-            System.out.println("left");
-            // msgsView.append(PCMHandlerModel.messageToText(getPreviousMessage()));
-            // msgrView.setVESSELID(pcmHandlerModel.getVesselID(getPreviousMessage()));
-
-            // Utgår från att backenden har koll på vilket meddelande (samt vilken
-            // plats den har i en lista av flera meddelanden) som visas just nu, samt att föregående / nästa
+            try {
+                msgsModel.goToPreviousMessage();
+                msgsView.append(msgsModel.getLogMessage());
+                int[] currentPositionInfo = msgsModel.getMessagePositions();
+                msgsView.changePositionInfo(currentPositionInfo);
+            }
+            catch(Exception exception){
+                exception.printStackTrace();
+            }
         }
 
         if (o == msgsView.nextMessageButton) {
-            System.out.println("Right");
-            // msgsView.append(PCMHandlerModel.getNextMessage());
-            // msgrView.setVESSELID(pcmHandlerModel.getVesselID(getPreviousMessage()));
+            try {
+                msgsModel.goToNextMessage();
+                msgsView.append(msgsModel.getLogMessage());
+                int[] currentPositionInfo = msgsModel.getMessagePositions();
+                msgsView.changePositionInfo(currentPositionInfo);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
         }
-
     }
 }

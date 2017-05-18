@@ -1,4 +1,51 @@
+import java.util.ArrayList;
+
 public class MessagesHandlerModel {
+
+
+
+    ArrayList<String> logMessages;
+    int currentMessageNumber;
+
+    public MessagesHandlerModel(){
+        logMessages = new ArrayList<String>();
+        currentMessageNumber = 0;
+    }
+
+    public int[] getMessagePositions(){
+        int[] messagePositionInfo = new int[2];
+        messagePositionInfo[0]=logMessages.size();
+        messagePositionInfo[1]=currentMessageNumber;
+        return messagePositionInfo;
+    }
+
+    public void addMessageTest(){
+        addMessage("Meddelande" + (logMessages.size()));
+    }
+
+    public void addMessage(String str){
+        logMessages.add(str);
+    }
+
+    public String getLogMessage(){
+        return logMessages.get(currentMessageNumber);
+    }
+
+    public String goToNextMessage(){
+        if (!(currentMessageNumber == logMessages.size()-1)) {
+            currentMessageNumber++;
+            return logMessages.get(currentMessageNumber);
+        }
+        else throw new ArrayIndexOutOfBoundsException("end reached");
+    }
+
+    public String goToPreviousMessage(){
+        if (!(currentMessageNumber == 0)) {
+            currentMessageNumber--;
+            return logMessages.get(currentMessageNumber);
+        }
+        else throw new ArrayIndexOutOfBoundsException("beginning reached");
+    }
 
     String[] labelList;
     int[] labelPositionsList;
@@ -120,18 +167,4 @@ public class MessagesHandlerModel {
         }
         message = newString;
     }
-
-/*
-    public static void main(String[] args) {
-
-        MessagesHandlerModel hej = new MessagesHandlerModel();
-		String string = "Hej [firstname], tack för ett trevligt [action]. jag är en [animal] !!! xD";
-		hej.updateLabels(string);
-
-		System.out.println(Arrays.toString(hej.labelPositionsList));
-		System.out.println(Arrays.toString(hej.labelList));
-        hej.applyLabelsToMessage(string);
-        System.out.println(hej.message);
-    }
-    */
 }
