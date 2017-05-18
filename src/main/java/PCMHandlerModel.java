@@ -85,12 +85,12 @@ import java.util.List;
         }
         // Skapa ett meddelande utifrån ett föregående meddelande
         private PortCallMessage updateRecievedMessage(PortCallMessage portCallMessage, String text, ServiceState serviceState){
+            TimeStampHelper timeStampHelper = new TimeStampHelper();
             PortCallMessage message = portCallMessage;
             message.setReportedBy("VTS");
             message.setComment(text);
             message.setServiceState(serviceState);
-            // TODO add xml gregorian calender to line under
-            //message.setReportedAt(TimeStampHelper.getCurrentTimeStamp());
+            message.setReportedAt(timeStampHelper.getTimeGregorian());
             return message;
         }
 
