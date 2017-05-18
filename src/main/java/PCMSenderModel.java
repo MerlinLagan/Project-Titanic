@@ -44,43 +44,7 @@ public class PCMSenderModel {
         return stateUpdateApi;
     }
 
-    /**
-     * Example of creating a PortCallMessage using the common package util classes.
-     * There are more versions of the StateWrapper constructor, this one is for creating a LocationState.
-     * We do not want to send a message with both localJobId and localPortCallId, but both are filled in to show the format.
-     *
-     * @return
-     */
-
-    private PortCallMessage getExampleMessage2() {
-        PortCallMessage portCallMessage = new PortCallMessage();
-        LocationState locationState = new LocationState();
-        LocationState.ArrivalLocation arrivalLocation = new LocationState.ArrivalLocation();
-        LocationState.DepartureLocation departureLocation = new LocationState.DepartureLocation();
-        portCallMessage.setPortCallId("urn:x-mrn:stm:portcdm:local_port_call:SEGOT:DHC:52723");
-        portCallMessage.setComment(null);
-        portCallMessage.setMessageId("urn:x-mrn:stm:portcdm:message:" + UUID.randomUUID().toString());
-        locationState.setArrivalLocation(arrivalLocation);
-        locationState.setDepartureLocation(departureLocation);
-        locationState.setReferenceObject(LocationReferenceObject.VESSEL);
-        portCallMessage.setLocationState(locationState);
-        portCallMessage.setReportedAt(DateFormatter.toGregorianXML("2016-09-02T10:00:00Z"));
-        return portCallMessage;
-    }
-
-    /** Skapa ett korrekt meddelande. Olika variabler skall antingen bestämmas genom meddelandet eller skapas. Kan finnas
-     * jobb ID vilka antingen skall sättas automatiskt eller sllkapas..
-     */
-    private PortCallMessage createMessage2(PortCallMessage portCallMessage, String text){
-        PortCallMessage message = portCallMessage;
-        message.setReportedBy("VTS");
-        message.setComment(text);
-        // TODO add xml gregorian calender to line under
-        //message.setReportedAt();
-        return message;
-    }
-
-    private PortCallMessage createMessage(LocationTimeSequence locationTimeSequence, LogicalLocation logicalLocation) {
+    private PortCallMessage createGenericMessage(LocationTimeSequence locationTimeSequence, LogicalLocation logicalLocation) {
         StateWrapper stateWrapper = new StateWrapper(
                 LocationReferenceObject.VESSEL, //referenceObject
                 locationTimeSequence, //ARRIVAL_TO or DEPARTURE_FROM
