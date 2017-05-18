@@ -26,26 +26,25 @@ import java.util.List;
         List<PortCallSummary> summaries;
 
         // Konstruktor som anropar initiateStateupdateAPI och hämtare nuvarande portcall
-        public PCMHandlerModel(){
+        public PCMHandlerModel() {
             initiateStateupdateAPI();
 //            summaries = getSummaries();
-          // TODO   här skall vi hänvisa till portcallIDet (kolla vad summaries är)
+            // TODO   här skall vi hänvisa till portcallIDet (kolla vad summaries är)
 //            currentCall = getPortCall(0);
         }
 
         // Uppdaterar summaries
-        public boolean updateCalls(){
+        public boolean updateCalls() {
             summaries = getSummaries();
-            if (summaries == null){
+            if (summaries == null) {
                 return false;
-            }
-            else {
+            } else {
                 return true;
             }
         }
 
         // Hämtar den nuvarande callen
-        public PortCall getCurrentCall(){
+        public PortCall getCurrentCall() {
             return currentCall;
         }
 
@@ -64,27 +63,28 @@ import java.util.List;
 
 
         // Hämtar ett specifikt PortCall
-        public PortCall getPortCall(int id){
+        public PortCall getPortCall(int id) {
             PortCallSummary summary = summaries.get(id);
             try {
-                return portcallsApi.getPortCall(summary.getId(), "porter", "porter"," porter");
+                return portcallsApi.getPortCall(summary.getId(), "porter", "porter", " porter");
             } catch (ApiException e) {
                 e.printStackTrace();
             }
             return null;
         }
-        
+
         // Hämtar ett antal Summaries
-        private List<PortCallSummary> getSummaries(){
+        private List<PortCallSummary> getSummaries() {
             try {
-                return portcallsApi.getAllPortCalls("porter", "porter"," porter", 30);
+                return portcallsApi.getAllPortCalls("porter", "porter", " porter", 30);
             } catch (ApiException e) {
                 e.printStackTrace();
             }
             return null;
         }
+
         // Skapa ett meddelande utifrån ett föregående meddelande
-        private PortCallMessage updateRecievedMessage(PortCallMessage portCallMessage, String text, ServiceState serviceState){
+        private PortCallMessage updateRecievedMessage(PortCallMessage portCallMessage, String text, ServiceState serviceState) {
             TimeStampHelper timeStampHelper = new TimeStampHelper();
             PortCallMessage message = portCallMessage;
             message.setReportedBy("VTS");
@@ -124,11 +124,12 @@ import java.util.List;
             );
             return portCallMessage;
 
-
-            public List<PortCallMessage> checkServiceState(List<PortCallMessage>){
-                    //plocka ut en pmc, kolla om det är det xxx lägg in i ny lista "relavent list" reapat
-                return null;
+        }
+            public List<PortCallMessage> checkServiceState (List<PortCallMessage> messageList) {
+            //plocka ut en pmc, kolla om det är det xxx lägg in i ny lista "relavent list" reapat
+            return null;
 
         }
-    }
+        }
+
 

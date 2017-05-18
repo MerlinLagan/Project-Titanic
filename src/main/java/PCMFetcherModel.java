@@ -39,7 +39,7 @@ public class PCMFetcherModel {
 
 
 
-    public List<PortCallMessage> fetchMessagesBetweenTimes(String fromtime, String totime) {
+    public List<PortCallMessage> fetchMessagesBetweenTimes(/*String fromtime, String totime*/) {
         try {
             return stateUpdateApi.getPortCallMessages("test16", "test123", "Testkonto16", 5);
             // return stateUpdateApi.getMessagesBetween(fromtime, totime, "test16", "test123","Testkonto16");
