@@ -13,11 +13,8 @@ public class MessagesView extends JFrame {
 
 
     private static final long serialVersionUID = 1L;
-    // to Logout and get the list of the users
-    public JButton previousMessageButton, nextMessageButton;
-    // for the chat room
+    public JButton previousMessageButton, nextMessageButton, clearLogButton;
     private JTextArea loggArea;
-    // the default port numb    er
 
 
     MessagesView(Controller controller) {
@@ -46,10 +43,14 @@ public class MessagesView extends JFrame {
         previousMessageButton.addActionListener(controller);
         nextMessageButton = new JButton("Next Message");
         nextMessageButton.addActionListener(controller);
+        clearLogButton = new JButton ("Clear Log");
+        clearLogButton.addActionListener(controller);
+
 
         // Fills the southPanel with content and adds it to the frame
         southPanel.add(previousMessageButton);
         southPanel.add(nextMessageButton);
+        southPanel.add(clearLogButton);
         add(southPanel, BorderLayout.SOUTH);
 
         //templates = new HashMap<String, String>();
@@ -72,6 +73,10 @@ public class MessagesView extends JFrame {
         else nextMessageButton.setEnabled(true);
 
     }
+    public void clearLog(){
+        loggArea.setText("");
+    }
+
     // Append text in the TextArea
     public void append(String str) {
         loggArea.append(str + "\n \n \n \n \n");

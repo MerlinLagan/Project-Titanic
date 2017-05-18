@@ -164,5 +164,12 @@ public class Controller implements ActionListener {
                 exception.printStackTrace();
             }
         }
+        if (o == msgsView.clearLogButton) {
+            try {
+                msgsView.clearLog();
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        }
     }
 }
