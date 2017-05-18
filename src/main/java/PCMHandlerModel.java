@@ -123,6 +123,12 @@ import java.util.List;
                     comment //comment (optional)
             );
             return portCallMessage;
+
+
+            public List<PortCallMessage> checkServiceState(List<PortCallMessage>){
+                    //plocka ut en pmc, kolla om det är det xxx lägg in i ny lista "relavent list" reapat
+                return null;
+
         }
     }
 
