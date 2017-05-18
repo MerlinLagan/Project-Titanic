@@ -28,12 +28,14 @@ public class MessagesView extends JFrame {
         JPanel centerPanel = new JPanel(new GridLayout());
 
         // The content for the centerPanel
-        loggArea = new JTextArea("SampleThree");
+        loggArea = new JTextArea();
         loggArea.setBackground(Color.WHITE);
         loggArea.setSize(15, this.getWidth());
+        loggArea.setEditable(false);
+        JScrollPane scrollPanel = new JScrollPane(loggArea);
 
         // Fills the centerPanel with content and adds it to the frame
-        centerPanel.add(loggArea);
+        centerPanel.add(scrollPanel);
         add(centerPanel, BorderLayout.CENTER);
 
         JPanel southPanel = new JPanel();
@@ -42,7 +44,7 @@ public class MessagesView extends JFrame {
         String newerMessages = "0";
         previousMessageButton = new JButton("Previous Message");
         previousMessageButton.addActionListener(controller);
-        nextMessageButton = new JButton("Next Message (" + newerMessages + ")");
+        nextMessageButton = new JButton("Next Message");
         nextMessageButton.addActionListener(controller);
 
         // Fills the southPanel with content and adds it to the frame
@@ -57,18 +59,27 @@ public class MessagesView extends JFrame {
         setVisible(true);
     }
 
+    public void changePositionInfo(int[] positionInListInfo){
+        int nextMessagesCount = positionInListInfo[0]-positionInListInfo[1];
+        int previousMessagesCount = positionInListInfo[0]-nextMessagesCount;
+        previousMessageButton.setText("Previous Message (" + previousMessagesCount + ")");
+        nextMessageButton.setText("Next Message (" + (nextMessagesCount-1) + ")");
+        if (previousMessagesCount == 0)
+            previousMessageButton.setEnabled(false);
+        else previousMessageButton.setEnabled(true);
+        if (nextMessagesCount-1 == 0)
+            nextMessageButton.setEnabled(false);
+        else nextMessageButton.setEnabled(true);
+
+    }
     // Append text in the TextArea
-    void append(String str) {
-        loggArea.append(str + "\n");
+    public void append(String str) {
+        loggArea.append(str + "\n \n \n \n \n");
         loggArea.setCaretPosition(loggArea.getText().length() - 1);
     }
-
-    // called by the GUI is the connection failed
-    // we reset our buttons, label, textfield
-    void connectionFailed() {
-        // metod som kallades på om connection misslyckades
-        System.out.println("CONNECTION FAILED");
-        append("shit failed");
+    public void appendWithOneBreak(String str) {
+        loggArea.append(str + "\n");
+        loggArea.setCaretPosition(loggArea.getText().length() - 1);
     }
 
 }
