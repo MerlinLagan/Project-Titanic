@@ -8,10 +8,7 @@ import eu.portcdm.client.service.StateupdateApi;
 import eu.portcdm.dto.LocationTimeSequence;
 import eu.portcdm.dto.PortCall;
 import eu.portcdm.dto.PortCallSummary;
-import eu.portcdm.messaging.LocationReferenceObject;
-import eu.portcdm.messaging.LogicalLocation;
-import eu.portcdm.messaging.PortCallMessage;
-import eu.portcdm.messaging.TimeType;
+import eu.portcdm.messaging.*;
 import se.viktoria.stm.portcdm.connector.common.util.PortCallMessageBuilder;
 import se.viktoria.stm.portcdm.connector.common.util.StateWrapper;
 
@@ -63,6 +60,8 @@ import java.util.List;
             return stateUpdateApi;
         }
 
+        //TODO En metod som hanterar listan från fetch och skriver ut dessa
+
 
         // Hämtar ett specifikt PortCall
         public PortCall getPortCall(int id){
@@ -85,10 +84,11 @@ import java.util.List;
             return null;
         }
         // Skapa ett meddelande utifrån ett föregående meddelande
-        private PortCallMessage updateRecievedMessage(PortCallMessage portCallMessage, String text){
+        private PortCallMessage updateRecievedMessage(PortCallMessage portCallMessage, String text, ServiceState serviceState){
             PortCallMessage message = portCallMessage;
             message.setReportedBy("VTS");
             message.setComment(text);
+            message.setServiceState(serviceState);
             // TODO add xml gregorian calender to line under
             //message.setReportedAt(TimeStampHelper.getCurrentTimeStamp());
             return message;
@@ -123,6 +123,12 @@ import java.util.List;
                     comment //comment (optional)
             );
             return portCallMessage;
+
+
+            public List<PortCallMessage> checkServiceState(List<PortCallMessage>){
+                    //plocka ut en pmc, kolla om det är det xxx lägg in i ny lista "relavent list" reapat
+                return null;
+
         }
     }
 
