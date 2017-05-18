@@ -7,9 +7,7 @@
 // Gå igenom nyast - äldst och om VesselID:t inte registrerats än så tar man currentloc esimatedloc och lägger in
 // om ESTIMATED är nyare i tiden än ACTUALLOCATION vet vi att det även finns en estimate om framtiden
 
-
 import java.util.ArrayList;
-import java.util.TreeMap;
 
 /**
  * Created by Jakob on 17/05/17.
@@ -17,21 +15,45 @@ import java.util.TreeMap;
 
 public class VesselLocationModel {
 
-    TreeMap boatPosMap = new TreeMap();
+    String confirmed = "CONFIRMED";
+    String estimated = "ESTIMATED";
+
+    ArrayList<PolygonWithBoats> polygons;
 
     public VesselLocationModel() {
-       boatPosMap = new TreeMap();
+        polygons = new ArrayList<PolygonWithBoats>();
     }
 
-
-    public void updateLocations(String berth, String vesselID, String reportState){
-        BoatWithLocation boat = new BoatWithLocation(vesselID);
-        boatPosMap.put(boat.getID(), boat);
+    public ArrayList<PolygonWithBoats> getPolygons(){
+        return polygons;
     }
 
-    public static void main(String[] args){
-        VesselLocationModel vslloc = new VesselLocationModel();
-        vslloc.updateLocations("Lindholmen", "1", "CONFIRMED");
-        vslloc.updateLocations("Lindholmen", "1", "CONFIRMED");
+    public void addInfo(String polygonID, String vesselID, String reportState) {
+        PolygonWithBoats newPolygon = new PolygonWithBoats(polygonID);
+        if (!polygons.contains(newPolygon)) {
+            if (reportState.equals(confirmed)){
+                for (PolygonWithBoats e : polygons) {
+                    e.removeConfirmedBoat(vesselID);
+                    e.removeEstimatedBoat(vesselID);
+                }
+                newPolygon.addConfirmedBoat(vesselID);
+            }
+            else
+                newPolygon.addEstimatedBoat(vesselID);
+            polygons.add(newPolygon);
+        } else if (reportState.equals(confirmed)) {
+            for (PolygonWithBoats e : polygons) {
+                e.removeConfirmedBoat(vesselID);
+                e.removeEstimatedBoat(vesselID);
+                if (e.getID().equals(polygonID))
+                    e.addConfirmedBoat(vesselID);
+            }
+        } else if (reportState.equals(estimated)) {
+            for (PolygonWithBoats e : polygons) {
+                e.removeEstimatedBoat(vesselID);
+                if (e.getID().equals(polygonID))
+                    e.addEstimatedBoat(vesselID);
+            }
+        }
     }
 }

@@ -16,6 +16,7 @@ public class VesselLocationView extends JFrame {
 
         // The content for the centerPanel
         vesselLocationArea = new JTextArea("");
+        vesselLocationArea.setEditable(false);
         vesselLocationArea.setBackground(Color.WHITE);
         vesselLocationArea.setSize(15, this.getWidth());
 
@@ -28,4 +29,9 @@ public class VesselLocationView extends JFrame {
         setSize(600, 600);
         setVisible(true);
     }
+
+    public void updateVesselLocs(String str){
+        vesselLocationArea.setText(str);
+    }
+
 }

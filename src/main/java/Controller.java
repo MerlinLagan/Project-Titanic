@@ -25,6 +25,8 @@ public class Controller implements ActionListener {
     public void initialize(){
         tmpltsModel.loadTemplatesMap("data.properties");
         msgrView.loadTemplatesFromMap(tmpltsModel.getTemplates());
+        vesselViewTester();
+        updateFullVesselLocationView();
         timer = new Timer(5000, this);
         timer.setInitialDelay(0);
         timer.start();
@@ -66,6 +68,30 @@ public class Controller implements ActionListener {
         String strDate = sdfDate.format(now);
         return strDate;
     }
+
+    public void vesselViewTester(){
+        vsllocModel.addInfo("Lindholmen", "1", "CONFIRMED");
+        vsllocModel.addInfo("Lindholmen", "1", "CONFIRMED");
+        vsllocModel.addInfo("Arendal", "7", "CONFIRMED");
+        vsllocModel.addInfo("Arendal", "1", "ESTIMATED");
+        vsllocModel.addInfo("Arendal", "2", "ESTIMATED");
+        vsllocModel.addInfo("Arendal", "3", "ESTIMATED");
+        vsllocModel.addInfo("Arendal", "4", "ESTIMATED");
+        vsllocModel.addInfo("EriksBerg", "1", "CONFIRMED");
+    }
+
+    public void updateFullVesselLocationView(){
+        String overview = "";
+        for (PolygonWithBoats polygon : vsllocModel.getPolygons()){
+            overview = overview + "Polygon: " + polygon.getID().toString() + "\n " +
+                                  "Current Vessels: " + polygon.countConfirmedVessels() + "\n " +
+                                  "Estimated Vessels: " + polygon.countEstimatedVessels() + "\n " +
+                                  "\n " +
+                                  "\n ";
+        }
+        vsllocView.updateVesselLocs(overview);
+    }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
