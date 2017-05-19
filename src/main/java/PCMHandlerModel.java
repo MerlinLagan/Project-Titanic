@@ -125,8 +125,17 @@ import java.util.List;
             return portCallMessage;
 
         }
+
+        //plocka ut en pmc, kolla om det är det xxx lägg in i ny lista "relavent list" reapat, lägg in if portcallid=xxx lägg in
             public List<PortCallMessage> checkServiceState (List<PortCallMessage> messageList) {
-            //plocka ut en pmc, kolla om det är det xxx lägg in i ny lista "relavent list" reapat
+                for (PortCallMessage portCallMessage : messageList){
+                    if(portCallMessage.getPortCallId().toString() == "xxxx") {
+                        if (portCallMessage.getServiceState().toString() == "VTSAreaEntry_Requested")
+                            portCallMessage.getServiceState();
+                            System.out.print(portCallMessage);
+                        }
+                    }
+                }
             return null;
 
         }
