@@ -130,6 +130,15 @@ import java.util.List;
             return null;
 
         }
+
+        public List<String> getVesselTravelInfo(PortCallMessage message){
+            List<String> vesselInfo = null;
+
+            vesselInfo.add(message.getLocationState().getArrivalLocation().getTo().getLocationType().toString());
+            vesselInfo.add(message.getVesselId());
+            vesselInfo.add(message.getLocationState().getTimeType().toString());
+            return vesselInfo;
+        }
         }
 
 
