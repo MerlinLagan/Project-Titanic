@@ -13,7 +13,7 @@ public class PCMFetcherModel {
     // från amss assistant message service fick man xml-test
     // comment
 
-    public String baseurl = "http://sandbox-5.portcdm.eu:8080/dmp";
+    public String baseurl = "http://sandbox-5.portcdm.eu:8080/mb/mqs";
     // http://192.168.56.101:8080/dmp
     public String userId = "porter";
     public String password = "porter";
@@ -37,8 +37,9 @@ public class PCMFetcherModel {
         return stateUpdateApi;
     }
 
-
-
+// använd /mb/mqs messagebroker gör en post sedan sparar ned istället vi går runt, polla för att få ut meddelanden sedan sist
+    // Get messages between blir redundant
+    // skapa en kö och använd denna som nyckel
     public List<PortCallMessage> fetchMessagesBetweenTimes(/*String fromtime, String totime*/) {
         try {
             return stateUpdateApi.getPortCallMessages("test16", "test123", "Testkonto16", 5);
