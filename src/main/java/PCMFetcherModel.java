@@ -13,7 +13,8 @@ public class PCMFetcherModel {
     // från amss assistant message service fick man xml-test
     // comment
 
-    public String baseurl = "http://sandbox-5.portcdm.eu:8080/mb/mqs";
+    //public String baseurl = "http://sandbox-5.portcdm.eu:8080/mb/mqs/";
+    public String baseurl = "http://dev.portcdm.eu:8080/mb/mqs/";
     // http://192.168.56.101:8080/dmp
     public String userId = "porter";
     public String password = "porter";
@@ -29,25 +30,27 @@ public class PCMFetcherModel {
     private StateupdateApi initiateStateupdateAPI() {
         connectorClient = new ApiClient();
         connectorClient.setConnectTimeout(15);
-        connectorClient.addDefaultHeader("X-PortCDM-UserId", "test16");
-        connectorClient.addDefaultHeader("X-PortCDM-Password", "test123");
-        connectorClient.addDefaultHeader("X-PortCDM-APIKey", "Testkonto16");
+        connectorClient.addDefaultHeader("X-PortCDM-UserId", "viktoria");
+        connectorClient.addDefaultHeader("X-PortCDM-Password", "vik123");
+        connectorClient.addDefaultHeader("X-PortCDM-APIKey", "eeee");
+        //connectorClient.addDefaultHeader("X-PortCDM-xml", "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+
         connectorClient.setBasePath(baseurl);
         stateUpdateApi = new StateupdateApi(connectorClient);
         return stateUpdateApi;
     }
 
+    List<eu.portcdm.messaging.PortCallMessage> messageList;
 // använd /mb/mqs messagebroker gör en post sedan sparar ned istället vi går runt, polla för att få ut meddelanden sedan sist
     // Get messages between blir redundant
     // skapa en kö och använd denna som nyckel
-    public List<PortCallMessage> fetchMessagesBetweenTimes(/*String fromtime, String totime*/) {
+    public /*List<eu.portcdm.messaging.PortCallMessage>*/ void fetchMessagesBetweenTimes(/*String fromtime, String totime*/) {
         try {
-            return stateUpdateApi.getPortCallMessages("test16", "test123", "Testkonto16", 5);
+            List<eu.portcdm.messaging.PortCallMessage> messageList = stateUpdateApi.getPortCallMessages("viktoria", "vik123", "eeee", 5);
             // return stateUpdateApi.getMessagesBetween(fromtime, totime, "test16", "test123","Testkonto16");
         } catch (ApiException e) {
             e.printStackTrace();
         }
-        return null;
     }
 
 
@@ -57,11 +60,13 @@ public class PCMFetcherModel {
         app.initiateStateupdateAPI();
         System.out.println("ran main method");
         //List<PortCallMessage> messageList = app.fetchMessagesBetweenTimes();
-        List<PortCallMessage> messageList = app.fetchMessagesBetweenTimes();
-        for (PortCallMessage pcm : messageList) {
-            String printString = pcm.getComment().toString();
-            System.out.println(printString);
-        }
+        //List<PortCallMessage> messageList = app.fetchMessagesBetweenTimes();
+        app.fetchMessagesBetweenTimes();
+        System.out.println(app.messageList);
+      //  for (PortCallMessage pcm : messageList) {
+      //      String printString = pcm.getComment().toString();
+      //      System.out.println(printString);
+      //  }
       //  app.GetPortCalls();
     }
 }

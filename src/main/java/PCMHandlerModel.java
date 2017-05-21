@@ -32,8 +32,7 @@ import java.util.List;
         // Konstruktor som anropar initiateStateupdateAPI och hämtare nuvarande portcall
         public PCMHandlerModel() {
             initiateStateupdateAPI();
-//            summaries = getSummaries();
-            // TODO   här skall vi hänvisa till portcallIDet (kolla vad summaries är)
+            // TODO   här skall vi hänvisa till portcallIDet
 //            currentCall = getPortCall(0);
         }
 
@@ -156,12 +155,14 @@ import java.util.List;
                      System.out.print("C");
                      if (portCallMessage.getComment() == "Oscar") {
                          System.out.print("D");
+                         System.out.println(portCallMessage.getComment());
                          relevantPCM.add(portCallMessage);
                      }
                  }
              }         
              System.out.print("E");
              System.out.print(relevantPCM.toString());
+
              return null;
 
          }
