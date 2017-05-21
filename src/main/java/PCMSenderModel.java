@@ -1,50 +1,92 @@
-import eu.portcdm.client.service.PortcallsApi;
 import eu.portcdm.dto.LocationTimeSequence;
 import eu.portcdm.messaging.*;
-import se.viktoria.stm.portcdm.connector.common.util.DateFormatter;
 import se.viktoria.stm.portcdm.connector.common.util.PortCallMessageBuilder;
 import se.viktoria.stm.portcdm.connector.common.util.StateWrapper;
 
-import java.util.UUID;
-
-
 public class PCMSenderModel {
-    // comment
 
-    public String baseurl = "http://192.168.56.101:8080/dmp";
-    public String userId = "porter";
-    public String password = "porter";
-    public eu.portcdm.client.service.StateupdateApi stateUpdateApi;
-    public eu.portcdm.client.ApiClient connectorClient;
-    public PortcallsApi portCallsApi;
+    eu.portcdm.client.service.StateupdateApi stateUpdateApi;
+    eu.portcdm.client.ApiClient connectorClient;
 
+    String baseUrl, userID, userPW, apiKey;
 
-    public PCMSenderModel() {
-        initiateStateupdateAPI();
+    String  BASEURL_SANDBOX ="http://sandbox-5.portcdm.eu:8080/dmp",
+            BASEURL_VIRTUALBOX = "http://192.168.56.101:8080/dmp";
+    String  userIDVBox = "porter", userPWVBox = "porter", apiKeyVBox = "none",
+            userIDSBox = "test13", userPWSBox = "test123", apiKeySBox = "Testkonto 13";
+
+    public PCMSenderModel(String boxtype) {
+        initiateStateupdateAPI(boxtype);
     }
 
-    public boolean sendMessage(PortCallMessage message){
-            try {
-                stateUpdateApi.sendMessage( "porter", "porter", "porter", message );
-                return true;
-            } catch (eu.portcdm.client.ApiException e) {
-                e.printStackTrace();
-                return false;
-            }
 
-    }
-    private eu.portcdm.client.service.StateupdateApi initiateStateupdateAPI() {
+    private eu.portcdm.client.service.StateupdateApi initiateStateupdateAPI(String boxtype) {
         connectorClient = new eu.portcdm.client.ApiClient();
         connectorClient.setConnectTimeout(15);
-        connectorClient.addDefaultHeader("X-PortCDM-UserId", "porter");
-        connectorClient.addDefaultHeader("X-PortCDM-Password", "porter");
-        connectorClient.addDefaultHeader("X-PortCDM-APIKey", "eeee");
-        connectorClient.setBasePath(baseurl);
+        if (boxtype.equals("sandbox")) {
+            baseUrl = BASEURL_SANDBOX;
+            userID = userIDSBox;
+            userPW = userPWSBox;
+            apiKey = apiKeySBox;
+
+        }
+        if (boxtype.equals("virtualbox")) {
+            baseUrl = BASEURL_VIRTUALBOX;
+            userID = userIDVBox;
+            userPW = userPWVBox;
+            apiKey = apiKeyVBox;
+        }
+        connectorClient.addDefaultHeader("X-PortCDM-UserId", userID);
+        connectorClient.addDefaultHeader("X-PortCDM-Password", userPW);
+        connectorClient.addDefaultHeader("X-PortCDM-APIKey", apiKey);
+        connectorClient.setBasePath(baseUrl);
         stateUpdateApi = new eu.portcdm.client.service.StateupdateApi(connectorClient);
         return stateUpdateApi;
     }
 
-    private PortCallMessage createGenericMessage(LocationTimeSequence locationTimeSequence, LogicalLocation logicalLocation) {
+    private PortCallMessage createNewMessage(LocationTimeSequence locationTimeSequence, LogicalLocation logicalLocation, double reqLat,
+                                             double reqLong, String reqName, LogicalLocation logicalOptionalLocation, double reqOptLat,
+                                             double reqOptLong, String reqOptName, String localPCID, String localJID, String time, TimeType
+                                                     timeType, String vesselID, String reportedAt, String reportedBy, String groupWith, String comment) {
+        StateWrapper stateWrapper = new StateWrapper(
+                LocationReferenceObject.VESSEL, //referenceObject
+                locationTimeSequence, //ARRIVAL_TO or DEPARTURE_FROM
+                logicalLocation, //Type of required location
+                reqLat, //Latitude of required location
+                reqLong, //Longitude of required location
+                reqName, //Name of required location
+                logicalOptionalLocation, //Type of optional location
+                reqOptLat, //Latitude of optional location
+                reqOptLong, //Longitude of optional location
+                reqOptName);//Name of optional location
+        //Change dates from 2017-03-23 06:40:00 to 2017-03-23T06:40:00Z
+        PortCallMessage portCallMessage = PortCallMessageBuilder.build(
+                localPCID, //localPortCallId
+                localJID, //localJobId
+                stateWrapper, //StateWrapper created above
+                time, //Message's time
+                timeType, //Message's timeType
+                vesselID, //vesselId
+                reportedAt, //reportedAt (optional)
+                reportedBy, //reportedBy (optional)
+                groupWith, //groupWith (optional), messageId of the message to group with.
+                comment //comment (optional)
+        );
+        return portCallMessage;
+
+    }
+
+    public boolean sendMessage(PortCallMessage message){
+        try {
+            stateUpdateApi.sendMessage(message);
+            return true;
+        } catch (eu.portcdm.client.ApiException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public PortCallMessage createGenericMessage(LocationTimeSequence locationTimeSequence, LogicalLocation logicalLocation) {
         StateWrapper stateWrapper = new StateWrapper(
                 LocationReferenceObject.VESSEL, //referenceObject
                 locationTimeSequence, //ARRIVAL_TO or DEPARTURE_FROM
@@ -71,5 +113,4 @@ public class PCMSenderModel {
         );
         return portCallMessage;
     }
-
 }

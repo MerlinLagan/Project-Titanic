@@ -14,9 +14,9 @@ public class Main {
 
                 MessagesHandlerModel msgsModel = new MessagesHandlerModel();
                 TemplatesHandlerModel msgrModel = new TemplatesHandlerModel();
-                PCMHandlerModel pcmHandler = new PCMHandlerModel();
-                PCMFetcherModel pcmFetcher = new PCMFetcherModel();
-                PCMSenderModel pcmSender = new PCMSenderModel();
+                PCMFetcherModel pcmFetcher = new PCMFetcherModel("sandbox");
+                PCMSenderModel pcmSender = new PCMSenderModel("sandbox");
+                PCMHandlerModel pcmHandler = new PCMHandlerModel(pcmFetcher, pcmSender);
                 VesselLocationModel vsllocModel = new VesselLocationModel();
 
                 Controller controller = new Controller();
