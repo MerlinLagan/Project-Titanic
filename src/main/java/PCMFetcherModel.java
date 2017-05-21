@@ -12,8 +12,8 @@ public class PCMFetcherModel {
 
     String baseUrl, userID, userPW, apiKey;
 
-    String  BASEURL_SANDBOX ="http://sandbox-5.portcdm.eu:8080/mb/mqs",
-            BASEURL_VIRTUALBOX = "http://192.168.56.101:8080/mb/mqs";
+    String  BASEURL_SANDBOX ="http://sandbox-5.portcdm.eu:8080/dmp",
+            BASEURL_VIRTUALBOX = "http://192.168.56.101:8080/dmp";
     String  userIDVBox = "porter", userPWVBox = "porter", apiKeyVBox = "none",
             userIDSBox = "test13", userPWSBox = "test123", apiKeySBox = "Testkonto 13";
 
@@ -22,7 +22,7 @@ public class PCMFetcherModel {
         initiateStateupdateAPI(boxtype);
     }
 
-    private eu.portcdm.client.service.StateupdateApi initiateStateupdateAPI(String boxtype) {
+    public eu.portcdm.client.service.StateupdateApi initiateStateupdateAPI(String boxtype) {
         connectorClient = new ApiClient();
         connectorClient.setConnectTimeout(15);
         if (boxtype.equals("sandbox")) {
@@ -30,14 +30,17 @@ public class PCMFetcherModel {
             userID = userIDSBox;
             userPW = userPWSBox;
             apiKey = apiKeySBox;
-
+            System.out.println("PCMFetcherModel initiated in sandbox mode.");
         }
+
         if (boxtype.equals("virtualbox")) {
             baseUrl = BASEURL_VIRTUALBOX;
             userID = userIDVBox;
             userPW = userPWVBox;
             apiKey = apiKeyVBox;
+            System.out.println("PCMFetcherModel initiated in virtualbox mode.");
         }
+
         connectorClient.addDefaultHeader("X-PortCDM-UserId", userID);
         connectorClient.addDefaultHeader("X-PortCDM-Password", userPW);
         connectorClient.addDefaultHeader("X-PortCDM-APIKey", apiKey);
@@ -46,10 +49,10 @@ public class PCMFetcherModel {
         return stateUpdateApi;
     }
 
-    public List<PortCallMessage> fetchMessagesBetweenTimes(String fromtime, String totime) {
+    public List<PortCallMessage> fetchMessagesBetweenTimes(String startdate, String enddate) {
         try {
-           // return stateUpdateApi.getPortCallMessages(userIDvbox, userPWvbox, apiKeyvbox, 5);
-             return stateUpdateApi.getMessagesBetween("2017-03-23T06:40:01Z","2017-05-23T06:40:01Z");
+            //stateUpdateApi.getPortCallMessages(5);
+            return stateUpdateApi.getMessagesBetween("2017-05-05T06:30:00Z", "2017-05-05T17:50:00Z");
         } catch (ApiException e) {
             e.printStackTrace();
         }

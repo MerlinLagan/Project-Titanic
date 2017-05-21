@@ -10,15 +10,14 @@ public class PCMSenderModel {
 
     String baseUrl, userID, userPW, apiKey;
 
-    String  BASEURL_SANDBOX ="http://sandbox-5.portcdm.eu:8080/dmp",
-            BASEURL_VIRTUALBOX = "http://192.168.56.101:8080/dmp";
+    String  BASEURL_SANDBOX = "http://sandbox-5.portcdm.eu:8080/amss",
+            BASEURL_VIRTUALBOX = "http://192.168.56.101:1337/dmp";
     String  userIDVBox = "porter", userPWVBox = "porter", apiKeyVBox = "none",
             userIDSBox = "test13", userPWSBox = "test123", apiKeySBox = "Testkonto 13";
 
     public PCMSenderModel(String boxtype) {
         initiateStateupdateAPI(boxtype);
     }
-
 
     private eu.portcdm.client.service.StateupdateApi initiateStateupdateAPI(String boxtype) {
         connectorClient = new eu.portcdm.client.ApiClient();
@@ -28,14 +27,18 @@ public class PCMSenderModel {
             userID = userIDSBox;
             userPW = userPWSBox;
             apiKey = apiKeySBox;
+            System.out.println("PCMSenderModel initiated in sandbox mode.");
 
         }
-        if (boxtype.equals("virtualbox")) {
+        else if (boxtype.equals("virtualbox")) {
             baseUrl = BASEURL_VIRTUALBOX;
             userID = userIDVBox;
             userPW = userPWVBox;
             apiKey = apiKeyVBox;
+            System.out.println("PCMSenderModel initiated in virtualbox mode.");
         }
+
+
         connectorClient.addDefaultHeader("X-PortCDM-UserId", userID);
         connectorClient.addDefaultHeader("X-PortCDM-Password", userPW);
         connectorClient.addDefaultHeader("X-PortCDM-APIKey", apiKey);
@@ -44,7 +47,7 @@ public class PCMSenderModel {
         return stateUpdateApi;
     }
 
-    private PortCallMessage createNewMessage(LocationTimeSequence locationTimeSequence, LogicalLocation logicalLocation, double reqLat,
+    public PortCallMessage createNewMessage(LocationTimeSequence locationTimeSequence, LogicalLocation logicalLocation, double reqLat,
                                              double reqLong, String reqName, LogicalLocation logicalOptionalLocation, double reqOptLat,
                                              double reqOptLong, String reqOptName, String localPCID, String localJID, String time, TimeType
                                                      timeType, String vesselID, String reportedAt, String reportedBy, String groupWith, String comment) {
