@@ -99,23 +99,23 @@ public class PCMHandlerModel {
         PCMHandlerModel pcmHandler = new PCMHandlerModel();
         PortCallMessage message1 = pcmHandler.createGenericMessage(LocationTimeSequence.ARRIVAL_TO, LogicalLocation.ANCHORING_AREA);
         PortCallMessage message2 = pcmHandler.createGenericMessage(LocationTimeSequence.ARRIVAL_TO, LogicalLocation.BERTH);
+        PortCallMessage message3 = pcmHandler.createGenericMessage(LocationTimeSequence.ARRIVAL_TO, LogicalLocation.BERTH);
         message1.setComment("Oscar");
         message2.setComment("Sands");
 
         pcmHandler.sendMessage(message1);
         pcmHandler.sendMessage(message2);
+        pcmHandler.sendMessage(message3);
 
-        pcmHandler.messageList.add(message1);
-        pcmHandler.messageList.add(message2);
 
         pcmHandler.messageList = pcmHandler.getMessagesBetweenTimes();
+        System.out.println(pcmHandler.messageList);
 
         for (PortCallMessage pcm : pcmHandler.messageList){
-            System.out.println(pcm.getComment());
+            //System.out.println(pcm.getComment());
+
         }
 
         //checkComment(pcmHandler.messageList);
-
-
     }
 }

@@ -52,7 +52,7 @@ public class PCMFetcherModel {
     public List<PortCallMessage> fetchMessagesBetweenTimes(String startdate, String enddate) {
         try {
             //stateUpdateApi.getPortCallMessages(5);
-            return stateUpdateApi.getMessagesBetween("2017-05-05T06:30:00Z", "2017-05-05T17:50:00Z");
+            return stateUpdateApi.getMessagesBetween("2017-01-05T06:30:00Z", "2017-05-20T17:50:00Z");
         } catch (ApiException e) {
             e.printStackTrace();
         }
