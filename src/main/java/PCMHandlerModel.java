@@ -10,25 +10,22 @@ import java.util.ArrayList;
 public class PCMHandlerModel {
 
     List<PortCallMessage> messageList;
+    int currentMessagepos;
     PortCallMessage selectedMessage;
     PCMFetcherModel fetcherModel;
     PCMSenderModel senderModel;
-
 
     // Konstruktor som anropar initiateStateupdateAPI och hämtare nuvarande portcall
     public PCMHandlerModel() {
         messageList = new ArrayList<>();
         this.fetcherModel = new PCMFetcherModel("virtualbox");
         this.senderModel = new PCMSenderModel("virtualbox");
-
-        //  PCMSenderModel senderModel = new PCMSenderModel("virtualbox");
     }
+
     public PCMHandlerModel(PCMFetcherModel fetcherModel, PCMSenderModel senderModel) {
         messageList = new ArrayList<>();
         this.fetcherModel = fetcherModel;
         this.senderModel = senderModel;
-
-        //  PCMSenderModel senderModel = new PCMSenderModel("virtualbox");
     }
 
     // Skapa ett meddelande utifrån ett föregående meddelande
@@ -43,7 +40,7 @@ public class PCMHandlerModel {
     }
 
     //Från en lista med alla PCM sorterar ut de som har relevant service state och returnerar de
-    public List<PortCallMessage> checkServiceState (List<PortCallMessage> messageList) {
+    public List<PortCallMessage> checkServiceState(List<PortCallMessage> messageList) {
         List<PortCallMessage> relevantPCM = new ArrayList<>();
         for (PortCallMessage portCallMessage : messageList) {
             if (portCallMessage.getLocalPortCallId().equals("urn:x-mrn:stm:portcdm:local_port_call:SEGOT:DHC:52724")) {
@@ -57,8 +54,8 @@ public class PCMHandlerModel {
     }
 
     //Samma uppbyggnad som checkServiceState men används för att testa i main
-    public static List<PortCallMessage> checkComment (List<PortCallMessage> messageList) {
-        List<PortCallMessage> relevantPCM= new ArrayList<>();
+    public static List<PortCallMessage> checkComment(List<PortCallMessage> messageList) {
+        List<PortCallMessage> relevantPCM = new ArrayList<>();
         System.out.print("A");
         for (PortCallMessage portCallMessage : messageList) {
             System.out.print("B");
@@ -75,47 +72,76 @@ public class PCMHandlerModel {
         return null;
     }
 
-    public List<String> getVesselTravelInfo(PortCallMessage message){
-        List<String> vesselInfo = new ArrayList<>(); ;
+    public List<PortCallMessage> getPortCallMessages() {
+        return messageList;
+    }
+
+    /*
+    Takes arraylist with pcms and turns into arraylist with strings for log
+    */
+    public List<String> getPortCallMessagesAsStrings(List<PortCallMessage> pcmList) {
+        ArrayList<String> pcmStringList = new ArrayList<String>();
+        for (PortCallMessage pcm : pcmList)
+            formatMessageForLog(pcm);
+        return pcmStringList;
+    }
+
+    public ArrayList<String> getVesselTravelInfo(PortCallMessage message) {
+        ArrayList<String> vesselInfo = new ArrayList<>();
         vesselInfo.add(message.getLocationState().getArrivalLocation().getTo().getLocationType().toString());
         vesselInfo.add(message.getVesselId());
         vesselInfo.add(message.getLocationState().getTimeType().toString());
         return vesselInfo;
     }
 
+    public ArrayList<ArrayList<String>> getMultipleVesselsTravelinfo(List<PortCallMessage> pcmList) {
+        ArrayList<ArrayList<String>> travelInfoList = new ArrayList<ArrayList<String>>();
+        for (PortCallMessage pcm : pcmList) {
+            travelInfoList.add(getVesselTravelInfo(pcm));
+        }
+        return travelInfoList;
+    }
+
     private PortCallMessage createGenericMessage(LocationTimeSequence locationTimeSequence, LogicalLocation logicalLocation) {
         return senderModel.createGenericMessage(locationTimeSequence, logicalLocation);
     }
 
-    private void sendMessage(PortCallMessage pcm){
+    private void sendMessage(PortCallMessage pcm) {
         senderModel.sendMessage(pcm);
     }
 
-    private List<PortCallMessage> getMessagesBetweenTimes(){
-        return fetcherModel.fetchMessagesBetweenTimes("", "");
+    public List<PortCallMessage> getMessagesBetweenTimes(String startdate, String enddate) {
+        messageList = fetcherModel.fetchMessagesBetweenTimes("", "");
+        return messageList;
+    }
+
+    public String formatMessageForLog(PortCallMessage pcm) {
+        String str = "Vessel ID: " + pcm.getVesselId() + "\n " +
+                "Location: " + pcm.getLocationState() + "\n " +
+                "Service State: " + pcm.getServiceState() +
+                "\n";
+        return str;
     }
 
     public static void main(String[] args) {
         PCMHandlerModel pcmHandler = new PCMHandlerModel();
-        PortCallMessage message1 = pcmHandler.createGenericMessage(LocationTimeSequence.ARRIVAL_TO, LogicalLocation.ANCHORING_AREA);
-        PortCallMessage message2 = pcmHandler.createGenericMessage(LocationTimeSequence.ARRIVAL_TO, LogicalLocation.BERTH);
-        PortCallMessage message3 = pcmHandler.createGenericMessage(LocationTimeSequence.ARRIVAL_TO, LogicalLocation.BERTH);
+        PortCallMessage message1 = pcmHandler.senderModel.createMessage();
         message1.setComment("Oscar");
-        message2.setComment("Sands");
-
         pcmHandler.sendMessage(message1);
-        pcmHandler.sendMessage(message2);
-        pcmHandler.sendMessage(message3);
 
-
-        pcmHandler.messageList = pcmHandler.getMessagesBetweenTimes();
+        pcmHandler.messageList = pcmHandler.getMessagesBetweenTimes("asd", "asd");
         System.out.println(pcmHandler.messageList);
 
-        for (PortCallMessage pcm : pcmHandler.messageList){
+        for (PortCallMessage pcm : pcmHandler.messageList) {
             //System.out.println(pcm.getComment());
 
+            if (!(pcm.getComment() == null)) {
+                System.out.println("is not null2");
+                if (pcm.getComment().equals("exampletest")) {
+                    System.out.println(pcm.getComment() + "yeo");
+                }
+            }
+            //checkComment(pcmHandler.messageList);
         }
-
-        //checkComment(pcmHandler.messageList);
     }
 }

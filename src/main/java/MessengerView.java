@@ -17,7 +17,7 @@ public class MessengerView extends JFrame{
     private static final long serialVersionUID = 1L;
     public JLabel label;
     public JTextArea tThree;
-    public JButton sendButton, newTemplateButton, deleteMessageButton;
+    public JButton sendButton, confirmButton, denyButton, newTemplateButton, deleteMessageButton;
     public JComboBox<String> templateMenu;
     public HashMap<String, String> templates;
     public JPanel labelField;
@@ -27,7 +27,7 @@ public class MessengerView extends JFrame{
     // Constructor connection receiving a socket number
     MessengerView(Controller controller) {
 
-        super("Chat Client");
+        super("Messenger");
 
         northPanel = new JPanel(new GridLayout(3,1));
 
@@ -59,6 +59,10 @@ public class MessengerView extends JFrame{
         // The content for the southPanel
         sendButton = new JButton("Send");
         sendButton.addActionListener(controller);
+        confirmButton = new JButton("confirm");
+        confirmButton.addActionListener(controller);
+        denyButton = new JButton("deny");
+        denyButton.addActionListener(controller);
         newTemplateButton = new JButton("New Template");
         newTemplateButton.addActionListener(controller);
         deleteMessageButton = new JButton("Delete Template");
@@ -66,6 +70,8 @@ public class MessengerView extends JFrame{
 
         // Fills the southPanel with content and adds it to the frame
         southPanel.add(sendButton);
+        southPanel.add(confirmButton);
+        southPanel.add(denyButton);
         southPanel.add(newTemplateButton);
         southPanel.add(deleteMessageButton);
         add(southPanel, BorderLayout.SOUTH);
@@ -132,9 +138,32 @@ public class MessengerView extends JFrame{
         return (String)templateMenu.getSelectedItem();
     }
 
+    public void disableDeleteButton(){
+        deleteMessageButton.setEnabled(false);
+    }
+
+    public void enableDeleteButton(){
+        deleteMessageButton.setEnabled(true);
+    }
+
+    public void disableSendButtons(){
+        sendButton.setEnabled(false);
+        confirmButton.setEnabled(false);
+        denyButton.setEnabled(false);
+    }
+
+    public void enableSendButtons(){
+        sendButton.setEnabled(true);
+        confirmButton.setEnabled(true);
+        denyButton.setEnabled(true);
+    }
 
     public void createTemplateName(){
         lastCreatedTemplateName = JOptionPane.showInputDialog(null, "Ange namn för standardmeddelandet");
+    }
+
+    public void goToEmptyMessage(){
+        templateMenu.setSelectedIndex(0);
     }
 
     public String getLastCreatedTemplateName(){

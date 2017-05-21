@@ -43,7 +43,7 @@ public class PCMFetcherModel {
 
         connectorClient.addDefaultHeader("X-PortCDM-UserId", userID);
         connectorClient.addDefaultHeader("X-PortCDM-Password", userPW);
-        connectorClient.addDefaultHeader("X-PortCDM-APIKey", apiKey);
+        connectorClient.addDefaultHeader("X-PortCDM-ApiKey", apiKey);
         connectorClient.setBasePath(baseUrl);
         stateUpdateApi = new StateupdateApi(connectorClient);
         return stateUpdateApi;
@@ -52,35 +52,10 @@ public class PCMFetcherModel {
     public List<PortCallMessage> fetchMessagesBetweenTimes(String startdate, String enddate) {
         try {
             //stateUpdateApi.getPortCallMessages(5);
-            return stateUpdateApi.getMessagesBetween("2017-01-05T06:30:00Z", "2017-05-20T17:50:00Z");
+            return stateUpdateApi.getMessagesBetween("2017-05-01T00:00:01Z", "2017-05-21T18:44:10Z");
         } catch (ApiException e) {
             e.printStackTrace();
         }
         return null;
     }
-
-    /*
-          // Hämtar ett specifikt PortCall
-        public PortCall getPortCall(int id) {
-            PortCallSummary summary = summaries.get(id);
-            try {
-                return portcallsApi.getPortCall(summary.getId(), "porter", "porter", " porter");
-            } catch (ApiException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-     */
-
-    public static void main( String[] args )
-    {
-        PCMFetcherModel app = new PCMFetcherModel("sandbox");
-        app.initiateStateupdateAPI("virtualbox");
-        System.out.println("ran main method");
-        List<PortCallMessage> messageList = app.fetchMessagesBetweenTimes("abc", "abc");
-        for (PortCallMessage pcm : messageList) {
-            String printString = pcm.getComment();
-            System.out.println(printString);
-        }
     }
-}

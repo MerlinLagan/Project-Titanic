@@ -22,6 +22,7 @@ public class TemplatesHandlerModel {
     public void loadTemplatesMap(String mapName){
         Properties properties = new Properties();
         HashMap<String, String> templates = new HashMap<String, String>();
+        templates.put("","");
         try {
             properties.load(new FileInputStream(mapName));
         } catch (FileNotFoundException e) {

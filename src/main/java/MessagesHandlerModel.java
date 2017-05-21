@@ -2,20 +2,28 @@ import java.util.ArrayList;
 
 public class MessagesHandlerModel {
 
-
-
     ArrayList<String> logMessages;
+    ArrayList<Integer> answeredMessages;
     int currentMessageNumber;
 
     public MessagesHandlerModel(){
         logMessages = new ArrayList<String>();
         currentMessageNumber = 0;
+        answeredMessages = new ArrayList<Integer>();
+    }
+
+    public void setCurrentMessageAsAnswered(){
+        answeredMessages.add(currentMessageNumber);
+    }
+
+    public boolean isAnsweredTo(){
+        return answeredMessages.contains(currentMessageNumber);
     }
 
     public int[] getMessagePositions(){
         int[] messagePositionInfo = new int[2];
-        messagePositionInfo[0]=logMessages.size();
-        messagePositionInfo[1]=currentMessageNumber;
+        messagePositionInfo[0] = logMessages.size();
+        messagePositionInfo[1] = currentMessageNumber;
         return messagePositionInfo;
     }
 
@@ -25,6 +33,10 @@ public class MessagesHandlerModel {
 
     public void addMessage(String str){
         logMessages.add(str);
+    }
+
+    public void addInfoToCurrentMessage(String str){
+        logMessages.set(currentMessageNumber, getLogMessage() + "\n \n " + str);
     }
 
     public String getLogMessage(){

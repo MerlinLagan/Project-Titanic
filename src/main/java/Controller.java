@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -30,6 +31,7 @@ public class Controller implements ActionListener {
         timer = new Timer(5000, this);
         timer.setInitialDelay(0);
         timer.start();
+        pcmHandler.getMessagesBetweenTimes("abcd", "efgh");
     }
 
     public void addViews(MessengerView msgrView, MessagesView msgsView, VesselLocationView vsllocView){
@@ -39,13 +41,10 @@ public class Controller implements ActionListener {
     }
 
     public void addModels(TemplatesHandlerModel tmpltsModel, MessagesHandlerModel msgsModel,
-                          PCMHandlerModel pcmHandler, PCMFetcherModel pcmFetcher, PCMSenderModel pcmSender,
-                          VesselLocationModel vsllocModel){
+                          PCMHandlerModel pcmHandler, VesselLocationModel vsllocModel){
         this.tmpltsModel = tmpltsModel;
         this.msgsModel = msgsModel;
         this.pcmHandler = pcmHandler;
-        this.pcmFetcher = pcmFetcher;
-        this.pcmSender = pcmSender;
         this.vsllocModel = vsllocModel;
     }
 
@@ -54,10 +53,9 @@ public class Controller implements ActionListener {
     TimeStampHelper timeStampHelper = new TimeStampHelper();
 
     public void getMessages(){
-        System.out.println("haj");
         oldTime = newTime;
         newTime = TimeStampHelper.getCurrentTimeStamp();
-       // pcmFetcher.fetchMessagesBetweenTimes(oldTime, newTime);
+        pcmHandler.getMessagesBetweenTimes(oldTime, newTime);
         System.out.println(oldTime);
         System.out.println(newTime);
     }
@@ -92,27 +90,61 @@ public class Controller implements ActionListener {
         vsllocView.updateVesselLocs(overview);
     }
 
+    public void applyNewMessages(){
+        for (String str : pcmHandler.getPortCallMessagesAsStrings(pcmHandler.getMessagesBetweenTimes("ad", "asd"))) {
+            msgsModel.addMessage(str);
+        }
+        for (ArrayList<String> vesselInfo : pcmHandler.getMultipleVesselsTravelinfo(pcmHandler.getMessagesBetweenTimes("ad", "asd")))
+        vsllocModel.addInfo(vesselInfo.get(0), vesselInfo.get(1), vesselInfo.get(2));
+    }
+
+    public void templateChanged(){
+        msgrView.enableDeleteButton();
+        String templateKey = msgrView.getSelectedTemplate();
+        String templateValue = tmpltsModel.getTemplateFromKey(templateKey);
+        msgrView.setMessageBoxText(templateValue);
+        msgrView.labelField.removeAll();
+        msgsModel.updateLabelList(templateValue);
+        String[] labels = msgsModel.getLabels();
+        for (String str : labels) {
+            msgrView.addLabel(str);
+            msgrView.labelField.repaint();
+        }
+        if (templateKey.equals("")){
+        }
+    }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
         Object o = e.getSource();
 
         if (o == msgrView.templateMenu) {
-            String templateKey = msgrView.getSelectedTemplate();
-            String templateValue = tmpltsModel.getTemplateFromKey(templateKey);
-            msgrView.setMessageBoxText(templateValue);
-            msgrView.labelField.removeAll();
-            msgsModel.updateLabelList(templateValue);
-            String[] labels = msgsModel.getLabels();
-            for (String str : labels) {
-                msgrView.addLabel(str);
-                msgrView.labelField.repaint();
-            }
+            templateChanged();
         }
 
         if(o == msgrView.sendButton) {
             msgsModel.applyLabelsToMessage(msgrView.tThree.getText(), msgrView.getLabels());
             msgsView.append(msgsModel.getMessage());
+            msgsModel.setCurrentMessageAsAnswered();
+            msgrView.disableSendButtons();
+        }
+
+        if(o == msgrView.confirmButton){
+            msgsModel.applyLabelsToMessage(msgrView.tThree.getText(), msgrView.getLabels());
+            msgsModel.addInfoToCurrentMessage("SENT MESSAGE BELOW" + "\n" +
+                    "\n" + msgsModel.getMessage() + "\n" + "\n" + "CONFIRMED");
+            msgsView.append(msgsModel.getLogMessage());
+            msgsModel.setCurrentMessageAsAnswered();
+            msgrView.disableSendButtons();
+        }
+        if(o == msgrView.denyButton){
+            msgsModel.applyLabelsToMessage(msgrView.tThree.getText(), msgrView.getLabels());
+            msgsModel.addInfoToCurrentMessage("SENT MESSAGE BELOW" + "\n" +
+                    "\n" + msgsModel.getMessage() + "\n" + "\n" + "DENIED");
+            msgsView.append(msgsModel.getLogMessage());
+            msgsModel.setCurrentMessageAsAnswered();
+            msgrView.disableSendButtons();
         }
 
         if(o == msgrView.newTemplateButton) {
@@ -138,19 +170,29 @@ public class Controller implements ActionListener {
         }
         if (o == timer) {
             msgsModel.addMessageTest();
+
             int[] currentPositionInfo = msgsModel.getMessagePositions();
             msgsView.changePositionInfo(currentPositionInfo);
         }
 
         if (o == msgsView.previousMessageButton) {
+
             try {
                 msgsModel.goToPreviousMessage();
                 msgsView.append(msgsModel.getLogMessage());
                 int[] currentPositionInfo = msgsModel.getMessagePositions();
                 msgsView.changePositionInfo(currentPositionInfo);
+                msgrView.enableSendButtons();
             }
             catch(Exception exception){
                 exception.printStackTrace();
+            }
+            String templateKey = "";
+            String templateValue = "";
+            msgrView.goToEmptyMessage();
+            templateChanged();
+            if (msgsModel.isAnsweredTo()){
+                msgrView.disableSendButtons();
             }
         }
 
@@ -160,13 +202,20 @@ public class Controller implements ActionListener {
                 msgsView.append(msgsModel.getLogMessage());
                 int[] currentPositionInfo = msgsModel.getMessagePositions();
                 msgsView.changePositionInfo(currentPositionInfo);
+                msgrView.enableSendButtons();
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
+            msgrView.goToEmptyMessage();
+            templateChanged();
+            if (msgsModel.isAnsweredTo()){
+                msgrView.disableSendButtons();
+            }
         }
-        if (o == msgsView.clearLogButton) {
+        if (o == msgsView.updateLogButton) {
             try {
-                msgsView.clearLog();
+                getMessages();
+
             } catch (Exception exception) {
                 exception.printStackTrace();
             }

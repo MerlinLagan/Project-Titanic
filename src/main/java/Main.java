@@ -27,7 +27,7 @@ public class Main {
 
                 controller.addViews(msgrView, msgsView, vsllocView);
 
-                controller.addModels(msgrModel, msgsModel, pcmHandler, pcmFetcher, pcmSender, vsllocModel);
+                controller.addModels(msgrModel, msgsModel, pcmHandler, vsllocModel);
 
                 controller.initialize();
     }

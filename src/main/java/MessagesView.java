@@ -4,7 +4,6 @@
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
 
 /*
  * The Client with its GUI
@@ -13,14 +12,12 @@ public class MessagesView extends JFrame {
 
 
     private static final long serialVersionUID = 1L;
-    public JButton previousMessageButton, nextMessageButton, clearLogButton;
+    public JButton previousMessageButton, nextMessageButton, updateLogButton;
     private JTextArea loggArea;
-
 
     MessagesView(Controller controller) {
 
         super("Logg");
-
 
         JPanel centerPanel = new JPanel(new GridLayout());
 
@@ -43,14 +40,14 @@ public class MessagesView extends JFrame {
         previousMessageButton.addActionListener(controller);
         nextMessageButton = new JButton("Next Message");
         nextMessageButton.addActionListener(controller);
-        clearLogButton = new JButton ("Clear Log");
-        clearLogButton.addActionListener(controller);
+        updateLogButton = new JButton ("Update Log");
+        updateLogButton.addActionListener(controller);
 
 
         // Fills the southPanel with content and adds it to the frame
         southPanel.add(previousMessageButton);
         southPanel.add(nextMessageButton);
-        southPanel.add(clearLogButton);
+        southPanel.add(updateLogButton);
         add(southPanel, BorderLayout.SOUTH);
 
         //templates = new HashMap<String, String>();
@@ -79,10 +76,13 @@ public class MessagesView extends JFrame {
 
     // Append text in the TextArea
     public void append(String str) {
-        loggArea.append(str + "\n \n \n \n \n");
+        clearLog();
+        loggArea.append(str + "\n");
         loggArea.setCaretPosition(loggArea.getText().length() - 1);
     }
+
     public void appendWithOneBreak(String str) {
+        clearLog();
         loggArea.append(str + "\n");
         loggArea.setCaretPosition(loggArea.getText().length() - 1);
     }
