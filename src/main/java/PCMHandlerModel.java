@@ -87,22 +87,46 @@ public class PCMHandlerModel {
     }
 
     public ArrayList<String> getVesselTravelInfo(PortCallMessage message) {
-        ArrayList<String> vesselInfo = new ArrayList<>();
+        ArrayList<String> vesselInfo = new ArrayList<String>();
+        String location;
+        String vesselID;
+        String timeType;
         try {
-            vesselInfo.add(message.getLocationState().getArrivalLocation().getTo().getLocationType().toString());
-            vesselInfo.add(message.getVesselId().toString());
-            vesselInfo.add(message.getLocationState().getTimeType().toString());
+            //timetypes: ACTUAL, CANCELLED, ESTIMATED, RECOMMENDED, TARGET
+            location = message.getLocationState().getArrivalLocation().getTo().getLocationType().toString();
+            vesselID = message.getVesselId().toString();
+            timeType = message.getLocationState().getTimeType().value();
+
+            if (location != null && vesselID != null &&
+                    (timeType.equals("ACTUAL") || timeType.equals("ESTIMATED") ||timeType.equals("TARGET"))) {
+                if (timeType.equals("ACTUAL")) {
+
+                    vesselInfo.add(0, location);
+                    vesselInfo.add(1, vesselID);
+                    vesselInfo.add(2, "ACTUAL");
+                }
+                if (timeType.equals("ESTIMATED") || timeType.equals("TARGET")) {
+                    vesselInfo.add(0, location);
+                    vesselInfo.add(1, vesselID);
+                    vesselInfo.add(2, "ESTIMATED");
+                }
+                System.out.println("actually returning vesselInfo where info is: "  + location + "   "  + vesselID + "   "  + timeType);
+                return vesselInfo;
+            }
         }
         catch (Exception NullPointerException) {
-            System.out.println("tried to add vessel info but got nullpointer");
         }
-        return vesselInfo;
+        return null;
     }
 
     public ArrayList<ArrayList<String>> getMultipleVesselsTravelinfo(List<PortCallMessage> pcmList) {
         ArrayList<ArrayList<String>> travelInfoList = new ArrayList<ArrayList<String>>();
+        ArrayList<String> singleVesselInfo;
         for (PortCallMessage pcm : pcmList) {
-            travelInfoList.add(getVesselTravelInfo(pcm));
+            singleVesselInfo = getVesselTravelInfo(pcm);
+            if (singleVesselInfo != null) {
+                travelInfoList.add(singleVesselInfo);
+            }
         }
         return travelInfoList;
     }

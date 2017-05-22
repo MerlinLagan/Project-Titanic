@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class VesselLocationModel {
 
-    String confirmed = "CONFIRMED";
+    String confirmed = "ACTUAL";
     String estimated = "ESTIMATED";
 
     ArrayList<PolygonWithBoats> polygons;

@@ -81,10 +81,8 @@ public class Controller implements ActionListener {
     public void vesselUpdateAction(){
         for (ArrayList<String> vesselInfo : pcmHandler.getMultipleVesselsTravelinfo(pcmHandler.getPortCallMessages())) {
             vsllocModel.addInfo(vesselInfo.get(0), vesselInfo.get(1), vesselInfo.get(2));
-            System.out.println(vesselInfo.get(0));
-            System.out.println(vesselInfo.get(1));
-            System.out.println(vesselInfo.get(2));
         }
+        updateFullVesselLocationView();
     }
 
     public void updateFullVesselLocationView(){
@@ -101,11 +99,9 @@ public class Controller implements ActionListener {
 
     public void applyNewMessages(){
         for (String str : pcmHandler.getPortCallMessagesAsStrings(pcmHandler.getPortCallMessages())) {
-            System.out.println(str);
             msgsModel.addMessage(str);
-            System.out.println("applyNewMessages>tried to addmsg to msgsmodel");
         }
-        //vesselUpdateAction();
+        vesselUpdateAction();
     }
 
     public void templateChanged(){
@@ -172,7 +168,6 @@ public class Controller implements ActionListener {
                 msgrView.removeSelectedTemplateFromMenu();
             }
             catch (NullPointerException exception) {
-                System.out.println("list is already empty");
             }
         }
         if (o == timer) {

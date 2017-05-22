@@ -59,12 +59,9 @@ public class PolygonWithBoats {
 
     @Override
     public boolean equals(Object object) {
-        System.out.println("in i equals");
         if (object instanceof PolygonWithBoats) {
-            System.out.println("längre in");
             PolygonWithBoats polygon = (PolygonWithBoats) object;
             boolean x = (this.hashCode() == polygon.hashCode());
-            System.out.println("x = " + x);
             return x;
         }
         return false;
