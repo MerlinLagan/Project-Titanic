@@ -11,7 +11,7 @@ import java.util.Date;
 
 public class Controller implements ActionListener {
 
-    LogModel msgsModel;
+    LogModel logModel;
     TemplatesHandlerModel tmpltsModel;
     MessengerView msgrView;
     MessagesView msgsView;
@@ -43,7 +43,7 @@ public class Controller implements ActionListener {
     public void addModels(TemplatesHandlerModel tmpltsModel, LogModel msgsModel,
                           PCMHandlerModel pcmHandler, VesselLocationModel vsllocModel){
         this.tmpltsModel = tmpltsModel;
-        this.msgsModel = msgsModel;
+        this.logModel = msgsModel;
         this.pcmHandler = pcmHandler;
         this.vsllocModel = vsllocModel;
     }
@@ -99,7 +99,7 @@ public class Controller implements ActionListener {
 
     public void applyNewMessages(){
         for (String str : pcmHandler.getPortCallMessagesAsStrings(pcmHandler.getPortCallMessages())) {
-            msgsModel.addMessage(str);
+            logModel.addMessage(str);
         }
         vesselUpdateAction();
     }
@@ -110,8 +110,8 @@ public class Controller implements ActionListener {
         String templateValue = tmpltsModel.getTemplateFromKey(templateKey);
         msgrView.setMessageBoxText(templateValue);
         msgrView.labelField.removeAll();
-        msgsModel.updateLabelList(templateValue);
-        String[] labels = msgsModel.getLabels();
+        logModel.updateLabelList(templateValue);
+        String[] labels = logModel.getLabels();
         for (String str : labels) {
             msgrView.addLabel(str);
             msgrView.labelField.repaint();
@@ -129,26 +129,26 @@ public class Controller implements ActionListener {
         }
 
         if(o == msgrView.sendButton) {
-            msgsModel.applyLabelsToMessage(msgrView.tThree.getText(), msgrView.getLabels());
-            msgsView.append(msgsModel.getMessage());
-            msgsModel.setCurrentMessageAsAnswered();
+            logModel.applyLabelsToMessage(msgrView.tThree.getText(), msgrView.getLabels());
+            msgsView.append(logModel.getMessage());
+            logModel.setCurrentMessageAsAnswered();
             msgrView.disableSendButtons();
         }
 
         if(o == msgrView.confirmButton){
-            msgsModel.applyLabelsToMessage(msgrView.tThree.getText(), msgrView.getLabels());
-            msgsModel.addInfoToCurrentMessage("SENT MESSAGE BELOW" + "\n" +
-                    "\n" + msgsModel.getMessage() + "\n" + "\n" + "CONFIRMED");
-            msgsView.append(msgsModel.getLogMessage());
-            msgsModel.setCurrentMessageAsAnswered();
+            logModel.applyLabelsToMessage(msgrView.tThree.getText(), msgrView.getLabels());
+            logModel.addInfoToCurrentMessage("SENT MESSAGE BELOW" + "\n" +
+                    "\n" + logModel.getMessage() + "\n" + "\n" + "CONFIRMED");
+            msgsView.append(logModel.getLogMessage());
+            logModel.setCurrentMessageAsAnswered();
             msgrView.disableSendButtons();
         }
         if(o == msgrView.denyButton){
-            msgsModel.applyLabelsToMessage(msgrView.tThree.getText(), msgrView.getLabels());
-            msgsModel.addInfoToCurrentMessage("SENT MESSAGE BELOW" + "\n" +
-                    "\n" + msgsModel.getMessage() + "\n" + "\n" + "DENIED");
-            msgsView.append(msgsModel.getLogMessage());
-            msgsModel.setCurrentMessageAsAnswered();
+            logModel.applyLabelsToMessage(msgrView.tThree.getText(), msgrView.getLabels());
+            logModel.addInfoToCurrentMessage("SENT MESSAGE BELOW" + "\n" +
+                    "\n" + logModel.getMessage() + "\n" + "\n" + "DENIED");
+            msgsView.append(logModel.getLogMessage());
+            logModel.setCurrentMessageAsAnswered();
             msgrView.disableSendButtons();
         }
         if(o == msgrView.newTemplateButton) {
@@ -171,46 +171,46 @@ public class Controller implements ActionListener {
             }
         }
         if (o == timer) {
-            msgsModel.addMessageTest();
+            logModel.addMessageTest();
 
-            int[] currentPositionInfo = msgsModel.getMessagePositions();
+            int[] currentPositionInfo = logModel.getMessagePositions();
             msgsView.changePositionInfo(currentPositionInfo);
         }
 
         if (o == msgsView.previousMessageButton) {
 
             try {
-                msgsModel.goToPreviousMessage();
-                msgsView.append(msgsModel.getLogMessage());
-                int[] currentPositionInfo = msgsModel.getMessagePositions();
+                logModel.goToPreviousMessage();
+                msgsView.append(logModel.getLogMessage());
+                int[] currentPositionInfo = logModel.getMessagePositions();
                 msgsView.changePositionInfo(currentPositionInfo);
                 msgrView.enableSendButtons();
+                pcmHandler.setSelectedMessageIndex(logModel.getSelectedMessageIndex());
             }
             catch(Exception exception){
                 exception.printStackTrace();
             }
-            String templateKey = "";
-            String templateValue = "";
-            msgrView.goToEmptyMessage();
+            msgrView.goToEmptyTemplate();
             templateChanged();
-            if (msgsModel.isAnsweredTo()){
+            if (logModel.isAnsweredTo()){
                 msgrView.disableSendButtons();
             }
         }
 
         if (o == msgsView.nextMessageButton) {
             try {
-                msgsModel.goToNextMessage();
-                msgsView.append(msgsModel.getLogMessage());
-                int[] currentPositionInfo = msgsModel.getMessagePositions();
+                logModel.goToNextMessage();
+                msgsView.append(logModel.getLogMessage());
+                int[] currentPositionInfo = logModel.getMessagePositions();
                 msgsView.changePositionInfo(currentPositionInfo);
                 msgrView.enableSendButtons();
+                pcmHandler.setSelectedMessageIndex(logModel.getSelectedMessageIndex());
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
-            msgrView.goToEmptyMessage();
+            msgrView.goToEmptyTemplate();
             templateChanged();
-            if (msgsModel.isAnsweredTo()){
+            if (logModel.isAnsweredTo()){
                 msgrView.disableSendButtons();
             }
         }

@@ -163,7 +163,7 @@ public class MessengerView extends JFrame{
         lastCreatedTemplateName = JOptionPane.showInputDialog(null, "Ange namn för standardmeddelandet");
     }
 
-    public void goToEmptyMessage(){
+    public void goToEmptyTemplate(){
         templateMenu.setSelectedIndex(0);
     }
 

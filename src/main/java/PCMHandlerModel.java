@@ -11,24 +11,31 @@ import java.util.ArrayList;
 
 public class PCMHandlerModel {
 
-    List<PortCallMessage> messageList;
-    int currentMessagepos;
-    PortCallMessage selectedMessage;
+    List<PortCallMessage> messageList = new ArrayList<PortCallMessage>();
+    int selectedMessageIndex;
     PCMFetcherModel fetcherModel;
     PCMSenderModel senderModel;
 
     // Konstruktor som anropar initiateStateupdateAPI och hämtare nuvarande portcall
     public PCMHandlerModel() {
-        messageList = new ArrayList<>();
         this.fetcherModel = new PCMFetcherModel("virtualbox");
         this.senderModel = new PCMSenderModel("virtualbox");
     }
 
     public PCMHandlerModel(PCMFetcherModel fetcherModel, PCMSenderModel senderModel) {
-        messageList = new ArrayList<>();
         this.fetcherModel = fetcherModel;
         this.senderModel = senderModel;
     }
+
+    public int getSelectedMessageIndex(){
+        return selectedMessageIndex;
+    }
+
+    public void setSelectedMessageIndex(int index){
+        selectedMessageIndex = index;
+        System.out.println("Logmodel index " + selectedMessageIndex);
+    }
+
 
     // Skapa ett meddelande utifrån ett föregående meddelande
     private PortCallMessage updateRecievedMessage(PortCallMessage portCallMessage, String text, ServiceState serviceState) {
@@ -142,9 +149,9 @@ public class PCMHandlerModel {
     }
 
     public void getMessagesBetweenTimes(String startdate, String enddate) {
-        this.messageList = fetcherModel.fetchMessagesBetweenTimes("", "");
+        for (PortCallMessage pcm : fetcherModel.fetchMessagesBetweenTimes("hh", "hh"))
+        this.messageList.add(pcm);
     }
-
 
     public String formatMessageForLog(PortCallMessage portCallMessage) {
 
