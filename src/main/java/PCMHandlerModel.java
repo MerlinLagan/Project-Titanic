@@ -36,14 +36,29 @@ public class PCMHandlerModel {
     }
 
 
-    // Skapa ett meddelande utifrån ett föregående meddelande
-    private PortCallMessage updateRecievedMessage(PortCallMessage portCallMessage, String text, ServiceState serviceState) {
+    // Skapar och svarar på ett meddelande utifrån ett föregående meddelande
+    private PortCallMessage respondToMessageWithStatement(PortCallMessage portCallMessage, String text, ServiceTimeSequence serviceTimeSequence) {
         TimeStampHelper timeStampHelper = new TimeStampHelper();
         PortCallMessage message = portCallMessage;
         message.setReportedBy("VTS");
-        message.setComment(text);
-        message.setServiceState(serviceState);
+        message.getServiceState().setTimeSequence(serviceTimeSequence);
         message.setReportedAt(timeStampHelper.getTimeGregorian());
+        if (text == null)
+            return  message;
+            else
+        message.setComment(text);
+        return message;
+    }
+
+    private PortCallMessage respondToMessage(PortCallMessage portCallMessage, String text) {
+        TimeStampHelper timeStampHelper = new TimeStampHelper();
+        PortCallMessage message = portCallMessage;
+        message.setReportedBy("VTS");
+        message.setReportedAt(timeStampHelper.getTimeGregorian());
+        if (text == null)
+            return  message;
+        else
+            message.setComment(text);
         return message;
     }
 
