@@ -188,11 +188,13 @@ public class PCMHandlerModel {
                 "\n " +
                 "ReportedBy: " + portCallMessage.getReportedBy() +  "\n " +
                 "Regarding Vessel ID: " + portCallMessage.getVesselId() + "\n" +
-                "Local Port Call ID: " + portCallMessage.getPortCallId() + "\n" +
+                "Message ID: " + portCallMessage.getMessageId() + "\n" +
                 "Local Job ID: " + portCallMessage.getLocalJobId() + "\n" +
                 "Reported at: " + strYear + "-" + strMonth + "-" + strDay + " " + strHour + ":" + strSec + "\n" +
                 "\n" +
-                "Regarding a : " + timeType + " "+ timeSequence + " on the Service Object: " + serviceObj + "\n" +
+                "Time Type: " + timeType + "\n" +
+                "Time Sequence: "+ timeSequence +  "\n" +
+                "Service Object: " + serviceObj + "\n" +
                 "\n" +
                 "Comment: " + portCallMessage.getComment();
 
