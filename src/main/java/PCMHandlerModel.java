@@ -145,16 +145,8 @@ public class PCMHandlerModel {
         this.messageList = fetcherModel.fetchMessagesBetweenTimes("", "");
     }
 
-    public String formatMessageForLog(PortCallMessage pcm) {
-        String str = "Vessel ID: " + pcm.getVesselId() + "\n " +
-                "Location: " + pcm.getLocationState() + "\n " +
-                "Service State: " + pcm.getServiceState() +
-                "\n";
-        return str;
-    }
 
-
-    public String formatPCMForLog(PortCallMessage portCallMessage){
+    public String formatMessageForLog(PortCallMessage portCallMessage) {
 
         XMLGregorianCalendar time = portCallMessage.getReportedAt();
         Integer intYear = time.getYear();
@@ -167,12 +159,21 @@ public class PCMHandlerModel {
         String strHour = intHour.toString();
         Integer intSec = time.getSecond();
         String strSec = intSec.toString();
+        String timeType = "null", timeSequence = "null", serviceObj = "null";
 
         ServiceState servState = portCallMessage.getServiceState();
-        String timeType = servState.getTimeType().toString(); // ACTUAL, RECOMMENDED, ESTIMATED mm
-        String timeSequence = servState.getTimeSequence().toString(); //ARRIVAL_TO, DEPARTURE_FROM, REQUESTED, COMMENCED, COMPLETED, CONFIRMED, DENIED , REQUEST_RECEIVED
-        String serviceObj = servState.getServiceObject().toString(); // ARRIVAL_VTSAREA mm
-
+        try {
+            timeType = servState.getTimeType().toString(); // ACTUAL, RECOMMENDED, ESTIMATED mm
+        } catch (Exception e) {
+        }
+        try {
+            timeSequence = servState.getTimeSequence().toString(); //ARRIVAL_TO, DEPARTURE_FROM, REQUESTED, COMMENCED, COMPLETED, CONFIRMED, DENIED , REQUEST_RECEIVED
+        } catch (Exception e) {
+        }
+        try {
+            serviceObj = servState.getServiceObject().toString(); // ARRIVAL_VTSAREA mm
+        } catch (Exception e) {
+        }
 
 
 
