@@ -63,7 +63,6 @@ public class LogModel {
         return message;
     }
     public int getSelectedLogMessageIndex(){
-        System.out.println("Logmodel index getted" + selectedLogMessageIndex);
         return selectedLogMessageIndex;
     }
 

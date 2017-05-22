@@ -1,3 +1,5 @@
+import eu.portcdm.messaging.ServiceTimeSequence;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,6 +32,7 @@ public class Controller implements ActionListener {
         timer = new Timer(5000, this);
         timer.setInitialDelay(0);
         timer.start();
+        applyNewMessages();
     }
 
     public void addViews(MessengerView msgrView, MessagesView msgsView, VesselLocationView vsllocView){
@@ -46,16 +49,14 @@ public class Controller implements ActionListener {
         this.vsllocModel = vsllocModel;
     }
 
-    String newTime = "";
+    String newTime = "2016-01-01T00:00:01Z";
     String oldTime;
     TimeStampHelper timeStampHelper = new TimeStampHelper();
 
-    public void getMessages(){
-        oldTime = newTime;
-        newTime = TimeStampHelper.getCurrentTimeStamp();
+    public void getNewMessages(){
+        this.oldTime = newTime;
+        this.newTime = TimeStampHelper.getCurrentTimeStamp();
         pcmHandler.getMessagesBetweenTimes(oldTime, newTime);
-        System.out.println(oldTime);
-        System.out.println(newTime);
     }
 
     public static String getCurrentTimeStamp() {
@@ -85,7 +86,7 @@ public class Controller implements ActionListener {
     }
 
     public void applyNewMessages(){
-        for (String str : pcmHandler.getPortCallMessagesAsStrings(pcmHandler.getPortCallMessages())) {
+        for (String str : pcmHandler.getPortCallMessagesAsStrings(pcmHandler.getLatestFetchBatch())) {
             logModel.addMessage(str);
         }
         int[] currentPositionInfo = logModel.getMessagePositions();
@@ -119,6 +120,7 @@ public class Controller implements ActionListener {
 
         if(o == msgrView.sendButton) {
             logModel.applyLabelsToMessage(msgrView.tThree.getText(), msgrView.getLabels());
+            pcmHandler.respondToMessage(logModel.getMessage());
             msgsView.append(logModel.getMessage());
             logModel.setCurrentMessageAsAnswered();
             msgrView.disableSendButtons();
@@ -126,6 +128,7 @@ public class Controller implements ActionListener {
 
         if(o == msgrView.confirmButton){
             logModel.applyLabelsToMessage(msgrView.tThree.getText(), msgrView.getLabels());
+            pcmHandler.respondToMessageWithStatement(logModel.getMessage(), ServiceTimeSequence.CONFIRMED);
             logModel.addInfoToCurrentMessage("SENT MESSAGE BELOW" + "\n" +
                     "\n" + logModel.getMessage() + "\n" + "\n" + "CONFIRMED");
             msgsView.append(logModel.getLogMessage());
@@ -134,6 +137,7 @@ public class Controller implements ActionListener {
         }
         if(o == msgrView.denyButton){
             logModel.applyLabelsToMessage(msgrView.tThree.getText(), msgrView.getLabels());
+            pcmHandler.respondToMessageWithStatement(logModel.getMessage(), ServiceTimeSequence.DENIED);
             logModel.addInfoToCurrentMessage("SENT MESSAGE BELOW" + "\n" +
                     "\n" + logModel.getMessage() + "\n" + "\n" + "DENIED");
             msgsView.append(logModel.getLogMessage());
@@ -160,8 +164,8 @@ public class Controller implements ActionListener {
             }
         }
         if (o == timer) {
-            //int[] currentPositionInfo = logModel.getMessagePositions();
-            //msgsView.changePositionInfo(currentPositionInfo);
+            getNewMessages();
+            applyNewMessages();
         }
 
         if (o == msgsView.previousMessageButton) {
@@ -203,9 +207,6 @@ public class Controller implements ActionListener {
         }
         if (o == msgsView.updateLogButton) {
             try {
-                System.out.println("updatelogbutton pressed");
-                pcmHandler.getMessagesBetweenTimes("asd", "asd");
-                applyNewMessages();
             } catch (Exception exception) {
                 exception.printStackTrace();
             }

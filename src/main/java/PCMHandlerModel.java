@@ -3,7 +3,6 @@
  */
 
 import eu.portcdm.dto.LocationTimeSequence;
-import eu.portcdm.dto.ReferenceObject;
 import eu.portcdm.messaging.*;
 
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -13,6 +12,7 @@ import java.util.ArrayList;
 public class PCMHandlerModel {
 
     List<PortCallMessage> messageList = new ArrayList<PortCallMessage>();
+    List<PortCallMessage> latestFetchBatch = new ArrayList<PortCallMessage>();
     int selectedPCMIndex;
     PCMFetcherModel fetcherModel;
     PCMSenderModel senderModel;
@@ -38,36 +38,39 @@ public class PCMHandlerModel {
 
 
     // Skapar och svarar på ett meddelande utifrån ett föregående meddelande
-    private PortCallMessage respondToMessageWithStatement(PortCallMessage portCallMessage, String text, ServiceTimeSequence serviceTimeSequence) {
+    public boolean respondToMessageWithStatement(String text, ServiceTimeSequence serviceTimeSequence) {
         TimeStampHelper timeStampHelper = new TimeStampHelper();
-        PortCallMessage message = portCallMessage;
-        message.setMessageId(null);
+        PortCallMessage message = messageList.get(selectedPCMIndex);
+        //message.setMessageId(null);
         message.setReportedBy("VTS");
         message.getServiceState().setTimeSequence(serviceTimeSequence);
         message.setReportedAt(timeStampHelper.getTimeGregorian());
-        if (text == null)
-            return  message;
+        if (text == null) {
+            message.setComment(text);
+        }
             else
         message.setComment(text);
-        return message;
+        senderModel.sendMessage(message);
+        return true;
     }
 
-    private PortCallMessage respondToMessage(PortCallMessage portCallMessage, String text) {
+    public boolean respondToMessage(String text) {
         TimeStampHelper timeStampHelper = new TimeStampHelper();
-        PortCallMessage message = portCallMessage;
+        PortCallMessage message = messageList.get(selectedPCMIndex);
         message.setMessageId(null);
         message.setReportedBy("VTS");
         message.setReportedAt(timeStampHelper.getTimeGregorian());
-        if (text == null)
-            return  message;
-        else
+        if (!(text == null)) {
             message.setComment(text);
-        return message;
+            senderModel.sendMessage(message);
+            return true;
+        }
+        return false;
     }
 
 
     //Från en lista med alla PCM sorterar ut de som har relevant Service Object och returnerar de
-    public List<PortCallMessage> filterOutRelaventPCM(List<PortCallMessage> messageList) {
+    public List<PortCallMessage> getRelevantPCMs(List<PortCallMessage> messageList) {
         List<PortCallMessage> relevantPCM = new ArrayList<>();
         for (PortCallMessage portCallMessage : messageList) {
             ServiceState servState = portCallMessage.getServiceState();
@@ -111,7 +114,6 @@ public class PCMHandlerModel {
                 } */
             } catch(NullPointerException e){
             }
-
         }
         System.out.println(relevantPCM);
         return relevantPCM;
@@ -176,7 +178,6 @@ public class PCMHandlerModel {
                     vesselInfo.add(1, vesselID);
                     vesselInfo.add(2, "ESTIMATED");
                 }
-                System.out.println("actually returning vesselInfo where info is: "  + location + "   "  + vesselID + "   "  + timeType);
                 return vesselInfo;
             }
         }
@@ -201,13 +202,16 @@ public class PCMHandlerModel {
         return senderModel.createGenericMessage(locationTimeSequence, logicalLocation);
     }
 
-    private void sendMessage(PortCallMessage pcm) {
-        senderModel.sendMessage(pcm);
+    public void getMessagesBetweenTimes(String startdate, String enddate) {
+        latestFetchBatch = new ArrayList<PortCallMessage>();
+        for (PortCallMessage pcm : getRelevantPCMs(fetcherModel.fetchMessagesBetweenTimes(startdate, enddate))) {
+            latestFetchBatch.add(pcm);
+            messageList.add(pcm);
+        }
     }
 
-    public void getMessagesBetweenTimes(String startdate, String enddate) {
-        for (PortCallMessage pcm : fetcherModel.fetchMessagesBetweenTimes("hh", "hh"))
-        this.messageList.add(pcm);
+    public List<PortCallMessage> getLatestFetchBatch(){
+        return latestFetchBatch;
     }
 
     public String formatMessageForLog(PortCallMessage portCallMessage) {
@@ -260,7 +264,7 @@ public class PCMHandlerModel {
         return string;
     }
 
-    // En main som testar filterOutRelevantPCM-metod genom att skapa en lista med pcm som har olika ServiceObjects som sedan körs metoden
+    // En main som testar getRelevantPCMs-metod genom att skapa en lista med pcm som har olika ServiceObjects som sedan körs metoden
     public static void main(String[] args) {
        PCMHandlerModel pcmHandler = new PCMHandlerModel();
 
@@ -295,7 +299,7 @@ public class PCMHandlerModel {
        //message5.setLocationState(locState);
        // listofPCM.add(message5);
 
-       pcmHandler.filterOutRelaventPCM(listofPCM);
+       pcmHandler.getRelevantPCMs(listofPCM);
    }
 
 
