@@ -4,6 +4,8 @@
 
 import eu.portcdm.dto.LocationTimeSequence;
 import eu.portcdm.messaging.*;
+
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -149,6 +151,45 @@ public class PCMHandlerModel {
                 "Service State: " + pcm.getServiceState() +
                 "\n";
         return str;
+    }
+
+
+    public String formatPCMForLog(PortCallMessage portCallMessage){
+
+        XMLGregorianCalendar time = portCallMessage.getReportedAt();
+        Integer intYear = time.getYear();
+        String strYear = intYear.toString();
+        Integer intMonth = time.getMonth();
+        String strMonth = intMonth.toString();
+        Integer intDay = time.getDay();
+        String strDay = intDay.toString();
+        Integer intHour = time.getHour();
+        String strHour = intHour.toString();
+        Integer intSec = time.getSecond();
+        String strSec = intSec.toString();
+
+        ServiceState servState = portCallMessage.getServiceState();
+        String timeType = servState.getTimeType().toString(); // ACTUAL, RECOMMENDED, ESTIMATED mm
+        String timeSequence = servState.getTimeSequence().toString(); //ARRIVAL_TO, DEPARTURE_FROM, REQUESTED, COMMENCED, COMPLETED, CONFIRMED, DENIED , REQUEST_RECEIVED
+        String serviceObj = servState.getServiceObject().toString(); // ARRIVAL_VTSAREA mm
+
+
+
+
+        String string = "Port Call Message Information" + "\n " +
+                "\n " +
+                "ReportedBy: " + portCallMessage.getReportedBy() +  "\n " +
+                "Regarding Vessel ID: " + portCallMessage.getVesselId() + "\n" +
+                "Local Port Call ID: " + portCallMessage.getPortCallId() + "\n" +
+                "Local Job ID: " + portCallMessage.getLocalJobId() + "\n" +
+                "Reported at: " + strYear + "-" + strMonth + "-" + strDay + " " + strHour + ":" + strSec + "\n" +
+                "\n" +
+                "Regarding a : " + timeType + " "+ timeSequence + " on the Service Object: " + serviceObj + "\n" +
+                "\n" +
+                "Comment: " + portCallMessage.getComment();
+
+
+        return string;
     }
 
     public static void main(String[] args) {
