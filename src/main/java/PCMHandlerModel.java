@@ -259,37 +259,37 @@ public class PCMHandlerModel {
     }
 
 
-   /* public static void main(String[] args) {
-        PCMHandlerModel pcmHandler = new PCMHandlerModel();
+  /* public static void main(String[] args) {
+       PCMHandlerModel pcmHandler = new PCMHandlerModel();
 
-        List<PortCallMessage> listofPCM = new ArrayList<>();
+       List<PortCallMessage> listofPCM = new ArrayList<>();
 
-        ServiceState servState = new ServiceState();
-        ServiceState servState2 = new ServiceState();
-        ServiceObject servObj = ServiceObject.ARRIVAL_VTSAREA;
-        ServiceObject servObj2 = ServiceObject.DEPARTURE_VTSAREA;
+       ServiceState servState = new ServiceState();
+       ServiceState servState2 = new ServiceState();
+       ServiceObject servObj = ServiceObject.ARRIVAL_VTSAREA;
+       ServiceObject servObj2 = ServiceObject.DEPARTURE_VTSAREA;
 
-        PortCallMessage message1 = pcmHandler.senderModel.createMessage();
-        servState.setServiceObject(servObj);
-        message1.setServiceState(servState);
-        listofPCM.add(message1);
+       PortCallMessage message1 = pcmHandler.senderModel.createMessage();
+       servState.setServiceObject(servObj);
+       message1.setServiceState(servState);
+       listofPCM.add(message1);
 
-        PortCallMessage message4 = pcmHandler.senderModel.createMessage();
-        servState2.setServiceObject(servObj2);
-        message4.setServiceState(servState2);
-        listofPCM.add(message4);
-
-
-        PortCallMessage message2 = pcmHandler.senderModel.createMessage();
-        listofPCM.add(message2);
-
-        PortCallMessage message3 = pcmHandler.senderModel.createMessage();
-        listofPCM.add(message3);
-
-        pcmHandler.filterOutRelaventPCM(listofPCM);
+       PortCallMessage message4 = pcmHandler.senderModel.createMessage();
+       servState2.setServiceObject(servObj2);
+       message4.setServiceState(servState2);
+       listofPCM.add(message4);
 
 
+       PortCallMessage message2 = pcmHandler.senderModel.createMessage();
+       listofPCM.add(message2);
 
+       PortCallMessage message3 = pcmHandler.senderModel.createMessage();
+       listofPCM.add(message3);
+
+       pcmHandler.filterOutRelaventPCM(listofPCM);
+
+
+   }
 
 
     /*
