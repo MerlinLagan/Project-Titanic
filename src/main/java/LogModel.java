@@ -66,6 +66,9 @@ public class LogModel {
     public String getMessage(){
         return message;
     }
+    public int getCurrentMessageNumber(){
+        return currentMessageNumber;
+    }
 
     public String[] getLabels(){
         return labelList;
