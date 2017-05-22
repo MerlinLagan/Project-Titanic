@@ -40,6 +40,7 @@ public class PCMHandlerModel {
     private PortCallMessage respondToMessageWithStatement(PortCallMessage portCallMessage, String text, ServiceTimeSequence serviceTimeSequence) {
         TimeStampHelper timeStampHelper = new TimeStampHelper();
         PortCallMessage message = portCallMessage;
+        message.setMessageId(null);
         message.setReportedBy("VTS");
         message.getServiceState().setTimeSequence(serviceTimeSequence);
         message.setReportedAt(timeStampHelper.getTimeGregorian());
@@ -53,6 +54,7 @@ public class PCMHandlerModel {
     private PortCallMessage respondToMessage(PortCallMessage portCallMessage, String text) {
         TimeStampHelper timeStampHelper = new TimeStampHelper();
         PortCallMessage message = portCallMessage;
+        message.setMessageId(null);
         message.setReportedBy("VTS");
         message.setReportedAt(timeStampHelper.getTimeGregorian());
         if (text == null)
