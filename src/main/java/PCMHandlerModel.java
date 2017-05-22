@@ -47,19 +47,53 @@ public class PCMHandlerModel {
         return message;
     }
 
+
     //Från en lista med alla PCM sorterar ut de som har relevant service state och returnerar de
-    public List<PortCallMessage> checkServiceState(List<PortCallMessage> messageList) {
+    public List<PortCallMessage> filterOutRelaventPCM(List<PortCallMessage> messageList) {
         List<PortCallMessage> relevantPCM = new ArrayList<>();
         for (PortCallMessage portCallMessage : messageList) {
-            if (portCallMessage.getLocalPortCallId().equals("urn:x-mrn:stm:portcdm:local_port_call:SEGOT:DHC:52724")) {
-                if (portCallMessage.getServiceState().toString().equals("VTSAreaEntry_Requested")) {
-                    relevantPCM.add(portCallMessage);
-                }
+            ServiceState servState = portCallMessage.getServiceState();
+            if(servState.getServiceObject().toString().equals("ARRIVAL_VTSAREA")){
+                System.out.print("ARRIVAL_VTSAREA");
+                relevantPCM.add(portCallMessage);
+            }
+            else if(servState.getServiceObject().toString().equals("DEPARTURE_VTSAREA")){
+                System.out.print("DEPARTURE_VTSAREA");
+                relevantPCM.add(portCallMessage);
+            }
+            else if(servState.getServiceObject().toString().equals("ARRIVAL_BERTH")){
+                System.out.print("ARRIVAL_BERTH");
+                relevantPCM.add(portCallMessage);
+            }
+            else if(servState.getServiceObject().toString().equals("DEPARTURE_BERTH")){
+                System.out.print("DEPARTURE_BERTH");
+                relevantPCM.add(portCallMessage);
+            }
+            else if(servState.getServiceObject().toString().equals("ARRIVAL_ANCHORING_OPERATION")){
+                System.out.print("ARRIVAL_ANCHORING_OPERATION");
+                relevantPCM.add(portCallMessage);
+            }
+            else if(servState.getServiceObject().toString().equals("DEPARTURE_ANCHORING_OPERATION")){
+                System.out.print("DEPARTURE_ANCHORING_OPERATION");
+                relevantPCM.add(portCallMessage);
+            }
+            else if(servState.getServiceObject().toString().equals("ANCHORING")){
+                System.out.print("ANCHORING");
+                relevantPCM.add(portCallMessage);
+            }
+            else if(servState.getServiceObject().toString().equals("TOWAGE")){
+                System.out.print("TOWAGE");
+                relevantPCM.add(portCallMessage);
+            }
+            else if(servState.getServiceObject().toString().equals("ESCORT_TOWAGE")){
+                System.out.print("ESCORT_TOWAGE");
+                relevantPCM.add(portCallMessage);
             }
         }
-        System.out.print(relevantPCM.toString());
-        return null;
+        return relevantPCM;
     }
+
+
 
     //Samma uppbyggnad som checkServiceState men används för att testa i main
     public static List<PortCallMessage> checkComment(List<PortCallMessage> messageList) {
@@ -183,12 +217,13 @@ public class PCMHandlerModel {
 
 
 
+
         String string = "Port Call Message Information" + "\n " +
                 "\n " +
                 "ReportedBy: " + portCallMessage.getReportedBy() +  "\n " +
                 "Regarding Vessel ID: " + portCallMessage.getVesselId() + "\n" +
+                "Port Call ID: " + portCallMessage.getPortCallId() + "\n" +
                 "Message ID: " + portCallMessage.getMessageId() + "\n" +
-                "Local Job ID: " + portCallMessage.getLocalJobId() + "\n" +
                 "Reported at: " + strYear + "-" + strMonth + "-" + strDay + " " + strHour + ":" + strSec + "\n" +
                 "\n" +
                 "Time Type: " + timeType + "\n" +
@@ -201,24 +236,45 @@ public class PCMHandlerModel {
         return string;
     }
 
+
     public static void main(String[] args) {
         PCMHandlerModel pcmHandler = new PCMHandlerModel();
+
+        List<PortCallMessage> listofPCM = new ArrayList<>();
+
+        ServiceState servState = new ServiceState();
+        ServiceObject servObj = ServiceObject.ARRIVAL_VTSAREA;
+
         PortCallMessage message1 = pcmHandler.senderModel.createMessage();
-        message1.setComment("Oscar");
-        pcmHandler.sendMessage(message1);
+        servState.setServiceObject(servObj);
+        message1.setServiceState(servState);
+        listofPCM.add(message1);
 
-        pcmHandler.getMessagesBetweenTimes("asd", "asd");
+        PortCallMessage message2 = pcmHandler.senderModel.createMessage();
+        listofPCM.add(message2);
 
-        for (PortCallMessage pcm : pcmHandler.messageList) {
-            //System.out.println(pcm.getComment());
+        pcmHandler.filterOutRelaventPCM(listofPCM);
 
-            if (!(pcm.getComment() == null)) {
-                System.out.println("is not null2");
-                if (pcm.getComment().equals("exampletest")) {
-                    System.out.println(pcm.getComment() + "yeo");
-                }
+
+
+
+
+    /*
+    pcmHandler.sendMessage(message1);
+
+    pcmHandler.getMessagesBetweenTimes("asd", "asd");
+    System.out.println(pcmHandler.messageList);
+
+    for (PortCallMessage pcm : pcmHandler.messageList) {
+        //System.out.println(pcm.getComment());
+
+        if (!(pcm.getComment() == null)) {
+            System.out.println("is not null2");
+            if (pcm.getComment().equals("exampletest")) {
+                System.out.println(pcm.getComment() + "yeo");
             }
-            //checkComment(pcmHandler.messageList);
         }
+        //checkComment(pcmHandler.messageList);
+    }*/
     }
 }
