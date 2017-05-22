@@ -26,12 +26,10 @@ public class Controller implements ActionListener {
     public void initialize(){
         tmpltsModel.loadTemplatesMap("data.properties");
         msgrView.loadTemplatesFromMap(tmpltsModel.getTemplates());
-        vesselViewTester();
         updateFullVesselLocationView();
         timer = new Timer(5000, this);
         timer.setInitialDelay(0);
         timer.start();
-        pcmHandler.getMessagesBetweenTimes("abcd", "efgh");
     }
 
     public void addViews(MessengerView msgrView, MessagesView msgsView, VesselLocationView vsllocView){
@@ -65,17 +63,6 @@ public class Controller implements ActionListener {
         Date now = new Date();
         String strDate = sdfDate.format(now);
         return strDate;
-    }
-
-    public void vesselViewTester(){
-        vsllocModel.addInfo("Lindholmen", "1", "CONFIRMED");
-        vsllocModel.addInfo("Lindholmen", "1", "CONFIRMED");
-        vsllocModel.addInfo("Arendal", "7", "CONFIRMED");
-        vsllocModel.addInfo("Arendal", "1", "ESTIMATED");
-        vsllocModel.addInfo("Arendal", "2", "ESTIMATED");
-        vsllocModel.addInfo("Arendal", "3", "ESTIMATED");
-        vsllocModel.addInfo("Arendal", "4", "ESTIMATED");
-        vsllocModel.addInfo("EriksBerg", "1", "CONFIRMED");
     }
 
     public void vesselUpdateAction(){
