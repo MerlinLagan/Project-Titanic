@@ -3,6 +3,7 @@
  */
 
 import eu.portcdm.dto.LocationTimeSequence;
+import eu.portcdm.dto.ReferenceObject;
 import eu.portcdm.messaging.*;
 
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -65,48 +66,49 @@ public class PCMHandlerModel {
     }
 
 
-    //Från en lista med alla PCM sorterar ut de som har relevant service state och returnerar de
+    //Från en lista med alla PCM sorterar ut de som har relevant Service Object och returnerar de
     public List<PortCallMessage> filterOutRelaventPCM(List<PortCallMessage> messageList) {
         List<PortCallMessage> relevantPCM = new ArrayList<>();
         for (PortCallMessage portCallMessage : messageList) {
             ServiceState servState = portCallMessage.getServiceState();
+            LocationState locState = portCallMessage.getLocationState();
+
             try {
                 if(servState.getServiceObject().toString().equals("ARRIVAL_VTSAREA")){
-                    System.out.print("ARRIVAL_VTSAREA");
                     relevantPCM.add(portCallMessage);
                 }
                 else if(servState.getServiceObject().toString().equals("DEPARTURE_VTSAREA")){
-                    System.out.print("DEPARTURE_VTSAREA");
                     relevantPCM.add(portCallMessage);
                 }
                 else if(servState.getServiceObject().toString().equals("ARRIVAL_BERTH")){
-                    System.out.print("ARRIVAL_BERTH");
                     relevantPCM.add(portCallMessage);
                 }
                 else if(servState.getServiceObject().toString().equals("DEPARTURE_BERTH")){
-                    System.out.print("DEPARTURE_BERTH");
                     relevantPCM.add(portCallMessage);
                 }
                 else if(servState.getServiceObject().toString().equals("ARRIVAL_ANCHORING_OPERATION")){
-                    System.out.print("ARRIVAL_ANCHORING_OPERATION");
                     relevantPCM.add(portCallMessage);
                 }
                 else if(servState.getServiceObject().toString().equals("DEPARTURE_ANCHORING_OPERATION")){
-                    System.out.print("DEPARTURE_ANCHORING_OPERATION");
                     relevantPCM.add(portCallMessage);
                 }
                 else if(servState.getServiceObject().toString().equals("ANCHORING")){
-                    System.out.print("ANCHORING");
                     relevantPCM.add(portCallMessage);
                 }
                 else if(servState.getServiceObject().toString().equals("TOWAGE")){
-                    System.out.print("TOWAGE");
                     relevantPCM.add(portCallMessage);
                 }
                 else if(servState.getServiceObject().toString().equals("ESCORT_TOWAGE")){
-                    System.out.print("ESCORT_TOWAGE");
                     relevantPCM.add(portCallMessage);
                 }
+                /*else if(locState.getReferenceObject().equals("TUG")){
+                    System.out.print("TUG");
+                    relevantPCM.add(portCallMessage);
+                }
+                else if(locState.getReferenceObject().toString().equals("ESCORT_TUG")){
+                    System.out.print("ESCORT_TUG");
+                    relevantPCM.add(portCallMessage);
+                } */
             } catch(NullPointerException e){
             }
 
@@ -258,27 +260,24 @@ public class PCMHandlerModel {
         return string;
     }
 
-
-  /* public static void main(String[] args) {
+    // En main som testar filterOutRelevantPCM-metod genom att skapa en lista med pcm som har olika ServiceObjects som sedan körs metoden
+    public static void main(String[] args) {
        PCMHandlerModel pcmHandler = new PCMHandlerModel();
 
        List<PortCallMessage> listofPCM = new ArrayList<>();
 
        ServiceState servState = new ServiceState();
        ServiceState servState2 = new ServiceState();
+       // LocationState locState = new LocationState();
+
        ServiceObject servObj = ServiceObject.ARRIVAL_VTSAREA;
        ServiceObject servObj2 = ServiceObject.DEPARTURE_VTSAREA;
+       //LocationReferenceObject refObj = LocationReferenceObject.TUG; -- LYCKAS INTE FILTRERA PÅ DESSA
 
        PortCallMessage message1 = pcmHandler.senderModel.createMessage();
        servState.setServiceObject(servObj);
        message1.setServiceState(servState);
        listofPCM.add(message1);
-
-       PortCallMessage message4 = pcmHandler.senderModel.createMessage();
-       servState2.setServiceObject(servObj2);
-       message4.setServiceState(servState2);
-       listofPCM.add(message4);
-
 
        PortCallMessage message2 = pcmHandler.senderModel.createMessage();
        listofPCM.add(message2);
@@ -286,9 +285,17 @@ public class PCMHandlerModel {
        PortCallMessage message3 = pcmHandler.senderModel.createMessage();
        listofPCM.add(message3);
 
+       PortCallMessage message4 = pcmHandler.senderModel.createMessage();
+       servState2.setServiceObject(servObj2);
+       message4.setServiceState(servState2);
+       listofPCM.add(message4);
+
+       //PortCallMessage message5 = pcmHandler.senderModel.createMessage();
+        // locState.setReferenceObject(refObj);
+       //message5.setLocationState(locState);
+       // listofPCM.add(message5);
+
        pcmHandler.filterOutRelaventPCM(listofPCM);
-
-
    }
 
 
