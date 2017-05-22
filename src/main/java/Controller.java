@@ -101,6 +101,8 @@ public class Controller implements ActionListener {
         for (String str : pcmHandler.getPortCallMessagesAsStrings(pcmHandler.getPortCallMessages())) {
             logModel.addMessage(str);
         }
+        int[] currentPositionInfo = logModel.getMessagePositions();
+        msgsView.changePositionInfo(currentPositionInfo);
         vesselUpdateAction();
     }
 
@@ -171,10 +173,8 @@ public class Controller implements ActionListener {
             }
         }
         if (o == timer) {
-            logModel.addMessageTest();
-
-            int[] currentPositionInfo = logModel.getMessagePositions();
-            msgsView.changePositionInfo(currentPositionInfo);
+            //int[] currentPositionInfo = logModel.getMessagePositions();
+            //msgsView.changePositionInfo(currentPositionInfo);
         }
 
         if (o == msgsView.previousMessageButton) {
@@ -185,7 +185,7 @@ public class Controller implements ActionListener {
                 int[] currentPositionInfo = logModel.getMessagePositions();
                 msgsView.changePositionInfo(currentPositionInfo);
                 msgrView.enableSendButtons();
-                pcmHandler.setSelectedMessageIndex(logModel.getSelectedMessageIndex());
+                pcmHandler.setSelectedPCMIndex(logModel.getSelectedLogMessageIndex());
             }
             catch(Exception exception){
                 exception.printStackTrace();
@@ -204,7 +204,7 @@ public class Controller implements ActionListener {
                 int[] currentPositionInfo = logModel.getMessagePositions();
                 msgsView.changePositionInfo(currentPositionInfo);
                 msgrView.enableSendButtons();
-                pcmHandler.setSelectedMessageIndex(logModel.getSelectedMessageIndex());
+                pcmHandler.setSelectedPCMIndex(logModel.getSelectedLogMessageIndex());
             } catch (Exception exception) {
                 exception.printStackTrace();
             }

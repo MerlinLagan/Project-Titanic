@@ -36,9 +36,11 @@ public class MessagesView extends JFrame {
 
         // The content for the southPanel
         String newerMessages = "0";
-        previousMessageButton = new JButton("Previous Message");
+        previousMessageButton = new JButton("Previous Message (0)");
+        previousMessageButton.setEnabled(false);
         previousMessageButton.addActionListener(controller);
-        nextMessageButton = new JButton("Next Message");
+        nextMessageButton = new JButton("Next Message (0)");
+        nextMessageButton.setEnabled(false);
         nextMessageButton.addActionListener(controller);
         updateLogButton = new JButton ("Update Log");
         updateLogButton.addActionListener(controller);

@@ -4,31 +4,27 @@ public class LogModel {
 
     ArrayList<String> logMessages;
     ArrayList<Integer> answeredMessages;
-    int selectedMessageIndex;
+    int selectedLogMessageIndex;
 
     public LogModel(){
         logMessages = new ArrayList<String>();
-        selectedMessageIndex = 0;
+        selectedLogMessageIndex = 0;
         answeredMessages = new ArrayList<Integer>();
     }
 
     public void setCurrentMessageAsAnswered(){
-        answeredMessages.add(selectedMessageIndex);
+        answeredMessages.add(selectedLogMessageIndex);
     }
 
     public boolean isAnsweredTo(){
-        return answeredMessages.contains(selectedMessageIndex);
+        return answeredMessages.contains(selectedLogMessageIndex);
     }
 
     public int[] getMessagePositions(){
         int[] messagePositionInfo = new int[2];
         messagePositionInfo[0] = logMessages.size();
-        messagePositionInfo[1] = selectedMessageIndex;
+        messagePositionInfo[1] = selectedLogMessageIndex;
         return messagePositionInfo;
-    }
-
-    public void addMessageTest(){
-        addMessage("Meddelande" + (logMessages.size()));
     }
 
     public void addMessage(String str){
@@ -36,28 +32,25 @@ public class LogModel {
     }
 
     public void addInfoToCurrentMessage(String str){
-        logMessages.set(selectedMessageIndex, getLogMessage() + "\n \n " + str);
+        logMessages.set(selectedLogMessageIndex, getLogMessage() + "\n \n " + str);
     }
 
     public String getLogMessage(){
-        return logMessages.get(selectedMessageIndex);
+        return logMessages.get(selectedLogMessageIndex);
     }
 
     public String goToNextMessage(){
-        if (!(selectedMessageIndex == logMessages.size()-1)) {
-            selectedMessageIndex++;
-            System.out.println("Logmodel index increased to" + selectedMessageIndex);
-
-            return logMessages.get(selectedMessageIndex);
+        if (!(selectedLogMessageIndex == logMessages.size()-1)) {
+            selectedLogMessageIndex++;
+            return logMessages.get(selectedLogMessageIndex);
         }
         else throw new ArrayIndexOutOfBoundsException("end reached");
     }
 
     public String goToPreviousMessage(){
-        if (!(selectedMessageIndex == 0)) {
-            selectedMessageIndex--;
-            System.out.println("Logmodel index decreased to" + selectedMessageIndex);
-            return logMessages.get(selectedMessageIndex);
+        if (!(selectedLogMessageIndex == 0)) {
+            selectedLogMessageIndex--;
+            return logMessages.get(selectedLogMessageIndex);
         }
         else throw new ArrayIndexOutOfBoundsException("beginning reached");
     }
@@ -69,9 +62,9 @@ public class LogModel {
     public String getMessage(){
         return message;
     }
-    public int getSelectedMessageIndex(){
-        System.out.println("Logmodel index getted" + selectedMessageIndex);
-        return selectedMessageIndex;
+    public int getSelectedLogMessageIndex(){
+        System.out.println("Logmodel index getted" + selectedLogMessageIndex);
+        return selectedLogMessageIndex;
     }
 
     public String[] getLabels(){

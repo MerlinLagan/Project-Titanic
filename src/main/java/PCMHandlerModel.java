@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class PCMHandlerModel {
 
     List<PortCallMessage> messageList = new ArrayList<PortCallMessage>();
-    int selectedMessageIndex;
+    int selectedPCMIndex;
     PCMFetcherModel fetcherModel;
     PCMSenderModel senderModel;
 
@@ -27,13 +27,12 @@ public class PCMHandlerModel {
         this.senderModel = senderModel;
     }
 
-    public int getSelectedMessageIndex(){
-        return selectedMessageIndex;
+    public int getSelectedPCMIndex(){
+        return selectedPCMIndex;
     }
 
-    public void setSelectedMessageIndex(int index){
-        selectedMessageIndex = index;
-        System.out.println("Logmodel index " + selectedMessageIndex);
+    public void setSelectedPCMIndex(int index){
+        selectedPCMIndex = index;
     }
 
 
@@ -209,7 +208,6 @@ public class PCMHandlerModel {
         pcmHandler.sendMessage(message1);
 
         pcmHandler.getMessagesBetweenTimes("asd", "asd");
-        System.out.println(pcmHandler.messageList);
 
         for (PortCallMessage pcm : pcmHandler.messageList) {
             //System.out.println(pcm.getComment());
