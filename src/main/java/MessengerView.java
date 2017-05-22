@@ -67,6 +67,7 @@ public class MessengerView extends JFrame{
         newTemplateButton.addActionListener(controller);
         deleteMessageButton = new JButton("Delete Template");
         deleteMessageButton.addActionListener(controller);
+        deleteMessageButton.setEnabled(false);
 
         // Fills the southPanel with content and adds it to the frame
         southPanel.add(sendButton);

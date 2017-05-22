@@ -82,15 +82,20 @@ public class PCMHandlerModel {
     public List<String> getPortCallMessagesAsStrings(List<PortCallMessage> pcmList) {
         ArrayList<String> pcmStringList = new ArrayList<String>();
         for (PortCallMessage pcm : pcmList)
-            formatMessageForLog(pcm);
+            pcmStringList.add(formatMessageForLog(pcm));
         return pcmStringList;
     }
 
     public ArrayList<String> getVesselTravelInfo(PortCallMessage message) {
         ArrayList<String> vesselInfo = new ArrayList<>();
-        vesselInfo.add(message.getLocationState().getArrivalLocation().getTo().getLocationType().toString());
-        vesselInfo.add(message.getVesselId());
-        vesselInfo.add(message.getLocationState().getTimeType().toString());
+        try {
+            vesselInfo.add(message.getLocationState().getArrivalLocation().getTo().getLocationType().toString());
+            vesselInfo.add(message.getVesselId().toString());
+            vesselInfo.add(message.getLocationState().getTimeType().toString());
+        }
+        catch (Exception NullPointerException) {
+            System.out.println("tried to add vessel info but got nullpointer");
+        }
         return vesselInfo;
     }
 
@@ -110,9 +115,8 @@ public class PCMHandlerModel {
         senderModel.sendMessage(pcm);
     }
 
-    public List<PortCallMessage> getMessagesBetweenTimes(String startdate, String enddate) {
-        messageList = fetcherModel.fetchMessagesBetweenTimes("", "");
-        return messageList;
+    public void getMessagesBetweenTimes(String startdate, String enddate) {
+        this.messageList = fetcherModel.fetchMessagesBetweenTimes("", "");
     }
 
     public String formatMessageForLog(PortCallMessage pcm) {
@@ -129,7 +133,7 @@ public class PCMHandlerModel {
         message1.setComment("Oscar");
         pcmHandler.sendMessage(message1);
 
-        pcmHandler.messageList = pcmHandler.getMessagesBetweenTimes("asd", "asd");
+        pcmHandler.getMessagesBetweenTimes("asd", "asd");
         System.out.println(pcmHandler.messageList);
 
         for (PortCallMessage pcm : pcmHandler.messageList) {

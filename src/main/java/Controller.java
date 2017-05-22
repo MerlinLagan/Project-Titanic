@@ -11,7 +11,7 @@ import java.util.Date;
 
 public class Controller implements ActionListener {
 
-    MessagesHandlerModel msgsModel;
+    LogModel msgsModel;
     TemplatesHandlerModel tmpltsModel;
     MessengerView msgrView;
     MessagesView msgsView;
@@ -40,7 +40,7 @@ public class Controller implements ActionListener {
         this.vsllocView = vsllocView;
     }
 
-    public void addModels(TemplatesHandlerModel tmpltsModel, MessagesHandlerModel msgsModel,
+    public void addModels(TemplatesHandlerModel tmpltsModel, LogModel msgsModel,
                           PCMHandlerModel pcmHandler, VesselLocationModel vsllocModel){
         this.tmpltsModel = tmpltsModel;
         this.msgsModel = msgsModel;
@@ -78,24 +78,34 @@ public class Controller implements ActionListener {
         vsllocModel.addInfo("EriksBerg", "1", "CONFIRMED");
     }
 
+    public void vesselUpdateAction(){
+        for (ArrayList<String> vesselInfo : pcmHandler.getMultipleVesselsTravelinfo(pcmHandler.getPortCallMessages())) {
+            vsllocModel.addInfo(vesselInfo.get(0), vesselInfo.get(1), vesselInfo.get(2));
+            System.out.println(vesselInfo.get(0));
+            System.out.println(vesselInfo.get(1));
+            System.out.println(vesselInfo.get(2));
+        }
+    }
+
     public void updateFullVesselLocationView(){
         String overview = "";
         for (PolygonWithBoats polygon : vsllocModel.getPolygons()){
             overview = overview + "Polygon: " + polygon.getID().toString() + "\n " +
-                                  "Current Vessels: " + polygon.countConfirmedVessels() + "\n " +
-                                  "Estimated Vessels: " + polygon.countEstimatedVessels() + "\n " +
-                                  "\n " +
-                                  "\n ";
+                    "Current Vessels: " + polygon.countConfirmedVessels() + "\n " +
+                    "Estimated Vessels: " + polygon.countEstimatedVessels() + "\n " +
+                    "\n " +
+                    "\n ";
         }
         vsllocView.updateVesselLocs(overview);
     }
 
     public void applyNewMessages(){
-        for (String str : pcmHandler.getPortCallMessagesAsStrings(pcmHandler.getMessagesBetweenTimes("ad", "asd"))) {
+        for (String str : pcmHandler.getPortCallMessagesAsStrings(pcmHandler.getPortCallMessages())) {
+            System.out.println(str);
             msgsModel.addMessage(str);
+            System.out.println("applyNewMessages>tried to addmsg to msgsmodel");
         }
-        for (ArrayList<String> vesselInfo : pcmHandler.getMultipleVesselsTravelinfo(pcmHandler.getMessagesBetweenTimes("ad", "asd")))
-        vsllocModel.addInfo(vesselInfo.get(0), vesselInfo.get(1), vesselInfo.get(2));
+        //vesselUpdateAction();
     }
 
     public void templateChanged(){
@@ -113,7 +123,6 @@ public class Controller implements ActionListener {
         if (templateKey.equals("")){
         }
     }
-
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -146,9 +155,7 @@ public class Controller implements ActionListener {
             msgsModel.setCurrentMessageAsAnswered();
             msgrView.disableSendButtons();
         }
-
         if(o == msgrView.newTemplateButton) {
-
             msgrView.createTemplateName();
             String templateKey = msgrView.getLastCreatedTemplateName();
             String templateValue = msgrView.getMessageBoxText();
@@ -214,8 +221,9 @@ public class Controller implements ActionListener {
         }
         if (o == msgsView.updateLogButton) {
             try {
-                getMessages();
-
+                System.out.println("updatelogbutton pressed");
+                pcmHandler.getMessagesBetweenTimes("asd", "asd");
+                applyNewMessages();
             } catch (Exception exception) {
                 exception.printStackTrace();
             }

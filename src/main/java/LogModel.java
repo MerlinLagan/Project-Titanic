@@ -1,12 +1,12 @@
 import java.util.ArrayList;
 
-public class MessagesHandlerModel {
+public class LogModel {
 
     ArrayList<String> logMessages;
     ArrayList<Integer> answeredMessages;
     int currentMessageNumber;
 
-    public MessagesHandlerModel(){
+    public LogModel(){
         logMessages = new ArrayList<String>();
         currentMessageNumber = 0;
         answeredMessages = new ArrayList<Integer>();

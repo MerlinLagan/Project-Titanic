@@ -12,7 +12,7 @@
 public class Main {
     public static void main(String[] args) {
 
-                MessagesHandlerModel msgsModel = new MessagesHandlerModel();
+                LogModel msgsModel = new LogModel();
                 TemplatesHandlerModel msgrModel = new TemplatesHandlerModel();
                 PCMFetcherModel pcmFetcher = new PCMFetcherModel("virtualbox");
                 PCMSenderModel pcmSender = new PCMSenderModel("virtualbox");
