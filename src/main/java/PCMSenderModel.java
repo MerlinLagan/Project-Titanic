@@ -5,6 +5,7 @@ import eu.portcdm.messaging.*;
 import se.viktoria.stm.portcdm.connector.common.util.PortCallMessageBuilder;
 import se.viktoria.stm.portcdm.connector.common.util.StateWrapper;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -53,19 +54,19 @@ public class PCMSenderModel {
 
 
     public PortCallMessage createNewMessage(ServiceObject serviceObject, ServiceTimeSequence serviceTimeSequence,
-                                            LogicalLocation atLocationType, String localPCID, String localJID,
-                                            String time, TimeType timeType, String vesselID, String reportedAt,
+                                            String performingActor, String localPCID, String localJID,
+                                            LocalDateTime time, TimeType timeType, String vesselID, LocalDateTime reportedAt,
                                             String reportedBy, String groupWith, String comment) {
 
         StateWrapper stateWrapper = new StateWrapper(
                 serviceObject, //referenceObject
                 serviceTimeSequence,
-                atLocationType);
+                performingActor);
 
         PortCallMessage portCallMessage = PortCallMessageBuilder.build(
                 localPCID, //localPortCallId
                 localJID, //localJobId
-                stateWrapper, //StateWrapper created above
+                stateWrapper.getServiceState(),
                 time, //Message's time
                 timeType, //Message's timeType
                 vesselID, //vesselId
@@ -77,6 +78,7 @@ public class PCMSenderModel {
         return portCallMessage;
     }
 
+    /*
     public PortCallMessage getExampleMessage() {
         StateWrapper stateWrapper = new StateWrapper(
                 ServiceObject.DEPARTURE_PORTAREA, //referenceObjec
@@ -98,6 +100,7 @@ public class PCMSenderModel {
         );
         return portCallMessage;
     }
+    */
 
     public void sendMessage(PortCallMessage message){
         try {

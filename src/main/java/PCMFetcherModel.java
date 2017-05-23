@@ -51,7 +51,7 @@ public class PCMFetcherModel {
         return stateUpdateApi;
     }
 
-    public List<PortCallMessage> fetchMessagesBetweenTimes(String startdate, String enddate) {
+    public List<PortCallMessage> fetchMessagesBetweenTimes(XMLGregorianCalendar startdate, XMLGregorianCalendar enddate) {
         TimeStampHelper timeStampHelper = new TimeStampHelper();
         try {
             return stateUpdateApi.getMessagesBetween(startdate, enddate, userID, userPW, apiKey);

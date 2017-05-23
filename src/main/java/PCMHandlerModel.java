@@ -3,11 +3,16 @@
  */
 
 import eu.portcdm.dto.LocationTimeSequence;
+import eu.portcdm.dto.LocationType;
 import eu.portcdm.messaging.*;
 
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.TimeZone;
 
 public class PCMHandlerModel {
 
@@ -58,6 +63,7 @@ public class PCMHandlerModel {
     }
     */
 
+/*
     public boolean respondToMessage(String text) {
         TimeStampHelper timeStampHelper = new TimeStampHelper();
         PortCallMessage message = messageList.get(selectedPCMIndex);
@@ -71,37 +77,35 @@ public class PCMHandlerModel {
         }
         return false;
     }
+    */
 
     public boolean respondToMessageWithStatement(String text, ServiceTimeSequence serviceTimeSequence) {
         System.out.println(text);
         TimeStampHelper timeStampHelper = new TimeStampHelper();
         PortCallMessage currentMessage = messageList.get(selectedPCMIndex);
         ServiceObject serviceObject = currentMessage.getServiceState().getServiceObject();
-
-        LogicalLocation atLocationType = null;
-        try {
-            atLocationType = currentMessage.getServiceState().getAt().getLocationType();
-        } catch (Exception röv) {
-            atLocationType = currentMessage.getServiceState().getBetween().getTo().getLocationType();
-        }
-
-        String localPCID  = null; String localJID = null; String time = null;  TimeType timeType = null; String vesselID = null; String reportedAt = null; String reportedBy = null;
+        LocalDateTime time = LocalDateTime.now(Clock.systemUTC());
+        String localPCID = currentMessage.getLocalPortCallId();
+        String localJID = currentMessage.getLocalJobId();
+        String vesselID = currentMessage.getVesselId();
+        TimeType timeType = currentMessage.getServiceState().getTimeType();
+        String reportedBy = "VTS";
+        LocalDateTime reportedAt = LocalDateTime.now(Clock.systemUTC());
         String groupWith = null; String comment = null;
+        String performingActor = currentMessage.getVesselId();
 
-
+        try { performingActor = currentMessage.getReportedBy();} catch (Exception nullPointerException){}
         try { localPCID = currentMessage.getLocalPortCallId();} catch (Exception nullPointerException){}
         try { localJID = currentMessage.getLocalJobId();} catch (Exception nullPointerException){}
-        try { time = TimeStampHelper.getCurrentTimeStamp();} catch (Exception nullPointerException){}
         try { timeType = currentMessage.getServiceState().getTimeType();} catch (Exception nullPointerException){}
         try { vesselID = currentMessage.getVesselId();} catch (Exception nullPointerException){}
-        try { reportedAt = timeStampHelper.getCurrentTimeStamp();} catch (Exception nullPointerException){}
         try { reportedBy = "VTS";} catch (Exception nullPointerException){}
         try { groupWith = currentMessage.getGroupWith();} catch (Exception nullPointerException){}
         try { comment = text;} catch (Exception nullPointerException){}
 
         System.out.println(serviceObject);
 
-        PortCallMessage newMessage = senderModel.createNewMessage(serviceObject, serviceTimeSequence, atLocationType, /*, toLocation, toLat,
+        PortCallMessage newMessage = senderModel.createNewMessage(serviceObject, serviceTimeSequence, performingActor, /*, toLocation, toLat,
                     toLong, toName, fromLocation, fromLat, fromLong, fromName*/ localPCID, localJID, time,
                 timeType, vesselID, reportedAt, reportedBy, groupWith, comment);
 
@@ -280,17 +284,14 @@ public class PCMHandlerModel {
 
     public String formatMessageForLog(PortCallMessage portCallMessage) {
 
-        XMLGregorianCalendar time = portCallMessage.getReportedAt();
-        Integer intYear = time.getYear();
-        String strYear = intYear.toString();
-        Integer intMonth = time.getMonth();
-        String strMonth = intMonth.toString();
-        Integer intDay = time.getDay();
-        String strDay = intDay.toString();
-        Integer intHour = time.getHour();
-        String strHour = intHour.toString();
-        Integer intSec = time.getSecond();
-        String strSec = intSec.toString();
+        LocalDateTime time = portCallMessage.getReportedAt();
+        String year = Integer.toString(time.getYear());
+        String month = Integer.toString(time.getMonthValue());
+        String day = Integer.toString(time.getDayOfMonth());
+        String hour = Integer.toString(time.getHour());
+        String minutes = Integer.toString(time.getMinute());
+        String sec = Integer.toString(time.getSecond());
+
         String timeType = "null", timeSequence = "null", serviceObj = "null";
 
         ServiceState servState = portCallMessage.getServiceState();
@@ -316,7 +317,7 @@ public class PCMHandlerModel {
                 "Regarding Vessel ID: " + portCallMessage.getVesselId() + "\n" +
                 "Port Call ID: " + portCallMessage.getPortCallId() + "\n" +
                 "Message ID: " + portCallMessage.getMessageId() + "\n" +
-                "Reported at: " + strYear + "-" + strMonth + "-" + strDay + " " + strHour + ":" + strSec + "\n" +
+                "Reported at: " + year + "-" + month + "-" + day + " " + hour + ":" + minutes +":"+ sec + "\n" +
                 "\n" +
                 "Time Type: " + timeType + "\n" +
                 "Time Sequence: "+ timeSequence +  "\n" +
