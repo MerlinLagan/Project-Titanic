@@ -2,6 +2,8 @@ import eu.portcdm.client.ApiClient;
 import eu.portcdm.client.ApiException;
 import eu.portcdm.client.service.StateupdateApi;
 import eu.portcdm.messaging.PortCallMessage;
+
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.List;
 
 
@@ -50,8 +52,9 @@ public class PCMFetcherModel {
     }
 
     public List<PortCallMessage> fetchMessagesBetweenTimes(String startdate, String enddate) {
+        TimeStampHelper timeStampHelper = new TimeStampHelper();
         try {
-            return stateUpdateApi.getMessagesBetween(startdate, enddate);
+            return stateUpdateApi.getMessagesBetween(startdate, enddate, userID, userPW, apiKey);
         } catch (ApiException e) {
             e.printStackTrace();
         }

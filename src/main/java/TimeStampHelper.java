@@ -13,6 +13,8 @@ import javax.xml.datatype.DatatypeConfigurationException;
  */
 public class TimeStampHelper {
 
+
+
     public static String getCurrentTimeStamp() {
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         sdfDate.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -21,7 +23,7 @@ public class TimeStampHelper {
         return strDate;
     }
 
-    public XMLGregorianCalendar getTimeGregorian() {
+    public static XMLGregorianCalendar getTimeGregorian() {
         XMLGregorianCalendar gregFmt = null;
         try {
             gregFmt = DatatypeFactory.newInstance().newXMLGregorianCalendar(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date()));

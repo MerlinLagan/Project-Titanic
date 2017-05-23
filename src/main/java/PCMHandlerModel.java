@@ -101,15 +101,13 @@ public class PCMHandlerModel {
 
         System.out.println(serviceObject);
 
-            PortCallMessage newMessage = senderModel.createNewMessage(serviceObject, serviceTimeSequence, atLocationType, /*, toLocation, toLat,
+        PortCallMessage newMessage = senderModel.createNewMessage(serviceObject, serviceTimeSequence, atLocationType, /*, toLocation, toLat,
                     toLong, toName, fromLocation, fromLat, fromLong, fromName*/ localPCID, localJID, time,
-                    timeType, vesselID, reportedAt, reportedBy, groupWith, comment);
+                timeType, vesselID, reportedAt, reportedBy, groupWith, comment);
 
-        newMessage.setMessageId(null);
-        newMessage.setReportedBy(reportedBy);
         System.out.println("text ="+ text + "=");
-        if (!(text.equals("")))
-             newMessage.setComment(text);
+        //  if (!(text.equals("")))
+        //       newMessage.setComment(text);
         //senderModel.sendMessage(senderModel.getExampleMessage());
         senderModel.sendMessage(newMessage);
         System.out.println("did sendMessage");
@@ -266,9 +264,6 @@ public class PCMHandlerModel {
         return travelInfoList;
     }
 
-    private PortCallMessage createGenericMessage(LocationTimeSequence locationTimeSequence, LogicalLocation logicalLocation) {
-        return senderModel.createGenericMessage(locationTimeSequence, logicalLocation);
-    }
 
     public void getMessagesBetweenTimes(String startdate, String enddate) {
         latestFetchBatch = new ArrayList<PortCallMessage>();
@@ -335,40 +330,7 @@ public class PCMHandlerModel {
 
     // En main som testar getRelevantPCMs-metod genom att skapa en lista med pcm som har olika ServiceObjects som sedan körs metoden
     public static void main(String[] args) {
-        PCMHandlerModel pcmHandler = new PCMHandlerModel();
 
-        List<PortCallMessage> listofPCM = new ArrayList<>();
-
-        ServiceState servState = new ServiceState();
-        ServiceState servState2 = new ServiceState();
-        // LocationState locState = new LocationState();
-
-        ServiceObject servObj = ServiceObject.ARRIVAL_VTSAREA;
-        ServiceObject servObj2 = ServiceObject.DEPARTURE_VTSAREA;
-        //LocationReferenceObject refObj = LocationReferenceObject.TUG; -- LYCKAS INTE FILTRERA PÅ DESSA
-
-        PortCallMessage message1 = pcmHandler.senderModel.createMessage();
-        servState.setServiceObject(servObj);
-        message1.setServiceState(servState);
-        listofPCM.add(message1);
-
-        PortCallMessage message2 = pcmHandler.senderModel.createMessage();
-        listofPCM.add(message2);
-
-        PortCallMessage message3 = pcmHandler.senderModel.createMessage();
-        listofPCM.add(message3);
-
-        PortCallMessage message4 = pcmHandler.senderModel.createMessage();
-        servState2.setServiceObject(servObj2);
-        message4.setServiceState(servState2);
-        listofPCM.add(message4);
-
-        PortCallMessage message5 = pcmHandler.senderModel.createMessage();
-        // locState.setReferenceObject(refObj);
-        // message5.setLocationState(locState);
-        // listofPCM.add(message5);
-
-        pcmHandler.getRelevantPCMs(listofPCM);
     }
 
 
