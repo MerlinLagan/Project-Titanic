@@ -51,15 +51,17 @@ public class Controller implements ActionListener {
         this.pcmHandler = pcmHandler;
         this.vsllocModel = vsllocModel;
     }
-
-    String newTime = "2016-01-01T00:00:01Z";
-    String oldTime;
     TimeStampHelper timeStampHelper = new TimeStampHelper();
+    String newTime = "2017-04-14T00:00:01Z";
+    String oldTime;
+
 
     public void getNewMessages(){
         this.oldTime = newTime;
         this.newTime = TimeStampHelper.getCurrentTimeStamp();
         pcmHandler.getMessagesBetweenTimes(oldTime, newTime);
+        System.out.println(newTime);
+        System.out.println(pcmHandler.getLatestFetchBatch());
     }
 
 

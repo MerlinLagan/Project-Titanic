@@ -7,6 +7,7 @@ import java.awt.*;
 public class VesselLocationView extends JFrame {
 
     JTextArea vesselLocationArea;
+    JScrollPane jps;
 
     VesselLocationView(Controller controller) {
 
@@ -14,20 +15,23 @@ public class VesselLocationView extends JFrame {
 
         JPanel centerPanel = new JPanel(new GridLayout());
 
+
         // The content for the centerPanel
         vesselLocationArea = new JTextArea("");
         vesselLocationArea.setEditable(false);
         vesselLocationArea.setBackground(Color.WHITE);
         vesselLocationArea.setSize(15, this.getWidth());
 
-        // Fills the centerPanel with content and adds it to the frame
-        centerPanel.add(vesselLocationArea);
+        JScrollPane jps = new JScrollPane(vesselLocationArea);
+
+        centerPanel.add(jps);
         add(centerPanel, BorderLayout.CENTER);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(600, 600);
         setVisible(false);
     }
+
     public void updateVesselLocs(String str){
         vesselLocationArea.setText(str);
     }

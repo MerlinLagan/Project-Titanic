@@ -3,6 +3,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Calendar;
+import java.util.TimeZone;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.DatatypeConfigurationException;
 
@@ -12,9 +13,9 @@ import javax.xml.datatype.DatatypeConfigurationException;
  */
 public class TimeStampHelper {
 
-
     public static String getCurrentTimeStamp() {
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        sdfDate.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date now = new Date();
         String strDate = sdfDate.format(now);
         return strDate;

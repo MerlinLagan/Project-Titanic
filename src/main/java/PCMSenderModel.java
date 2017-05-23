@@ -51,22 +51,15 @@ public class PCMSenderModel {
         return stateUpdateApi;
     }
 
-    public PortCallMessage createNewMessage(LocationTimeSequence locationTimeSequence, LogicalLocation logicalLocation, double reqLat,
-                                             double reqLong, String reqName, LogicalLocation logicalOptionalLocation, double reqOptLat,
-                                             double reqOptLong, String reqOptName, String localPCID, String localJID, String time, TimeType
+    public PortCallMessage createNewMessage(ServiceObject serviceObject, ServiceTimeSequence serviceTimeSequence, LogicalLocation atLocationType,/* LogicalLocation logicalLocation, double toLat,
+                                             double toLong, String name, LogicalLocation fromLocation, double fromLat,
+                                             double fromLong, String fromName,*/ String localPCID, String localJID, String time, TimeType
                                                      timeType, String vesselID, String reportedAt, String reportedBy, String groupWith, String comment) {
         StateWrapper stateWrapper = new StateWrapper(
-                LocationReferenceObject.VESSEL, //referenceObject
-                locationTimeSequence, //ARRIVAL_TO or DEPARTURE_FROM
-                logicalLocation, //Type of required location
-                reqLat, //Latitude of required location
-                reqLong, //Longitude of required location
-                reqName, //Name of required location
-                logicalOptionalLocation, //Type of optional location
-                reqOptLat, //Latitude of optional location
-                reqOptLong, //Longitude of optional location
-                reqOptName);//Name of optional location
-        //Change dates from 2017-03-23 06:40:00 to 2017-03-23T06:40:00Z
+                serviceObject, //referenceObject
+                serviceTimeSequence,
+                atLocationType);
+
         PortCallMessage portCallMessage = PortCallMessageBuilder.build(
                 localPCID, //localPortCallId
                 localJID, //localJobId
@@ -80,7 +73,6 @@ public class PCMSenderModel {
                 comment //comment (optional)
         );
         return portCallMessage;
-
     }
 
     public void sendMessage(PortCallMessage message){
@@ -92,6 +84,28 @@ public class PCMSenderModel {
     }
 
     public PortCallMessage getExampleMessage() {
+        StateWrapper stateWrapper = new StateWrapper(
+                ServiceObject.DEPARTURE_PORTAREA, //referenceObjec
+                ServiceTimeSequence.REQUESTED, //ARRIVAL_TO or DEPARTURE_FROM
+                LogicalLocation.BERTH
+        );
+        //Change dates from 2017-03-23 06:40:00 to 2017-03-23T06:40:00Z
+        PortCallMessage portCallMessage = PortCallMessageBuilder.build(
+                "urn:x-mrn:stm:portcdm:local_port_call:SEGOT:DHC:52724", //localPortCallId
+                "urn:x-mrn:stm:portcdm:local_job:FENIX_SMA:990198126", //localJobId
+                stateWrapper, //StateWrapper created above
+                TimeStampHelper.getCurrentTimeStamp(), //Message's time
+                TimeType.ESTIMATED, //Message's timeType
+                "urn:x-mrn:stm:vessel:IMO:9259501", //vesselId
+                null, //reportedAt (optional)
+                "Viktoria", //reportedBy (optional)
+                "urn:x-mrn:stm:portcdm:message:5eadbb1c-6be7-4cf2-bd6d-f0af5a0c35dc", //groupWith (optional), messageId of the message to group with.
+                "exampletest" //comment (optional)
+        );
+        return portCallMessage;
+    }
+
+    public PortCallMessage getExampleMessageBackup() {
         StateWrapper stateWrapper = new StateWrapper(
                 LocationReferenceObject.VESSEL, //referenceObject
                 LocationTimeSequence.ARRIVAL_TO, //ARRIVAL_TO or DEPARTURE_FROM
@@ -108,10 +122,10 @@ public class PCMSenderModel {
                 "urn:x-mrn:stm:portcdm:local_port_call:SEGOT:DHC:52724", //localPortCallId
                 "urn:x-mrn:stm:portcdm:local_job:FENIX_SMA:990198126", //localJobId
                 stateWrapper, //StateWrapper created above
-                "2017-01-01T00:00:06Z", //Message's time
+                TimeStampHelper.getCurrentTimeStamp(), //Message's time
                 TimeType.ESTIMATED, //Message's timeType
                 "urn:x-mrn:stm:vessel:IMO:9259501", //vesselId
-                "2017-01-01T00:00:05Z", //reportedAt (optional)
+                TimeStampHelper.getCurrentTimeStamp(), //reportedAt (optional)
                 "Viktoria", //reportedBy (optional)
                 "urn:x-mrn:stm:portcdm:message:5eadbb1c-6be7-4cf2-bd6d-f0af5a0c35dc", //groupWith (optional), messageId of the message to group with.
                 "exampletest" //comment (optional)

@@ -36,7 +36,7 @@ public class PCMHandlerModel {
         selectedPCMIndex = index;
     }
 
-
+/*
    // Skapar och svarar på ett meddelande utifrån ett föregående meddelande
     public boolean respondToMessageWithStatement(String text, ServiceTimeSequence serviceTimeSequence) {
         TimeStampHelper timeStampHelper = new TimeStampHelper();
@@ -56,6 +56,7 @@ public class PCMHandlerModel {
             return true;
         }
     }
+    */
 
     public boolean respondToMessage(String text) {
         TimeStampHelper timeStampHelper = new TimeStampHelper();
@@ -70,29 +71,50 @@ public class PCMHandlerModel {
         }
         return false;
     }
-/*
-  public boolean respondToMessageWithStatement(String text, ServiceTimeSequence serviceTimeSequence) {
-      TimeStampHelper timeStampHelper = new TimeStampHelper();
-      PortCallMessage currentMessage = messageList.get(selectedPCMIndex);
-      PortCallMessage newMessage = senderModel.createNewMessage( currentMessage.getLocationState().get,currentMessage.getLocationState().getArrivalLocation().getTo().getLocationType(),
-              currentMessage.getLocationState().getArrivalLocation().getTo().getPosition().getLatitude(),
-              currentMessage.getLocationState().getArrivalLocation().getTo().getPosition().getLongitude(),currentMessage.getLocationState().getArrivalLocation().getTo().getName(),
-              currentMessage.getLocationState().getDepartureLocation().getFrom().getLocationType(), currentMessage.getLocationState().getDepartureLocation().getFrom().getPosition().getLatitude(),
-                currentMessage.getLocationState().getDepartureLocation().getFrom().getPosition().getLongitude(), currentMessage.getLocationState().getDepartureLocation().getFrom().getName(),
-              currentMessage.getLocalPortCallId(), currentMessage.getLocalPortCallId(), TimeStampHelper.getCurrentTimeStamp(), currentMessage.getServiceState().getTimeType(),
-              currentMessage.getVesselId(), TimeStampHelper.getCurrentTimeStamp(), "VTS", currentMessage.getGroupWith(), text);
-      //message.setMessageId(null);
-      //newMessage.setReportedBy("VTS");
-      newMessage.getServiceState().setTimeSequence(serviceTimeSequence);
-      newMessage.setReportedAt(timeStampHelper.getTimeGregorian());
-      if (text == null) {
-          newMessage.setComment(text);
-      }
-      else
-          newMessage.setComment(text);
-      senderModel.sendMessage(newMessage);
-      return true;
-  }
+
+    public boolean respondToMessageWithStatement(String text, ServiceTimeSequence serviceTimeSequence) {
+        TimeStampHelper timeStampHelper = new TimeStampHelper();
+        PortCallMessage currentMessage = messageList.get(selectedPCMIndex);
+        ServiceObject serviceObject = currentMessage.getServiceState().getServiceObject();
+
+        LogicalLocation atLocationType = null;
+        try {
+            atLocationType = currentMessage.getServiceState().getAt().getLocationType();
+        } catch (Exception röv) {
+            atLocationType = currentMessage.getServiceState().getBetween().getTo().getLocationType();
+        }
+
+        String localPCID  = null; String localJID = null; String time = null;  TimeType timeType = null; String vesselID = null; String reportedAt = null; String reportedBy = null;
+        String groupWith = null; String comment = null;
+
+
+        try { localPCID = currentMessage.getLocalPortCallId();} catch (Exception nullPointerException){}
+        try { localJID = currentMessage.getLocalJobId();} catch (Exception nullPointerException){}
+        try { time = TimeStampHelper.getCurrentTimeStamp();} catch (Exception nullPointerException){}
+        try { timeType = currentMessage.getServiceState().getTimeType();} catch (Exception nullPointerException){}
+        try { vesselID = currentMessage.getVesselId();} catch (Exception nullPointerException){}
+        try { reportedAt = timeStampHelper.getCurrentTimeStamp();} catch (Exception nullPointerException){}
+        try { reportedBy = "VTS";} catch (Exception nullPointerException){}
+        try { groupWith = currentMessage.getGroupWith();} catch (Exception nullPointerException){}
+        try { comment = text;} catch (Exception nullPointerException){}
+
+        System.out.println(serviceObject);
+
+            PortCallMessage newMessage = senderModel.createNewMessage(serviceObject, serviceTimeSequence, atLocationType, /*, toLocation, toLat,
+                    toLong, toName, fromLocation, fromLat, fromLong, fromName*/ localPCID, localJID, time,
+                    timeType, vesselID, reportedAt, reportedBy, groupWith, comment);
+
+        newMessage.setMessageId(null);
+        newMessage.setReportedBy(reportedBy);
+        System.out.println("text ="+"=");
+        if (!(text.equals("")))
+             newMessage.setComment(text);
+        senderModel.sendMessage(senderModel.getExampleMessage());
+        System.out.println("did sendMessage");
+        return true;
+    }
+
+  /*
 
     public boolean respondToMessage(String text) {
         TimeStampHelper timeStampHelper = new TimeStampHelper();
@@ -122,7 +144,8 @@ public class PCMHandlerModel {
     }
 
     public boolean isRelevant(PortCallMessage portCallMessage) {
-
+        if (true)
+            return true;
         ServiceState servState = portCallMessage.getServiceState();
         LocationState locState = portCallMessage.getLocationState();
 
@@ -146,14 +169,17 @@ public class PCMHandlerModel {
             } else if (servState.getServiceObject().toString().equals("ESCORT_TOWAGE")) {
                 return true;
             }
-                /*else if(locState.getReferenceObject().equals("TUG")){
+            /*
+                else if(locState.getReferenceObject().equals("TUG")){
                     System.out.print("TUG");
                     relevantPCM.add(portCallMessage);
                 }
                 else if(locState.getReferenceObject().toString().equals("ESCORT_TUG")){
+                    LocationReferenceObject.ESCORT_TUG;
                     System.out.print("ESCORT_TUG");
                     relevantPCM.add(portCallMessage);
-                } */
+                }
+                */
         } catch (NullPointerException e) {
         }
         return false;
@@ -201,7 +227,7 @@ public class PCMHandlerModel {
         String timeType;
         try {
             //timetypes: ACTUAL, CANCELLED, ESTIMATED, RECOMMENDED, TARGET
-            location = message.getLocationState().getArrivalLocation().getTo().getLocationType().toString();
+            location = message.getLocationState().getArrivalLocation().getTo().getName();
             vesselID = message.getVesselId().toString();
             timeType = message.getLocationState().getTimeType().value();
 
@@ -335,9 +361,9 @@ public class PCMHandlerModel {
         message4.setServiceState(servState2);
         listofPCM.add(message4);
 
-        //PortCallMessage message5 = pcmHandler.senderModel.createMessage();
+        PortCallMessage message5 = pcmHandler.senderModel.createMessage();
         // locState.setReferenceObject(refObj);
-        //message5.setLocationState(locState);
+        // message5.setLocationState(locState);
         // listofPCM.add(message5);
 
         pcmHandler.getRelevantPCMs(listofPCM);
@@ -362,5 +388,4 @@ public class PCMHandlerModel {
         //checkComment(pcmHandler.messageList);
     }
     */
-
 }
