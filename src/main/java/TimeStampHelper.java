@@ -15,7 +15,7 @@ public class TimeStampHelper {
 
 
 
-    public static String getCurrentTimeStamp() {
+   static public String getCurrentTimeStamp() {
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         sdfDate.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date now = new Date();
@@ -23,7 +23,7 @@ public class TimeStampHelper {
         return strDate;
     }
 
-    public static XMLGregorianCalendar getTimeGregorian() {
+    static public XMLGregorianCalendar getTimeGregorian() {
         XMLGregorianCalendar gregFmt = null;
         try {
             gregFmt = DatatypeFactory.newInstance().newXMLGregorianCalendar(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date()));

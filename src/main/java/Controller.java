@@ -120,7 +120,7 @@ public class Controller implements ActionListener {
 
         if(o == msgrView.sendButton) {
             logModel.applyLabelsToMessage(msgrView.tThree.getText(), msgrView.getLabels());
-            pcmHandler.respondToMessage(logModel.getMessage());
+            // pcmHandler.respondToMessage(logModel.getMessage());
             msgsView.append(logModel.getMessage());
             logModel.setCurrentMessageAsAnswered();
             msgrView.disableSendButtons();

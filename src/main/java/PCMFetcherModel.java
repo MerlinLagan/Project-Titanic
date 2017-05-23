@@ -54,7 +54,11 @@ public class PCMFetcherModel {
     public List<PortCallMessage> fetchMessagesBetweenTimes(String startdate, String enddate) {
         TimeStampHelper timeStampHelper = new TimeStampHelper();
         try {
-            return stateUpdateApi.getMessagesBetween(startdate, enddate, userID, userPW, apiKey);
+            //String str = stateUpdateApi.createQueue(userID, userPW, apiKey);
+           // System.out.println(str);
+            //return stateUpdateApi.getMessagesBetween(startdate, enddate, userID, userPW, apiKey);
+            return stateUpdateApi.getPortCallMessages(userID, userPW, apiKey, 1);
+
         } catch (ApiException e) {
             e.printStackTrace();
         }

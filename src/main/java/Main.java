@@ -14,8 +14,8 @@ public class Main {
 
                 LogModel msgsModel = new LogModel();
                 TemplatesHandlerModel msgrModel = new TemplatesHandlerModel();
-                PCMFetcherModel pcmFetcher = new PCMFetcherModel("sandbox");
-                PCMSenderModel pcmSender = new PCMSenderModel("sandbox");
+                PCMFetcherModel pcmFetcher = new PCMFetcherModel("virtualbox");
+                PCMSenderModel pcmSender = new PCMSenderModel("virtualbox");
                 PCMHandlerModel pcmHandler = new PCMHandlerModel(pcmFetcher, pcmSender);
                 VesselLocationModel vsllocModel = new VesselLocationModel();
 
