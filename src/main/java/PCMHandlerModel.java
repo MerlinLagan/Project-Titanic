@@ -28,16 +28,16 @@ public class PCMHandlerModel {
         this.senderModel = senderModel;
     }
 
-    public int getSelectedPCMIndex() {
+    public int getSelectedPCMIndex(){
         return selectedPCMIndex;
     }
 
-    public void setSelectedPCMIndex(int index) {
+    public void setSelectedPCMIndex(int index){
         selectedPCMIndex = index;
     }
 
 
-    // Skapar och svarar på ett meddelande utifrån ett föregående meddelande
+   // Skapar och svarar på ett meddelande utifrån ett föregående meddelande
     public boolean respondToMessageWithStatement(String text, ServiceTimeSequence serviceTimeSequence) {
         TimeStampHelper timeStampHelper = new TimeStampHelper();
         PortCallMessage message = messageList.get(selectedPCMIndex);
@@ -47,11 +47,52 @@ public class PCMHandlerModel {
         message.setReportedAt(timeStampHelper.getTimeGregorian());
         if (text == null) {
             message.setComment(text);
-        } else
+            senderModel.sendMessage(message);
+            return true;
+        }
+            else {
             message.setComment(text);
-        senderModel.sendMessage(message);
-        return true;
+            senderModel.sendMessage(message);
+            return true;
+        }
     }
+
+    public boolean respondToMessage(String text) {
+        TimeStampHelper timeStampHelper = new TimeStampHelper();
+        PortCallMessage message = messageList.get(selectedPCMIndex);
+        //message.setMessageId(null);
+        message.setReportedBy("VTS");
+        message.setReportedAt(timeStampHelper.getTimeGregorian());
+        if (!(text == null)) {
+            message.setComment(text);
+            senderModel.sendMessage(message);
+            return true;
+        }
+        return false;
+    }
+/*
+  public boolean respondToMessageWithStatement(String text, ServiceTimeSequence serviceTimeSequence) {
+      TimeStampHelper timeStampHelper = new TimeStampHelper();
+      PortCallMessage currentMessage = messageList.get(selectedPCMIndex);
+      PortCallMessage newMessage = senderModel.createNewMessage( currentMessage.getLocationState().get,currentMessage.getLocationState().getArrivalLocation().getTo().getLocationType(),
+              currentMessage.getLocationState().getArrivalLocation().getTo().getPosition().getLatitude(),
+              currentMessage.getLocationState().getArrivalLocation().getTo().getPosition().getLongitude(),currentMessage.getLocationState().getArrivalLocation().getTo().getName(),
+              currentMessage.getLocationState().getDepartureLocation().getFrom().getLocationType(), currentMessage.getLocationState().getDepartureLocation().getFrom().getPosition().getLatitude(),
+                currentMessage.getLocationState().getDepartureLocation().getFrom().getPosition().getLongitude(), currentMessage.getLocationState().getDepartureLocation().getFrom().getName(),
+              currentMessage.getLocalPortCallId(), currentMessage.getLocalPortCallId(), TimeStampHelper.getCurrentTimeStamp(), currentMessage.getServiceState().getTimeType(),
+              currentMessage.getVesselId(), TimeStampHelper.getCurrentTimeStamp(), "VTS", currentMessage.getGroupWith(), text);
+      //message.setMessageId(null);
+      //newMessage.setReportedBy("VTS");
+      newMessage.getServiceState().setTimeSequence(serviceTimeSequence);
+      newMessage.setReportedAt(timeStampHelper.getTimeGregorian());
+      if (text == null) {
+          newMessage.setComment(text);
+      }
+      else
+          newMessage.setComment(text);
+      senderModel.sendMessage(newMessage);
+      return true;
+  }
 
     public boolean respondToMessage(String text) {
         TimeStampHelper timeStampHelper = new TimeStampHelper();
@@ -66,6 +107,7 @@ public class PCMHandlerModel {
         }
         return false;
     }
+*/
 
     //Från en lista med alla PCM sorterar ut de som har relevant Service Object och returnerar de
     public List<PortCallMessage> getRelevantPCMs(List<PortCallMessage> messageList) {
