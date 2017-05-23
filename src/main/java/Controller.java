@@ -33,6 +33,9 @@ public class Controller implements ActionListener {
         timer.setInitialDelay(0);
         timer.start();
         applyNewMessages();
+        msgsView.setVisible(true);
+        msgrView.setVisible(true);
+        vsllocView.setVisible(true);
     }
 
     public void addViews(MessengerView msgrView, MessagesView msgsView, VesselLocationView vsllocView){
@@ -59,15 +62,19 @@ public class Controller implements ActionListener {
         pcmHandler.getMessagesBetweenTimes(oldTime, newTime);
     }
 
-    public static String getCurrentTimeStamp() {
-        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        Date now = new Date();
-        String strDate = sdfDate.format(now);
-        return strDate;
+
+
+    public void applyNewMessages(){
+        for (String str : pcmHandler.getPortCallMessagesAsStrings(pcmHandler.getRelevantPCMs(pcmHandler.getLatestFetchBatch()))) {
+            logModel.addMessage(str);
+        }
+        int[] currentPositionInfo = logModel.getMessagePositions();
+        msgsView.changePositionInfo(currentPositionInfo);
+        vesselUpdateAction();
     }
 
     public void vesselUpdateAction(){
-        for (ArrayList<String> vesselInfo : pcmHandler.getMultipleVesselsTravelinfo(pcmHandler.getPortCallMessages())) {
+        for (ArrayList<String> vesselInfo : pcmHandler.getMultipleVesselsTravelinfo(pcmHandler.getLatestFetchBatch())) {
             vsllocModel.addInfo(vesselInfo.get(0), vesselInfo.get(1), vesselInfo.get(2));
         }
         updateFullVesselLocationView();
@@ -83,15 +90,6 @@ public class Controller implements ActionListener {
                     "\n ";
         }
         vsllocView.updateVesselLocs(overview);
-    }
-
-    public void applyNewMessages(){
-        for (String str : pcmHandler.getPortCallMessagesAsStrings(pcmHandler.getLatestFetchBatch())) {
-            logModel.addMessage(str);
-        }
-        int[] currentPositionInfo = logModel.getMessagePositions();
-        msgsView.changePositionInfo(currentPositionInfo);
-        vesselUpdateAction();
     }
 
     public void templateChanged(){
