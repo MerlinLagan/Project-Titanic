@@ -54,7 +54,9 @@ public class PCMSenderModel {
     public PortCallMessage createNewMessage(ServiceObject serviceObject, ServiceTimeSequence serviceTimeSequence, LogicalLocation atLocationType,/* LogicalLocation logicalLocation, double toLat,
                                              double toLong, String name, LogicalLocation fromLocation, double fromLat,
                                              double fromLong, String fromName,*/ String localPCID, String localJID, String time, TimeType
-                                                     timeType, String vesselID, String reportedAt, String reportedBy, String groupWith, String comment) {
+                                             timeType, String vesselID, String reportedAt, String reportedBy, String groupWith, String comment) {
+        
+
         StateWrapper stateWrapper = new StateWrapper(
                 serviceObject, //referenceObject
                 serviceTimeSequence,

@@ -73,6 +73,7 @@ public class PCMHandlerModel {
     }
 
     public boolean respondToMessageWithStatement(String text, ServiceTimeSequence serviceTimeSequence) {
+        System.out.println(text);
         TimeStampHelper timeStampHelper = new TimeStampHelper();
         PortCallMessage currentMessage = messageList.get(selectedPCMIndex);
         ServiceObject serviceObject = currentMessage.getServiceState().getServiceObject();
@@ -106,10 +107,11 @@ public class PCMHandlerModel {
 
         newMessage.setMessageId(null);
         newMessage.setReportedBy(reportedBy);
-        System.out.println("text ="+"=");
+        System.out.println("text ="+ text + "=");
         if (!(text.equals("")))
              newMessage.setComment(text);
-        senderModel.sendMessage(senderModel.getExampleMessage());
+        //senderModel.sendMessage(senderModel.getExampleMessage());
+        senderModel.sendMessage(newMessage);
         System.out.println("did sendMessage");
         return true;
     }

@@ -5,8 +5,6 @@ import java.util.HashMap;
  */
 public class PolygonWithBoats {
     String polygonID;
-    String estimatedLocation;
-    String confirmedLocation;
     int numberOfEstimates;
     int numberOfConfirmed;
 
@@ -15,8 +13,8 @@ public class PolygonWithBoats {
 
     public PolygonWithBoats(String polygonID) {
         this.polygonID = polygonID;
-        estimatesToPolygon = new HashMap<String, Integer>();
-        confirmedToPolygon = new HashMap<String, String>();
+        estimatesToPolygon = new HashMap<>();
+        confirmedToPolygon = new HashMap<>();
     }
 
     public void addEstimatedBoat(String vesselID) {

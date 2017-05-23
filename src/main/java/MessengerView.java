@@ -132,6 +132,7 @@ public class MessengerView extends JFrame{
     }
 
     public String getMessageBoxText(){
+        tThree.getText();
         return tThree.getText();
     }
 
