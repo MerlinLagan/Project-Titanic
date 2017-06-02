@@ -12,13 +12,12 @@
 public class Main {
     public static void main(String[] args) {
 
-                LogModel msgsModel = new LogModel();
+                MessagesViewsModels msgsModel = new MessagesViewsModels();
                 TemplatesHandlerModel msgrModel = new TemplatesHandlerModel();
-                PCMFetcherModel pcmFetcher = new PCMFetcherModel("sandbox");
-                PCMSenderModel pcmSender = new PCMSenderModel("sandbox");
+                PCMFetcherModel pcmFetcher = new PCMFetcherModel("virtualbox");
+                PCMSenderModel pcmSender = new PCMSenderModel("virtualbox");
                 PCMHandlerModel pcmHandler = new PCMHandlerModel(pcmFetcher, pcmSender);
                 VesselLocationModel vsllocModel = new VesselLocationModel();
-
                 Controller controller = new Controller();
 
                 MessengerView msgrView = new MessengerView(controller);
@@ -26,9 +25,7 @@ public class Main {
                 VesselLocationView vsllocView = new VesselLocationView(controller);
 
                 controller.addViews(msgrView, msgsView, vsllocView);
-
                 controller.addModels(msgrModel, msgsModel, pcmHandler, vsllocModel);
-
                 controller.initialize();
     }
 }

@@ -1,3 +1,4 @@
+// Class that contains information about different polygons in VTS area
 
 // har ett objekt med alla vessels samt deras locations, baserat på Actual locations & estimates
 // Sker kontinuerligt genom att fetchas från varje nytt port call message där föregående skrivs över
@@ -29,6 +30,7 @@ public class VesselLocationModel {
     }
 
     public void addInfo(String polygonID, String vesselID, String reportState) {
+
         PolygonWithBoats newPolygon = new PolygonWithBoats(polygonID);
         if (!polygons.contains(newPolygon)) {
             if (reportState.equals(confirmed)){
@@ -36,6 +38,7 @@ public class VesselLocationModel {
                     e.removeConfirmedBoat(vesselID);
                     e.removeEstimatedBoat(vesselID);
                 }
+                if (!(polygonID.equals("DEPARTED")))
                 newPolygon.addConfirmedBoat(vesselID);
             }
             else
@@ -54,6 +57,9 @@ public class VesselLocationModel {
                 if (e.getID().equals(polygonID))
                     e.addEstimatedBoat(vesselID);
             }
+        }
+        if ((newPolygon.countConfirmedVessels() == 0) && (newPolygon.countEstimatedVessels() == 0)){
+            polygons.remove(newPolygon);
         }
     }
 }

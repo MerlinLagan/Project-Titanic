@@ -5,9 +5,10 @@
 import javax.swing.*;
 import java.awt.*;
 
-/*
- * The Client with its GUI
- */
+
+// The panel that handles relevant info for VTS extracted from received portcdm-messages
+
+
 public class MessagesView extends JFrame {
 
 
@@ -52,38 +53,44 @@ public class MessagesView extends JFrame {
         southPanel.add(updateLogButton);
         add(southPanel, BorderLayout.SOUTH);
 
-        //templates = new HashMap<String, String>();
-
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(600, 600);
         setVisible(false);
     }
 
+    // Changes previous & next message count
     public void changePositionInfo(int[] positionInListInfo){
-        int nextMessagesCount = positionInListInfo[0]-positionInListInfo[1];
-        int previousMessagesCount = positionInListInfo[0]-nextMessagesCount;
-        previousMessageButton.setText("Previous Message (" + previousMessagesCount + ")");
-        nextMessageButton.setText("Next Message (" + (nextMessagesCount-1) + ")");
-        if (previousMessagesCount == 0)
+        if (positionInListInfo[0] == 0){
             previousMessageButton.setEnabled(false);
-        else previousMessageButton.setEnabled(true);
-        if (nextMessagesCount-1 == 0)
+            previousMessageButton.setText("Previous Message (" + 0 + ")");
+            previousMessageButton.setEnabled(false);
+            nextMessageButton.setText("Next Message (" + 0 + ")");
             nextMessageButton.setEnabled(false);
-        else nextMessageButton.setEnabled(true);
+        }
+
+        else {
+            int nextMessagesCount = positionInListInfo[0] - positionInListInfo[1] - 1;
+            int previousMessagesCount = positionInListInfo[0] - nextMessagesCount - 1;
+            previousMessageButton.setText("Previous Message (" + previousMessagesCount + ")");
+            nextMessageButton.setText("Next Message (" + (nextMessagesCount) + ")"); // USed to be nextMEssagesCount-1 to prevent nullpointer,
+            // mightve been wrong approach tho
+            if (previousMessagesCount == 0)
+                previousMessageButton.setEnabled(false);
+            else previousMessageButton.setEnabled(true);
+            if (nextMessagesCount == 0)
+                nextMessageButton.setEnabled(false);
+            else nextMessageButton.setEnabled(true);
+        }
 
     }
+
+    // Method to clear log , used before appending new text
     public void clearLog(){
         loggArea.setText("");
     }
 
     // Append text in the TextArea
     public void append(String str) {
-        clearLog();
-        loggArea.append(str + "\n");
-        loggArea.setCaretPosition(loggArea.getText().length() - 1);
-    }
-
-    public void appendWithOneBreak(String str) {
         clearLog();
         loggArea.append(str + "\n");
         loggArea.setCaretPosition(loggArea.getText().length() - 1);

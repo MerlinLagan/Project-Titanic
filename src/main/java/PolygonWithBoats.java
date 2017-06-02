@@ -1,8 +1,12 @@
+// Class to represent a polygon, or an area, in VTS zone - by having info about confirmed and estimated boats in different
+// area.
+
 import java.util.HashMap;
 
 /**
  * Created by Jakob on 17/05/17.
  */
+
 public class PolygonWithBoats {
     String polygonID;
     int numberOfEstimates;

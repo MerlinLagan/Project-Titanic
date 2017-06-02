@@ -2,12 +2,16 @@
  * Created by maxlundstrom on 15/05/17.
  */
 
+// Class that manages port call messages, sorts them and creates them
+
 import eu.portcdm.dto.LocationTimeSequence;
 import eu.portcdm.messaging.*;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.List;
 import java.util.ArrayList;
+
+
 
 public class PCMHandlerModel {
 
@@ -17,7 +21,6 @@ public class PCMHandlerModel {
     PCMFetcherModel fetcherModel;
     PCMSenderModel senderModel;
 
-    // Konstruktor som anropar initiateStateupdateAPI och hämtare nuvarande portcall
     public PCMHandlerModel() {
         this.fetcherModel = new PCMFetcherModel("virtualbox");
         this.senderModel = new PCMSenderModel("virtualbox");
@@ -36,27 +39,6 @@ public class PCMHandlerModel {
         selectedPCMIndex = index;
     }
 
-/*
-   // Skapar och svarar på ett meddelande utifrån ett föregående meddelande
-    public boolean respondToMessageWithStatement(String text, ServiceTimeSequence serviceTimeSequence) {
-        TimeStampHelper timeStampHelper = new TimeStampHelper();
-        PortCallMessage message = messageList.get(selectedPCMIndex);
-        //message.setMessageId(null);
-        message.setReportedBy("VTS");
-        message.getServiceState().setTimeSequence(serviceTimeSequence);
-        message.setReportedAt(timeStampHelper.getTimeGregorian());
-        if (text == null) {
-            message.setComment(text);
-            senderModel.sendMessage(message);
-            return true;
-        }
-            else {
-            message.setComment(text);
-            senderModel.sendMessage(message);
-            return true;
-        }
-    }
-    */
 
     public boolean respondToMessage(String text) {
         TimeStampHelper timeStampHelper = new TimeStampHelper();
@@ -72,8 +54,8 @@ public class PCMHandlerModel {
         return false;
     }
 
+
     public boolean respondToMessageWithStatement(String text, ServiceTimeSequence serviceTimeSequence) {
-        System.out.println(text);
         TimeStampHelper timeStampHelper = new TimeStampHelper();
         PortCallMessage currentMessage = messageList.get(selectedPCMIndex);
         ServiceObject serviceObject = currentMessage.getServiceState().getServiceObject();
@@ -99,37 +81,17 @@ public class PCMHandlerModel {
         try { groupWith = currentMessage.getGroupWith();} catch (Exception nullPointerException){}
         try { comment = text;} catch (Exception nullPointerException){}
 
-        System.out.println(serviceObject);
 
         PortCallMessage newMessage = senderModel.createNewMessage(serviceObject, serviceTimeSequence, atLocationType, /*, toLocation, toLat,
                     toLong, toName, fromLocation, fromLat, fromLong, fromName*/ localPCID, localJID, time,
                 timeType, vesselID, reportedAt, reportedBy, groupWith, comment);
 
-        System.out.println("text ="+ text + "=");
-        //  if (!(text.equals("")))
-        //       newMessage.setComment(text);
-        //senderModel.sendMessage(senderModel.getExampleMessage());
+
         senderModel.sendMessage(newMessage);
-        System.out.println("did sendMessage");
+
         return true;
     }
 
-  /*
-
-    public boolean respondToMessage(String text) {
-        TimeStampHelper timeStampHelper = new TimeStampHelper();
-        PortCallMessage message = messageList.get(selectedPCMIndex);
-        message.setMessageId(null);
-        message.setReportedBy("VTS");
-        message.setReportedAt(timeStampHelper.getTimeGregorian());
-        if (!(text == null)) {
-            message.setComment(text);
-            senderModel.sendMessage(message);
-            return true;
-        }
-        return false;
-    }
-*/
 
     //Från en lista med alla PCM sorterar ut de som har relevant Service Object och returnerar de
     public List<PortCallMessage> getRelevantPCMs(List<PortCallMessage> messageList) {
@@ -144,10 +106,12 @@ public class PCMHandlerModel {
     }
 
     public boolean isRelevant(PortCallMessage portCallMessage) {
-        if (true)
-            return true;
+
         ServiceState servState = portCallMessage.getServiceState();
         LocationState locState = portCallMessage.getLocationState();
+
+        if (portCallMessage.getReportedBy().equals("VTS"))
+            return false;
 
         try {
             if (servState.getServiceObject().toString().equals("ARRIVAL_VTSAREA")) {
@@ -169,42 +133,13 @@ public class PCMHandlerModel {
             } else if (servState.getServiceObject().toString().equals("ESCORT_TOWAGE")) {
                 return true;
             }
-            /*
-                else if(locState.getReferenceObject().equals("TUG")){
-                    System.out.print("TUG");
-                    relevantPCM.add(portCallMessage);
-                }
-                else if(locState.getReferenceObject().toString().equals("ESCORT_TUG")){
-                    LocationReferenceObject.ESCORT_TUG;
-                    System.out.print("ESCORT_TUG");
-                    relevantPCM.add(portCallMessage);
-                }
-                */
+
         } catch (NullPointerException e) {
         }
         return false;
     }
 
 
-
-    //Samma uppbyggnad som checkServiceState men används för att testa i main
-    public static List<PortCallMessage> checkComment(List<PortCallMessage> messageList) {
-        List<PortCallMessage> relevantPCM = new ArrayList<>();
-        System.out.print("A");
-        for (PortCallMessage portCallMessage : messageList) {
-            System.out.print("B");
-            if (portCallMessage.getLocalPortCallId().equals("urn:x-mrn:stm:portcdm:local_port_call:SEGOT:DHC:52724")) {
-                System.out.print("C");
-                if (portCallMessage.getComment().equals("Oscar")) {
-                    System.out.print("D");
-                    relevantPCM.add(portCallMessage);
-                }
-            }
-        }
-        System.out.print("E");
-        System.out.print(relevantPCM.toString());
-        return null;
-    }
 
     public List<PortCallMessage> getPortCallMessages() {
         return messageList;
@@ -307,9 +242,6 @@ public class PCMHandlerModel {
         } catch (Exception e) {
         }
 
-
-
-
         String string = "Port Call Message Information" + "\n " +
                 "\n " +
                 "ReportedBy: " + portCallMessage.getReportedBy() +  "\n " +
@@ -333,23 +265,4 @@ public class PCMHandlerModel {
 
     }
 
-
-    /*
-    pcmHandler.sendMessage(message1);
-
-    pcmHandler.getMessagesBetweenTimes("asd", "asd");
-    System.out.println(pcmHandler.messageList);
-
-    for (PortCallMessage pcm : pcmHandler.messageList) {
-        //System.out.println(pcm.getComment());
-
-        if (!(pcm.getComment() == null)) {
-            System.out.println("is not null2");
-            if (pcm.getComment().equals("exampletest")) {
-                System.out.println(pcm.getComment() + "yeo");
-            }
-        }
-        //checkComment(pcmHandler.messageList);
-    }
-    */
 }

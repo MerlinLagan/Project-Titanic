@@ -1,12 +1,16 @@
 import java.util.ArrayList;
 
-public class LogModel {
+
+// Class to manage & store messages
+
+
+public class MessagesViewsModels {
 
     ArrayList<String> logMessages;
     ArrayList<Integer> answeredMessages;
     int selectedLogMessageIndex;
 
-    public LogModel(){
+    public MessagesViewsModels(){
         logMessages = new ArrayList<String>();
         selectedLogMessageIndex = 0;
         answeredMessages = new ArrayList<Integer>();

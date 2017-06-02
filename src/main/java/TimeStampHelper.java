@@ -1,3 +1,5 @@
+// Class to help with date handling
+
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,8 +21,17 @@ public class TimeStampHelper {
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         sdfDate.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date now = new Date();
-        String strDate = sdfDate.format(now);
-        return strDate;
+        return sdfDate.format(now);
+    }
+    public static String getCurrentTimeStampMinusOneSec() {
+        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        sdfDate.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date now = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(now);
+        cal.add(Calendar.SECOND, -1);
+        Date oneSecBack = cal.getTime();
+        return sdfDate.format(oneSecBack);
     }
 
     public static XMLGregorianCalendar getTimeGregorian() {

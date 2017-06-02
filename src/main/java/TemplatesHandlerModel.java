@@ -1,3 +1,5 @@
+// Model for managing templates based on input in MessengerView
+
 /**
  * Created by Tobias on 2017-05-05.
  */

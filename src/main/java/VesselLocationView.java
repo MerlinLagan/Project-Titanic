@@ -1,3 +1,5 @@
+// View for vessel locations in VTS area
+
 import javax.swing.*;
 import java.awt.*;
 

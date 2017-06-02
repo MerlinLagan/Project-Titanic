@@ -3,17 +3,22 @@ import eu.portcdm.messaging.ServiceTimeSequence;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by Jakob on 15/05/17.
  */
 
+
+// Controller class - MVC Pattern
+
+
+
 public class Controller implements ActionListener {
 
-    LogModel logModel;
+    // Declare models and views variables
+
+    MessagesViewsModels messagesViewsModels;
     TemplatesHandlerModel tmpltsModel;
     MessengerView msgrView;
     MessagesView msgsView;
@@ -25,6 +30,7 @@ public class Controller implements ActionListener {
     Timer timer;
 
 
+    // Initialize application
     public void initialize(){
         tmpltsModel.loadTemplatesMap("data.properties");
         msgrView.loadTemplatesFromMap(tmpltsModel.getTemplates());
@@ -38,43 +44,45 @@ public class Controller implements ActionListener {
         vsllocView.setVisible(true);
     }
 
+    // Adding views
     public void addViews(MessengerView msgrView, MessagesView msgsView, VesselLocationView vsllocView){
         this.msgsView = msgsView;
         this.msgrView = msgrView;
         this.vsllocView = vsllocView;
     }
 
-    public void addModels(TemplatesHandlerModel tmpltsModel, LogModel msgsModel,
+    // Adding models
+    public void addModels(TemplatesHandlerModel tmpltsModel, MessagesViewsModels msgsModel,
                           PCMHandlerModel pcmHandler, VesselLocationModel vsllocModel){
         this.tmpltsModel = tmpltsModel;
-        this.logModel = msgsModel;
+        this.messagesViewsModels = msgsModel;
         this.pcmHandler = pcmHandler;
         this.vsllocModel = vsllocModel;
     }
-    TimeStampHelper timeStampHelper = new TimeStampHelper();
-    String newTime = "2017-04-14T00:00:01Z";
+
+    String startTime = TimeStampHelper.getCurrentTimeStampMinusOneSec();
+    String newTime = startTime;
     String oldTime;
 
 
+    // Tell model to get PCmessages since last time method was called upon
     public void getNewMessages(){
         this.oldTime = newTime;
         this.newTime = TimeStampHelper.getCurrentTimeStamp();
         pcmHandler.getMessagesBetweenTimes(oldTime, newTime);
-        System.out.println(newTime);
-        System.out.println(pcmHandler.getLatestFetchBatch());
     }
 
-
-
+    // Applies latest message fetch-batch from model to view
     public void applyNewMessages(){
         for (String str : pcmHandler.getPortCallMessagesAsStrings(pcmHandler.getRelevantPCMs(pcmHandler.getLatestFetchBatch()))) {
-            logModel.addMessage(str);
+            messagesViewsModels.addMessage(str);
         }
-        int[] currentPositionInfo = logModel.getMessagePositions();
+        int[] currentPositionInfo = messagesViewsModels.getMessagePositions();
         msgsView.changePositionInfo(currentPositionInfo);
         vesselUpdateAction();
     }
 
+    // Tells vessel location model to update itself based on new info from PCMHandlerModel's fetched messages
     public void vesselUpdateAction(){
         for (ArrayList<String> vesselInfo : pcmHandler.getMultipleVesselsTravelinfo(pcmHandler.getLatestFetchBatch())) {
             vsllocModel.addInfo(vesselInfo.get(0), vesselInfo.get(1), vesselInfo.get(2));
@@ -82,6 +90,7 @@ public class Controller implements ActionListener {
         updateFullVesselLocationView();
     }
 
+    // Update view based on vessel location model
     public void updateFullVesselLocationView(){
         String overview = "";
         for (PolygonWithBoats polygon : vsllocModel.getPolygons()){
@@ -94,14 +103,15 @@ public class Controller implements ActionListener {
         vsllocView.updateVesselLocs(overview);
     }
 
+    // Update messengerview based on new template
     public void templateChanged(){
         msgrView.enableDeleteButton();
         String templateKey = msgrView.getSelectedTemplate();
         String templateValue = tmpltsModel.getTemplateFromKey(templateKey);
         msgrView.setMessageBoxText(templateValue);
         msgrView.labelField.removeAll();
-        logModel.updateLabelList(templateValue);
-        String[] labels = logModel.getLabels();
+        messagesViewsModels.updateLabelList(templateValue);
+        String[] labels = messagesViewsModels.getLabels();
         for (String str : labels) {
             msgrView.addLabel(str);
             msgrView.labelField.repaint();
@@ -110,6 +120,7 @@ public class Controller implements ActionListener {
         }
     }
 
+    // Actionlisteners for buttons in various panels
     @Override
     public void actionPerformed(ActionEvent e) {
         Object o = e.getSource();
@@ -119,29 +130,29 @@ public class Controller implements ActionListener {
         }
 
         if(o == msgrView.sendButton) {
-            logModel.applyLabelsToMessage(msgrView.tThree.getText(), msgrView.getLabels());
-            pcmHandler.respondToMessage(logModel.getMessage());
-            msgsView.append(logModel.getMessage());
-            logModel.setCurrentMessageAsAnswered();
+            messagesViewsModels.applyLabelsToMessage(msgrView.tThree.getText(), msgrView.getLabels());
+            pcmHandler.respondToMessage(messagesViewsModels.getMessage());
+            msgsView.append(messagesViewsModels.getMessage());
+            messagesViewsModels.setCurrentMessageAsAnswered();
             msgrView.disableSendButtons();
         }
 
         if(o == msgrView.confirmButton){
-            logModel.applyLabelsToMessage(msgrView.tThree.getText(), msgrView.getLabels());
-            pcmHandler.respondToMessageWithStatement(logModel.getMessage(), ServiceTimeSequence.CONFIRMED);
-            logModel.addInfoToCurrentMessage("SENT MESSAGE BELOW" + "\n" +
-                    "\n" + logModel.getMessage() + "\n" + "\n" + "CONFIRMED");
-            msgsView.append(logModel.getLogMessage());
-            logModel.setCurrentMessageAsAnswered();
+            messagesViewsModels.applyLabelsToMessage(msgrView.tThree.getText(), msgrView.getLabels());
+            pcmHandler.respondToMessageWithStatement(messagesViewsModels.getMessage(), ServiceTimeSequence.CONFIRMED);
+            messagesViewsModels.addInfoToCurrentMessage("SENT MESSAGE BELOW" + "\n" +
+                    "\n" + messagesViewsModels.getMessage() + "\n" + "\n" + "CONFIRMED");
+            msgsView.append(messagesViewsModels.getLogMessage());
+            messagesViewsModels.setCurrentMessageAsAnswered();
             msgrView.disableSendButtons();
         }
         if(o == msgrView.denyButton){
-            logModel.applyLabelsToMessage(msgrView.tThree.getText(), msgrView.getLabels());
-            pcmHandler.respondToMessageWithStatement(logModel.getMessage(), ServiceTimeSequence.DENIED);
-            logModel.addInfoToCurrentMessage("SENT MESSAGE BELOW" + "\n" +
-                    "\n" + logModel.getMessage() + "\n" + "\n" + "DENIED");
-            msgsView.append(logModel.getLogMessage());
-            logModel.setCurrentMessageAsAnswered();
+            messagesViewsModels.applyLabelsToMessage(msgrView.tThree.getText(), msgrView.getLabels());
+            pcmHandler.respondToMessageWithStatement(messagesViewsModels.getMessage(), ServiceTimeSequence.DENIED);
+            messagesViewsModels.addInfoToCurrentMessage("SENT MESSAGE BELOW" + "\n" +
+                    "\n" + messagesViewsModels.getMessage() + "\n" + "\n" + "DENIED");
+            msgsView.append(messagesViewsModels.getLogMessage());
+            messagesViewsModels.setCurrentMessageAsAnswered();
             msgrView.disableSendButtons();
         }
         if(o == msgrView.newTemplateButton) {
@@ -171,44 +182,38 @@ public class Controller implements ActionListener {
         if (o == msgsView.previousMessageButton) {
 
             try {
-                logModel.goToPreviousMessage();
-                msgsView.append(logModel.getLogMessage());
-                int[] currentPositionInfo = logModel.getMessagePositions();
+                messagesViewsModels.goToPreviousMessage();
+                msgsView.append(messagesViewsModels.getLogMessage());
+                int[] currentPositionInfo = messagesViewsModels.getMessagePositions();
                 msgsView.changePositionInfo(currentPositionInfo);
                 msgrView.enableSendButtons();
-                pcmHandler.setSelectedPCMIndex(logModel.getSelectedLogMessageIndex());
+                pcmHandler.setSelectedPCMIndex(messagesViewsModels.getSelectedLogMessageIndex());
             }
             catch(Exception exception){
                 exception.printStackTrace();
             }
             msgrView.goToEmptyTemplate();
             templateChanged();
-            if (logModel.isAnsweredTo()){
+            if (messagesViewsModels.isAnsweredTo()){
                 msgrView.disableSendButtons();
             }
         }
 
         if (o == msgsView.nextMessageButton) {
             try {
-                logModel.goToNextMessage();
-                msgsView.append(logModel.getLogMessage());
-                int[] currentPositionInfo = logModel.getMessagePositions();
+                messagesViewsModels.goToNextMessage();
+                msgsView.append(messagesViewsModels.getLogMessage());
+                int[] currentPositionInfo = messagesViewsModels.getMessagePositions();
                 msgsView.changePositionInfo(currentPositionInfo);
                 msgrView.enableSendButtons();
-                pcmHandler.setSelectedPCMIndex(logModel.getSelectedLogMessageIndex());
+                pcmHandler.setSelectedPCMIndex(messagesViewsModels.getSelectedLogMessageIndex());
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
             msgrView.goToEmptyTemplate();
             templateChanged();
-            if (logModel.isAnsweredTo()){
+            if (messagesViewsModels.isAnsweredTo()) {
                 msgrView.disableSendButtons();
-            }
-        }
-        if (o == msgsView.updateLogButton) {
-            try {
-            } catch (Exception exception) {
-                exception.printStackTrace();
             }
         }
     }

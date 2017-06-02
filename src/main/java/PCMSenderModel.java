@@ -1,3 +1,5 @@
+// Class used to send messages to server
+
 import eu.portcdm.amss.client.ApiClient;
 import eu.portcdm.amss.client.StateupdateApi;
 import eu.portcdm.dto.LocationTimeSequence;
@@ -31,15 +33,13 @@ public class PCMSenderModel {
             userID = userIDSBox;
             userPW = userPWSBox;
             apiKey = apiKeySBox;
-            System.out.println("PCMSenderModel initiated in sandbox mode.");
-
         }
+
         else if (boxtype.equals("virtualbox")) {
             baseUrl = BASEURL_VIRTUALBOX;
             userID = userIDVBox;
             userPW = userPWVBox;
             apiKey = apiKeyVBox;
-            System.out.println("PCMSenderModel initiated in virtualbox mode.");
         }
 
         apiClient.addDefaultHeader("X-PortCDM-UserId", userID);

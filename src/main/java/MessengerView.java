@@ -2,15 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 
-/*
- * The Client with its GUI
- */
 
-// Mooring vill ha när fartyg passerar rappunkt 1.
-// Agenten vill ha när fartyg passerar rappunkt 1.
-// Skjuter in tidsstämplar när fartyg går in i området.
-// Hör med backengänget om de kan få till en linje i Kartan där man kan
-// automatgenerera
+// View with panel where user can respond to messages using templates
 
 public class MessengerView extends JFrame{
 
@@ -138,10 +131,6 @@ public class MessengerView extends JFrame{
 
     public String getSelectedTemplate(){
         return (String)templateMenu.getSelectedItem();
-    }
-
-    public void disableDeleteButton(){
-        deleteMessageButton.setEnabled(false);
     }
 
     public void enableDeleteButton(){
